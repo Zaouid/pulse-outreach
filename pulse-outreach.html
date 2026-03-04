@@ -1,0 +1,2841 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulse Outreach — Keep Growing</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    /* DESIGN SYSTEM PREMIUM KEEP GROWING */
+    :root {
+      /* Background & Surfaces (Onyx/Glass) */
+      --bg: #050505;
+      --s1: rgba(17, 17, 20, 0.65);
+      --s2: rgba(26, 26, 31, 0.7);
+      --s3: rgba(34, 34, 40, 0.8);
+
+      /* Borders & Lines */
+      --bd: rgba(255, 255, 255, 0.08);
+      --bd2: rgba(255, 255, 255, 0.15);
+      --bd-g: rgba(52, 211, 153, 0.2);
+
+      /* Brand Keep Growing (Emerald + Accents) */
+      --g: #34D399;
+      /* Keep Growing Main */
+      --g-light: #6EE7B7;
+      --gd: rgba(52, 211, 153, 0.1);
+      --gh: rgba(52, 211, 153, 0.2);
+
+      /* Text */
+      --tx: #FFFFFF;
+      --t2: #A1A1AA;
+      --t3: #71717A;
+
+      /* Semantic colors */
+      --rd: #FB7185;
+      --rd-bg: rgba(251, 113, 133, 0.1);
+      --yw: #FBBF24;
+      --bl: #60A5FA;
+      --pp: #A78BFA;
+      --pk: #F472B6;
+      --og: #FB923C;
+
+      /* Radius */
+      --r: 16px;
+      --rs: 10px;
+      --rl: 24px;
+
+      /* Typography */
+      --fh: 'Manrope', -apple-system, sans-serif;
+      --fb: 'DM Sans', -apple-system, sans-serif;
+      --fm: 'JetBrains Mono', monospace;
+
+      /* Premium Shadows & Glows */
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      --glow-g: 0 0 20px rgba(52, 211, 153, 0.15);
+      --glow-g-hover: 0 0 30px rgba(52, 211, 153, 0.25);
+
+      /* Blurs */
+      --blur: blur(16px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      background-image:
+        radial-gradient(circle at 15% 50%, rgba(52, 211, 153, 0.03), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(96, 165, 250, 0.03), transparent 25%);
+      color: var(--tx);
+      font-family: var(--fb);
+      font-size: 14.5px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--s3);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--t3);
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font-family: inherit;
+    }
+
+    a {
+      color: var(--g);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--g-light);
+      text-shadow: 0 0 8px rgba(52, 211, 153, 0.4);
+    }
+
+    ::selection {
+      background: rgba(52, 211, 153, 0.3);
+      color: var(--tx);
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes slideInRight {
+      0% {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        box-shadow: var(--glow-g);
+      }
+
+      50% {
+        box-shadow: var(--glow-g-hover);
+      }
+    }
+
+    .fi {
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    /* LOGIN */
+    #LS {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at 30% 20%, rgba(52, 211, 153, 0.08) 0%, transparent 50%), var(--bg);
+    }
+
+    .lc {
+      background: var(--s1);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--bd);
+      border-radius: var(--rl);
+      padding: 52px 44px;
+      width: 440px;
+      max-width: 95vw;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .lc::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      border-radius: var(--rl) var(--rl) 0 0;
+    }
+
+    .lc h1 {
+      font-family: var(--fh);
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+      background: linear-gradient(to right, #fff, #a1a1aa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .lc h1 em {
+      color: var(--g);
+      font-style: normal;
+      background: linear-gradient(135deg, var(--g), #2dd4bf);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .lc .sub {
+      color: var(--t2);
+      font-size: 13.5px;
+      font-weight: 500;
+      margin-bottom: 36px;
+    }
+
+    .lb {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 14px 20px;
+      margin-bottom: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--bd);
+      border-radius: var(--r);
+      color: var(--tx);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      gap: 14px;
+    }
+
+    .lb:hover {
+      border-color: var(--bd-g);
+      background: var(--gd);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm), 0 0 0 1px var(--bd-g);
+    }
+
+    .lb .av {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      background: linear-gradient(135deg, rgba(52, 211, 153, 0.2), rgba(52, 211, 153, 0.05));
+      color: var(--g-light);
+      border: 1px solid rgba(52, 211, 153, 0.2);
+    }
+
+    .lb .rl {
+      margin-left: auto;
+      font-size: 11px;
+      color: var(--g);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      background: rgba(52, 211, 153, 0.1);
+      border-radius: 6px;
+    }
+
+    /* LAYOUT */
+    #A {
+      display: none;
+      min-height: 100vh;
+    }
+
+    #A.on {
+      display: flex;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    /* SIDEBAR */
+    #SB {
+      width: 250px;
+      background: var(--s1);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border-right: 1px solid var(--bd);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      flex-shrink: 0;
+      z-index: 50;
+    }
+
+    #SB .lo {
+      padding: 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    #SB .lo h2 {
+      font-family: var(--fh);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    #SB .lo h2 em {
+      color: var(--g);
+      font-style: normal;
+    }
+
+    #SB .lo .tg {
+      font-size: 10.5px;
+      color: var(--t2);
+      margin-top: 4px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    #SB .ui {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    #SB .ui .nm {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--tx);
+    }
+
+    #SB .ui .bg {
+      font-size: 10px;
+      color: var(--g);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    #SB nav {
+      flex: 1;
+      padding: 16px 12px;
+      overflow-y: auto;
+    }
+
+    #SB nav button {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 4px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: var(--rs);
+      color: var(--t2);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    #SB nav button:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--tx);
+      transform: translateX(4px);
+    }
+
+    #SB nav button.ac {
+      background: linear-gradient(90deg, var(--gd), transparent);
+      border-left: 2px solid var(--g);
+      border-radius: 0 var(--rs) var(--rs) 0;
+      color: var(--g-light);
+    }
+
+    #SB nav .ni {
+      width: 20px;
+      text-align: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      opacity: 0.7;
+      transition: all 0.2s;
+    }
+
+    #SB nav button.ac .ni {
+      opacity: 1;
+      color: var(--g);
+      text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+    }
+
+    #SB .sf {
+      padding: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    #SB .sf button {
+      width: 100%;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--rs);
+      color: var(--t3);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #SB .sf button:hover {
+      border-color: rgba(251, 113, 133, 0.3);
+      color: var(--rd);
+      background: var(--rd-bg);
+      transform: translateY(-1px);
+    }
+
+    /* MAIN */
+    #M {
+      flex: 1;
+      padding: 40px 48px;
+      overflow-y: auto;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    #M::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 300px;
+      background: linear-gradient(to bottom, rgba(52, 211, 153, 0.03), transparent);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .pt {
+      font-family: var(--fh);
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 28px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .pt small {
+      font-size: 14px;
+      color: var(--t2);
+      font-weight: 500;
+      margin-left: 12px;
+      text-shadow: none;
+    }
+
+    /* KPI CARDS */
+    .sg {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .sc {
+      padding: 20px 24px;
+      background: var(--s2);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--bd);
+      border-radius: var(--r);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .sc:hover {
+      border-color: var(--bd2);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .sc::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--ac, var(--g)), transparent);
+      opacity: 0.8;
+    }
+
+    .sc .v {
+      font-family: var(--fm);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--tx);
+      line-height: 1;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .sc .l {
+      font-size: 12.5px;
+      color: var(--ac, var(--t2));
+      margin-top: 10px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    /* BADGES */
+    .bd {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+
+    /* BUTTONS */
+    .bt {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border: 1px solid transparent;
+      border-radius: var(--rs);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bt:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .bp {
+      background: var(--g);
+      background: linear-gradient(135deg, var(--g), #10B981);
+      color: #000;
+      box-shadow: 0 2px 10px rgba(52, 211, 153, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .bp:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--g-light), var(--g));
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(52, 211, 153, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .bs {
+      background: var(--s2);
+      color: var(--tx);
+      border: 1px solid var(--bd2);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .bs:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      background: var(--s3);
+      transform: translateY(-1px);
+    }
+
+    .bg2 {
+      background: transparent;
+      color: var(--t2);
+      padding: 8px 16px;
+      border-radius: var(--rs);
+      font-weight: 500;
+    }
+
+    .bg2:hover {
+      color: var(--tx);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .bsm {
+      padding: 7px 14px;
+      font-size: 12.5px;
+    }
+
+    /* FORMS */
+    .ig {
+      margin-bottom: 20px;
+    }
+
+    .ig label {
+      display: block;
+      font-size: 13px;
+      color: var(--t2);
+      margin-bottom: 8px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .ig input,
+    .ig select,
+    .ig textarea {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--s1);
+      border: 1px solid var(--bd2);
+      border-radius: var(--rs);
+      color: var(--tx);
+      font-size: 14px;
+      outline: none;
+      transition: all 0.3s;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .ig input:focus,
+    .ig select:focus,
+    .ig textarea:focus {
+      border-color: var(--g);
+      background: var(--s2);
+      box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .ig textarea {
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.6;
+    }
+
+    /* CARDS */
+    .cd {
+      background: var(--s2);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--bd);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+    }
+
+    .ch {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: var(--r) var(--r) 0 0;
+    }
+
+    .ch h4 {
+      font-family: var(--fh);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .cb {
+      padding: 24px;
+    }
+
+    /* TABS */
+    .tb {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 6px;
+      border-radius: var(--r);
+      border: 1px solid var(--bd);
+      width: fit-content;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .tbtn {
+      padding: 10px 20px;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      color: var(--t2);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .tbtn:hover {
+      color: var(--tx);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .tbtn.ac {
+      background: var(--s3);
+      color: var(--tx);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* TABLE */
+    .tw {
+      overflow-x: auto;
+      border-radius: var(--r);
+      border: 1px solid var(--bd);
+      background: var(--s2);
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    table thead th {
+      padding: 16px 20px;
+      text-align: left;
+      color: var(--t2);
+      font-weight: 600;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    table tbody tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: all 0.2s;
+    }
+
+    table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+      transform: scale(1.001);
+    }
+
+    table td {
+      padding: 12px 16px
+    }
+
+    /* KANBAN */
+    .kan {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+    }
+
+    .kc {
+      min-width: 260px;
+      flex: 1;
+      background: var(--s2);
+      border-radius: var(--r);
+      border: 1px solid var(--bd);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .kch {
+      padding: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: var(--r) var(--r) 0 0;
+    }
+
+    .kch .dt {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    .kch .ct {
+      font-size: 14px;
+      font-weight: 700;
+      font-family: var(--fh);
+      letter-spacing: 0.3px;
+    }
+
+    .kch .cn {
+      margin-left: auto;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .ki {
+      padding: 12px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .kit {
+      padding: 16px;
+      background: var(--s1);
+      border-radius: var(--rs);
+      margin-bottom: 10px;
+      cursor: pointer;
+      border: 1px solid var(--bd2);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .kit:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      background: var(--s2);
+    }
+
+    /* Timeline */
+    .tl {
+      position: relative;
+      margin-top: 24px;
+      padding-left: 20px;
+    }
+
+    .tl::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--bd);
+    }
+
+    .ts {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .ts .dot2 {
+      position: absolute;
+      left: -20px;
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 3px solid var(--s2);
+      box-shadow: 0 0 0 2px var(--bd);
+      z-index: 1;
+      transition: all 0.3s;
+    }
+
+    .ts:hover .dot2 {
+      transform: scale(1.2);
+    }
+
+    .scd {
+      background: var(--s2);
+      border: 1px solid var(--bd2);
+      border-radius: var(--r);
+      padding: 20px;
+      transition: all 0.3s;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .scd:hover {
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .shd {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .sbd,
+    .sm {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .sm {
+      background: #050505;
+      padding: 16px;
+      border-radius: var(--rs);
+      color: var(--tx);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .cpb {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      color: var(--t2);
+      padding: 6px 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--t2);
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+    }
+
+    .ts .sm .cpb:hover {
+      background: rgba(52, 211, 153, 0.15);
+      border-color: rgba(52, 211, 153, 0.4);
+      color: var(--g-light);
+      transform: translateY(-1px);
+    }
+
+    /* TOAST */
+    #TOAST {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .toast {
+      padding: 16px 24px;
+      border-radius: var(--rs);
+      font-size: 14px;
+      font-weight: 600;
+      animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+      pointer-events: none;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: var(--blur);
+    }
+
+    .toast.ok {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      color: #34D399;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .toast.err {
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(251, 113, 133, 0.4);
+      color: #FB7185;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .toast.info {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(96, 165, 250, 0.4);
+      color: #60A5FA;
+    }
+
+    /* DETAIL VIEW */
+    #DV {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 5, 5, 0.85);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      z-index: 900;
+      overflow-y: auto;
+      display: none;
+    }
+
+    #DV.on {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    #DT {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(17, 17, 20, 0.85);
+      border-bottom: 1px solid var(--bd);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    #DT .bb {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--bd2);
+      border-radius: var(--rs);
+      color: var(--t2);
+      padding: 10px 18px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    #DT .bb:hover {
+      border-color: var(--g);
+      color: var(--g);
+      background: rgba(52, 211, 153, 0.1);
+      transform: translateX(-2px);
+    }
+
+    #DT h2 {
+      font-family: var(--fh);
+      font-size: 20px;
+      font-weight: 800;
+      flex: 1;
+      letter-spacing: -0.3px;
+    }
+
+    #DC {
+      padding: 32px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* FILTERS BAR */
+    .fb {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+      background: var(--s2);
+      padding: 12px;
+      border-radius: var(--r);
+      border: 1px solid var(--bd);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .fb input,
+    .fb select {
+      padding: 10px 16px;
+      background: var(--bg);
+      border: 1px solid var(--bd2);
+      border-radius: var(--rs);
+      color: var(--tx);
+      font-size: 13.5px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .fb input:focus,
+    .fb select:focus {
+      border-color: var(--g);
+      box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.15);
+    }
+
+    .fb input {
+      width: 280px;
+    }
+
+    .fb input::placeholder {
+      color: var(--t3);
+    }
+
+    /* GRIDS */
+    .g2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .g3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* HIGHLIGHT BOX */
+    .hb {
+      border-radius: var(--r);
+      padding: 24px;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+      border: 1px solid var(--bd);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    /* NEXT ACTION */
+    .na {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 24px;
+      background: var(--s2);
+      border: 1px solid var(--bd);
+      border-radius: var(--r);
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .na:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: var(--s3);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-2px);
+    }
+
+    /* EMPTY STATE */
+    .es {
+      text-align: center;
+      padding: 64px 32px;
+      color: var(--t3);
+      font-size: 14.5px;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px dashed var(--bd2);
+      border-radius: var(--r);
+    }
+
+    /* EXEC ITEMS */
+    .exec-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .exec-item {
+      flex: 1;
+      min-width: 160px;
+      background: var(--s2);
+      border: 1px solid var(--bd);
+      border-radius: var(--r);
+      padding: 20px;
+      transition: all 0.2s;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    }
+
+    .exec-item:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: var(--s3);
+    }
+
+    .exec-item .ei-l {
+      font-size: 11.5px;
+      color: var(--t2);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .exec-item .ei-v {
+      font-family: var(--fm);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--tx);
+      line-height: 1.3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-height: 52px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    /* MODAL */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal {
+      background: var(--s2);
+      border-radius: var(--rl);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 640px;
+      max-width: 95vw;
+      max-height: 90vh;
+      overflow: auto;
+      box-shadow: var(--shadow-lg);
+      transform: scale(1);
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal .mh {
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .modal .mh h3 {
+      font-family: var(--fh);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .modal .mx {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      color: var(--t2);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: all 0.2s;
+    }
+
+    .modal .mx:hover {
+      color: var(--tx);
+      background: rgba(255, 255, 255, 0.1);
+      transform: rotate(90deg);
+    }
+
+    .modal .mb {
+      padding: 32px;
+    }
+
+    /* MISC */
+    .res-card {
+      background: var(--s1);
+      border: 1px solid var(--bd2);
+      border-radius: var(--rs);
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+    }
+
+    .res-card:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      background: var(--s2);
+      transform: translateX(2px);
+    }
+
+    .pd {
+      display: flex;
+      gap: 4px;
+    }
+
+    .pd .ds {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .ckr {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .ckr:hover {
+      opacity: 0.8;
+    }
+
+    .ckr .ck {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      border: 2px solid var(--bd2);
+      background: rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+
+    .ckr .ck.on {
+      background: var(--g);
+      border-color: var(--g);
+      color: #000;
+      font-weight: 800;
+      box-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+    }
+
+    .durr-g {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .durr-c {
+      padding: 20px;
+      border-radius: var(--r);
+      border: 2px solid var(--bd2);
+      background: var(--s2);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .durr-c:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      background: var(--s3);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .durr-c.on {
+      border-color: var(--g);
+      background: rgba(52, 211, 153, 0.1);
+      box-shadow: 0 0 0 1px var(--g), 0 4px 12px rgba(52, 211, 153, 0.2);
+    }
+
+    .durr-c .dc-h {
+      font-family: var(--fh);
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .durr-c .dc-d {
+      font-size: 12px;
+      color: var(--t2);
+      line-height: 1.6;
+    }
+
+    /* SVG Icons */
+    .ico {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ico svg {
+      width: 1.1em;
+      height: 1.1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .ico-c {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--rs);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Gradient buttons like examples */
+    .bt-grad {
+      background: linear-gradient(135deg, var(--g), #10B981);
+      color: #000;
+      border: none;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+      transition: all 0.3s;
+    }
+
+    .bt-grad:hover {
+      box-shadow: 0 6px 20px rgba(52, 211, 153, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, var(--g-light), var(--g));
+    }
+
+    .bt-purple {
+      background: linear-gradient(135deg, #A78BFA, #8B5CF6);
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s;
+    }
+
+    .bt-purple:hover {
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #C4B5FD, #A78BFA);
+    }
+
+    .bt-blue {
+      background: linear-gradient(135deg, #60A5FA, #3B82F6);
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s;
+    }
+
+    .bt-blue:hover {
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #93C5FD, #60A5FA);
+    }
+
+    /* Password input */
+    .pw-wrap {
+      position: relative;
+    }
+
+    .pw-wrap input {
+      padding-right: 48px;
+    }
+
+    .pw-tog {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      color: var(--t2);
+      cursor: pointer;
+      padding: 6px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .pw-tog:hover {
+      color: var(--tx);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* CEO / DirCo strategy toggle buttons */
+    .strat-toggle {
+      flex: 1;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: var(--fh);
+      border-radius: var(--rs);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--bd);
+      background: var(--s1);
+      color: var(--t2);
+    }
+    .strat-toggle:hover {
+      border-color: var(--bd2);
+      background: var(--s2);
+      color: var(--tx);
+    }
+    .strat-toggle.active-ceo {
+      background: linear-gradient(135deg, rgba(52,211,153,.2), rgba(110,231,183,.1));
+      border-color: rgba(52,211,153,.5);
+      color: var(--g);
+      box-shadow: 0 0 16px rgba(52,211,153,.15);
+    }
+    .strat-toggle.active-dirco {
+      background: linear-gradient(135deg, rgba(96,165,250,.2), rgba(96,165,250,.1));
+      border-color: rgba(96,165,250,.5);
+      color: var(--bl);
+      box-shadow: 0 0 16px rgba(96,165,250,.15);
+    }
+
+    /* AI Analysis Banner (persistent, lives outside #DC) */
+    #AI_BANNER {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 12px 24px;
+      background: rgba(17,17,20,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--bd);
+    }
+    #AI_BANNER.running {
+      display: block;
+      border-bottom-color: rgba(52,211,153,.25);
+    }
+    #AI_BANNER.done {
+      display: block;
+      border-bottom-color: rgba(52,211,153,.4);
+    }
+    #AI_BANNER.error {
+      display: block;
+      border-bottom-color: rgba(248,113,133,.3);
+    }
+    #AI_BANNER .aib-bar {
+      height: 3px;
+      background: var(--bd);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    #AI_BANNER .aib-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--g), var(--g-light));
+      border-radius: 2px;
+      transition: width 0.6s ease;
+    }
+    @keyframes aib-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    #AI_BANNER .aib-spinner {
+      display: inline-block;
+      animation: aib-pulse 1.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="TOAST"></div>
+  <div id="LS">
+    <div class="lc fi">
+      <h1><em>Pulse</em> Outreach</h1>
+      <div class="sub">Keep Growing — Révélateur de Potentiel Commercial</div>
+      <div id="LB"></div>
+      <div class="ig" id="PW" style="display:none;margin-top:16px"><label>Mot de passe</label>
+        <div class="pw-wrap"><input id="pwIn" type="password" placeholder="Entrez votre mot de passe"><button
+            class="pw-tog" onclick="const i=$('pwIn');i.type=i.type==='password'?'text':'password'"><span class="ico"
+              style="font-size:16px"><svg viewBox="0 0 24 24">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg></span></button></div>
+      </div><button class="bt bp" id="loginBtn"
+        style="display:none;width:100%;margin-top:12px;justify-content:center">Se connecter</button>
+      <div id="LE" style="color:var(--rd);font-size:12px;margin-top:12px"></div>
+    </div>
+  </div>
+  <div id="A">
+    <div id="SB">
+      <div class="lo">
+        <h2><em>Pulse</em> Outreach</h2>
+        <div class="tg">Keep Growing</div>
+      </div>
+      <div class="ui">
+        <div class="nm" id="UN"></div>
+        <div class="bg" id="UR"></div>
+      </div>
+      <nav id="SN"></nav>
+      <div class="sf"><button onclick="logout()" id="logoutBtn"><span
+            style="display:inline-flex;align-items:center;gap:6px"><span class="ico" style="font-size:13px"><svg
+                viewBox="0 0 24 24">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg></span>Déconnexion</span></button></div>
+    </div>
+    <div id="M">
+      <div style="display:flex;align-items:center;justify-content:center;padding:80px" id="ML">
+        <div
+          style="width:28px;height:28px;border:3px solid var(--bd);border-top-color:var(--g);border-radius:50%;animation:spin .7s linear infinite">
+        </div>
+      </div>
+      <div id="PC"></div>
+    </div>
+  </div>
+  <div id="DV">
+    <div id="DT"><button class="bb" onclick="closeDetail()">← Retour</button>
+      <h2 id="DTT"></h2>
+      <div id="DTB"></div>
+    </div>
+    <div class="tb" id="DTB2" style="padding:12px 24px;background:var(--s1);border-bottom:1px solid var(--bd)"></div>
+    <div id="AI_BANNER"></div>
+    <div id="DC"></div>
+  </div>
+  <div id="MOD" style="display:none"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SB_URL = "https://uhpfhrsozswjrxuycueh.supabase.co";
+    const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVocGZocnNvenN3anJ4dXljdWVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTU1ODIsImV4cCI6MjA4Nzc3MTU4Mn0.Hspa_kviprc6e25oTMTnYLl-m6MqFxbQ8cSr0_FqxHM";
+    const supabaseCl = supabase.createClient(SB_URL, SB_KEY);
+    let SB_TOKEN = SB_KEY;
+    const STAGES = [{ k: "non_traite", l: "Non traité", c: "#71717A" }, { k: "strategie_generee", l: "Stratégie IA", c: "#A78BFA" }, { k: "premier_contact", l: "1er Contact", c: "#60A5FA" }, { k: "en_discussion", l: "Discussion", c: "#FBBF24" }, { k: "rdv", l: "RDV", c: "#FB923C" }, { k: "proposition", l: "Proposition", c: "#F472B6" }, { k: "gagne", l: "Gagné", c: "#3EC878" }, { k: "perdu", l: "Perdu", c: "#F87171" }];
+    const SEGC = { "SaaS B2B": "#A78BFA", "ETI PME Industrielles": "#FBBF24", "ESN & ICT": "#60A5FA" };
+    const DURR_DEF = [{ k: "durr_d", l: "D — Douloureux", d: "Le problème commercial est réel et mesurable", q: "Quel impact concret ce problème a-t-il sur vos résultats ?", sig: "CA stagne, quota non atteint, conversion chute" }, { k: "durr_u", l: "U — Urgent", d: "Le problème doit être résolu maintenant", q: "Que se passe-t-il si vous ne faites rien dans les 3 prochains mois ?", sig: "LBO récent, nouveau DirCo, restructuration" }, { k: "durr_r1", l: "R — Reconnu", d: "Le dirigeant reconnaît qu'il a un problème", q: "Depuis quand avez-vous identifié ce sujet ?", sig: "Il en parle, cherche des solutions, a déjà tenté des choses" }, { k: "durr_r2", l: "R — Récurrent", d: "Ce n'est pas un accident, c'est structurel", q: "Ce problème est-il nouveau ou revient-il régulièrement ?", sig: "Revient chaque trimestre, chaque année, à chaque recrutement" }];
+    let S = { user: null, admin: false, uid: null, targets: [], strats: [], cons: [], posts: [], cfgs: [], livres: [], page: "dashboard", sel: null, dtab: "exec", fl: { q: "", seg: "", stg: "", cons: "" }, pfl: { f: "all", cons: "" } };
+
+    // SVG Icon library (line style)
+    const I = {
+      dashboard: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="4" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="11" width="7" height="10" rx="1.5"/></svg>',
+      target: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>',
+      kanban: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>',
+      posts: '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>',
+      profile: '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+      admin: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>',
+      brain: '<svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 017 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 01-2 2h-4a2 2 0 01-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 017-7z"/><path d="M9 21h6"/><path d="M10 17v4"/><path d="M14 17v4"/></svg>',
+      fire: '<svg viewBox="0 0 24 24"><path d="M12 12c0-3 2.5-6 2.5-6S18 9 18 12a6 6 0 11-12 0c0-3 3.5-8 6-10 .5 2 2 4 2 4s-2 3-2 6z"/></svg>',
+      news: '<svg viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V8m2 12a2 2 0 002-2V9a2 2 0 00-2-2h-2"/><line x1="9" y1="9" x2="13" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/></svg>',
+      chart: '<svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+      users: '<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>',
+      building: '<svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22V12h6v10"/><line x1="8" y1="6" x2="8" y2="6"/><line x1="12" y1="6" x2="12" y2="6"/><line x1="16" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/></svg>',
+      linkedin: '<svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>',
+      globe: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>',
+      comment: '<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>',
+      connect: '<svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>',
+      exchange: '<svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>',
+      calendar: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+      trophy: '<svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 19.24 7 20v2"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 19.24 17 20v2"/><path d="M18 2H6v7a6 6 0 1012 0V2z"/></svg>',
+      send: '<svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',
+      mail: '<svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
+      refresh: '<svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>',
+      eye: '<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+      lock: '<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>',
+      key: '<svg viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.78 7.78 5.5 5.5 0 017.78-7.78zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>',
+      check: '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',
+      x: '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+      play: '<svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>',
+      copy: '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>',
+      arrow: '<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+      trend: '<svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+      book: '<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>',
+      file: '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+      logout: '<svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>',
+      clock: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      alert: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+      image: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
+    };
+    const ic = (name, sz) => `<span class="ico" style="font-size:${sz || '1em'}">${I[name] || ''}</span>`;
+
+    const hd = () => ({ apikey: SB_KEY, Authorization: "Bearer " + SB_TOKEN, "Content-Type": "application/json" });
+    async function GET(p) { try { const r = await fetch(SB_URL + "/rest/v1/" + p, { headers: hd() }); return r.ok ? r.json() : [] } catch (e) { console.error("GET", p, e); return [] } }
+    async function PATCH(p, b) { try { const r = await fetch(SB_URL + "/rest/v1/" + p, { method: "PATCH", headers: { ...hd(), Prefer: "return=representation" }, body: JSON.stringify(b) }); return r.ok ? r.json() : [] } catch (e) { console.error("PATCH", e); return [] } }
+    async function POST(p, b) { try { const r = await fetch(SB_URL + "/rest/v1/" + p, { method: "POST", headers: { ...hd(), Prefer: "return=representation" }, body: JSON.stringify(b) }); return r.ok ? r.json() : [] } catch (e) { console.error("POST", e); return [] } }
+    async function DEL(p) { try { await fetch(SB_URL + "/rest/v1/" + p, { method: "DELETE", headers: hd() }); return true } catch (e) { return false } }
+
+    const $ = id => document.getElementById(id);
+    const e = s => s ? String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;") : "";
+    const dateFr = s => { if (!s) return ""; try { const d = new Date(s); return d.toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" }) } catch { return String(s) } }; const badge = (t, c) => `<span class="bd" style="background:${c}18;color:${c}">${e(t)}</span>`;
+    const stg = k => STAGES.find(s => s.k === k) || STAGES[0];
+    const segC = s => SEGC[s] || "#71717A";
+    const ini = n => n ? n.split(" ").map(w => w[0]).join("").substring(0, 2).toUpperCase() : "?";
+    function toast(msg, type = 'ok', dur = 2800) { const el = document.createElement('div'); el.className = 'toast ' + type; el.textContent = msg; $('TOAST').appendChild(el); setTimeout(() => el.remove(), dur) }
+    function cpTxt(t) { navigator.clipboard.writeText(t).then(() => toast('✓ Copié !')).catch(() => toast('Copie échouée', 'err')) }
+    function consById(nm) { return S.cons.find(c => c.name === nm) }
+
+    // ===== LOGIN =====
+    let _selUser = null;
+    async function initLogin() {
+      try {
+        const c = await GET("consultants?is_active=eq.true&select=id,name,email,role,is_active&order=name");
+        if (!c.length) { $("LE").textContent = "Aucun consultant trouvé."; return }
+        S.cons = c;
+        $("LB").innerHTML = c.map((x, i) => `<button class="lb" data-ci="${i}"><div class="av">${ini(x.name)}</div><span>${e(x.name)}</span>${x.role === "admin" ? '<span class="rl">Admin</span>' : ""}</button>`).join("");
+        $("LB").querySelectorAll("button").forEach((btn, i) => { btn.onclick = () => selectUser(c[i]) });
+        $("loginBtn").onclick = () => tryLogin();
+        $("pwIn").onkeydown = (ev) => { if (ev.key === "Enter") tryLogin() };
+      } catch (err) { $("LE").textContent = "Erreur: " + err.message }
+    }
+    function selectUser(u) {
+      _selUser = u;
+      $("LB").querySelectorAll(".lb").forEach(b => b.style.borderColor = "var(--bd)");
+      const idx = S.cons.indexOf(u);
+      $("LB").querySelectorAll(".lb")[idx].style.borderColor = "var(--g)";
+      $("PW").style.display = "block"; $("loginBtn").style.display = "flex";
+      $("pwIn").focus(); $("LE").textContent = "";
+    }
+    async function tryLogin() {
+      if (!_selUser) return;
+      const pw = $("pwIn").value;
+      if (!pw) { $("LE").textContent = "Entrez le mot de passe."; return }
+
+      try {
+        const { data, error } = await supabaseCl.auth.signInWithPassword({
+          email: _selUser.email,
+          password: pw
+        });
+
+        if (error) {
+          $("LE").textContent = "Mot de passe incorrect."; return;
+        }
+
+        if (data && data.session) {
+          SB_TOKEN = data.session.access_token;
+        }
+
+        login(_selUser.name, _selUser.role || "consultant", _selUser.id);
+      } catch (err) {
+        $("LE").textContent = "Erreur de connexion."; return;
+      }
+    }
+    async function login(name, role, id) {
+      S.user = name; S.admin = role === "admin"; S.uid = id;
+      $("LS").style.display = "none"; $("A").classList.add("on");
+      $("UN").textContent = name; $("UR").innerHTML = S.admin ? ic("admin", "12px") + " Administrateur" : "Consultant";
+      renderNav(); await loadData(); nav("dashboard")
+    }
+    function logout() {
+      supabaseCl.auth.signOut();
+      SB_TOKEN = SB_KEY;
+      S = { ...S, user: null, admin: false, targets: [], strats: [], posts: [], cfgs: [], livres: [] };
+      $("A").classList.remove("on"); $("LS").style.display = "flex"; closeDetail()
+    }
+
+    async function loadData() {
+      $("ML").style.display = "flex"; $("PC").innerHTML = "";
+      const nm = encodeURIComponent(S.user);
+      const [t, s, c, p, cfg, lb, kgx] = await Promise.all([
+        GET(S.admin ? "targets?order=entreprise" : `targets?consultant_name=eq.${nm}&order=entreprise`),
+        GET("communication_strategies?select=*"), GET("consultants?order=name"),
+        GET(S.admin ? "editorial_posts?order=consultant_name,semaine" : `editorial_posts?consultant_name=eq.${nm}&order=semaine`),
+        GET("agent_config?order=consultant_name"), GET("livres_blancs?order=titre"),
+        S.admin ? GET("kg_context?select=*&order=section") : Promise.resolve([])
+      ]);
+      S.targets = t; S.strats = s; S.cons = c; S.posts = p; S.cfgs = cfg; S.livres = lb; S.kgCtx = kgx || [];
+      $("ML").style.display = "none";
+    }
+
+    // ===== NAV =====
+    function renderNav() {
+      const items = [{ k: "dashboard", i: "dashboard", l: "Dashboard" }, { k: "targets", i: "target", l: "Cibles" }, { k: "kanban", i: "kanban", l: "Pipeline" }, { k: "posts", i: "posts", l: "Posts LinkedIn" }, { k: "profile", i: "profile", l: "Mon Profil" }];
+      if (S.admin) items.push({ k: "admin", i: "admin", l: "Administration" });
+      $("SN").innerHTML = items.map(n => `<button class="${S.page === n.k ? 'ac' : ''}" data-nav="${n.k}"><span class="ni">${ic(n.i, '16px')}</span> ${n.l}</button>`).join("");
+      $("SN").querySelectorAll("button").forEach(b => b.onclick = () => nav(b.dataset.nav))
+    }
+    function nav(p) { S.page = p; renderNav(); render() }
+    function render() { const el = $("PC"); el.className = "fi"; ({ dashboard: rDash, targets: rTargets, kanban: rKanban, posts: rPosts, profile: rProfile, admin: rAdmin })[S.page]?.(el) }
+
+    // ===== DASHBOARD =====
+    function rDash(el) { S.admin ? rADash(el) : rCDash(el) }
+    function rADash(el) {
+      const t = S.targets, s = S.strats, a = t.filter(x => x.consultant_name).length, ws = t.filter(x => s.some(z => z.target_id === x.id)).length;
+      const byC = {}; t.filter(x => x.consultant_name).forEach(x => { const n = x.consultant_name; if (!byC[n]) byC[n] = { t: 0, s: 0, c: 0, r: 0, sg: 0 }; byC[n].t++; if (s.some(z => z.target_id === x.id)) byC[n].s++; if (x.action_connecte || x.action_email_envoye) byC[n].c++; if (x.action_rdv) byC[n].r++; if (x.action_signe) byC[n].sg++ });
+      el.innerHTML = `<h2 class="pt">${ic('chart', '22px')} Dashboard Équipe</h2>
+  <div class="sg"><div class="sc"><div style="display:flex;align-items:center;gap:12px"><div class="ico-c" style="background:var(--gd);color:var(--g)">${ic('target', '16px')}</div><div><div class="v">${t.length}</div><div class="l">Cibles totales</div></div></div></div><div class="sc" style="--ac:var(--pp)"><div style="display:flex;align-items:center;gap:12px"><div class="ico-c" style="background:rgba(167,139,250,.1);color:var(--pp)">${ic('brain', '16px')}</div><div><div class="v">${ws}</div><div class="l">Stratégies générées</div></div></div></div><div class="sc" style="--ac:var(--bl)"><div style="display:flex;align-items:center;gap:12px"><div class="ico-c" style="background:rgba(96,165,250,.1);color:var(--bl)">${ic('trend', '16px')}</div><div><div class="v">${t.filter(x => x.action_connecte || x.action_email_envoye).length}</div><div class="l">Actions réalisées</div></div></div></div><div class="sc" style="--ac:var(--og)"><div style="display:flex;align-items:center;gap:12px"><div class="ico-c" style="background:rgba(251,146,60,.1);color:var(--og)">${ic('trend', '16px')}</div><div><div class="v">${t.length > 0 ? Math.round(t.filter(x => x.action_signe).length / t.length * 100) : 0}%</div><div class="l">Taux de conversion</div></div></div></div></div>
+  <h3 style="font-family:var(--fh);margin-bottom:14px">Performance</h3>
+  <div class="cd" style="margin-bottom:24px"><div class="tw"><table><thead><tr><th>Consultant</th><th>Cibles</th><th>Stratégies</th><th>Contactées</th><th>RDV</th><th>Signés</th></tr></thead><tbody>${Object.entries(byC).map(([n, d]) => `<tr style="cursor:default"><td style="font-weight:600">${e(n)}</td><td>${d.t}</td><td style="color:var(--pp)">${d.s}</td><td style="color:var(--yw)">${d.c}</td><td style="color:var(--g)">${d.r}</td><td style="font-weight:700;color:var(--g)">${d.sg}</td></tr>`).join("")}</tbody></table></div></div>
+  <h3 style="font-family:var(--fh);margin-bottom:14px">Pipeline</h3>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">${STAGES.map(s => `<div class="sc" style="--ac:${s.c};flex:1;min-width:90px;text-align:center"><div class="v" style="font-size:20px">${t.filter(x => x.pipeline_etape === s.k).length}</div><div class="l">${s.l}</div></div>`).join("")}</div>`;
+    }
+    function rCDash(el) {
+      const my = S.targets, s = S.strats;
+      const nxt = my.filter(x => x.pipeline_etape !== "gagne" && x.pipeline_etape !== "perdu").map(t => {
+        const hs = s.some(z => z.target_id === t.id); let a, p;
+        if (!t.site_web || !t.linkedin_entreprise || !t.linkedin_ceo) { a = "Compléter site web + LinkedIn"; p = 1 }
+        else if (!hs) { a = "Lancer l'analyse IA"; p = 2 }
+        else if (!t.action_connecte && !t.action_email_envoye) { a = "Exécuter le 1er contact"; p = 3 }
+        else if (!t.action_echange_en_cours) { a = "Relancer la conversation"; p = 4 }
+        else if (!t.action_rdv) { a = "Obtenir un RDV"; p = 5 }
+        else { a = "Avancer le deal"; p = 6 }
+        return { ...t, _a: a, _p: p }
+      }).sort((a, b) => a._p - b._p).slice(0, 10);
+      el.innerHTML = `<h2 class="pt">Bonjour ${e(S.user.split(" ")[0])}</h2>
+  <div class="sg"><div class="sc"><div class="v">${my.length}</div><div class="l">Mes cibles</div></div><div class="sc" style="--ac:var(--pp)"><div class="v">${my.filter(x => s.some(z => z.target_id === x.id)).length}</div><div class="l">Stratégies IA</div></div><div class="sc" style="--ac:var(--bl)"><div class="v">${my.filter(x => x.action_connecte || x.action_email_envoye).length}</div><div class="l">Contactées</div></div><div class="sc" style="--ac:var(--og)"><div class="v">${my.filter(x => x.action_rdv).length}</div><div class="l">RDV</div></div></div>
+  <h3 style="font-family:var(--fh);margin-bottom:14px">${ic('arrow', '16px')} Prochaines Actions</h3><div id="NXT"></div>`;
+      const nx = $("NXT");
+      nxt.forEach(t => { const d = document.createElement("div"); d.className = "na"; d.innerHTML = `<div style="width:8px;height:8px;border-radius:50%;flex-shrink:0;background:${t._p <= 2 ? "var(--rd)" : t._p <= 4 ? "var(--yw)" : "var(--g)"}"></div><div style="flex:1"><div style="font-weight:600;font-size:13px">${e(t.entreprise)}</div><div style="font-size:12px;color:var(--t2)">${e(t._a)}</div></div>${badge(stg(t.pipeline_etape).l, stg(t.pipeline_etape).c)}`; d.onclick = () => openDetail(t.id); nx.appendChild(d) });
+      if (!nxt.length) nx.innerHTML = '<div class="es">Aucune action en attente</div>'
+    }
+
+    // ===== TARGETS =====
+    function rTargets(el) {
+      const f = S.fl;
+      el.innerHTML = `<h2 class="pt">${S.admin ? "Toutes les Cibles" : "Mes Cibles"} <small id="TC">0</small></h2>
+  <div class="fb"><input id="fq" placeholder="⌕ Rechercher..." value="${e(f.q)}"><select id="fseg"><option value="">Tous segments</option><option value="SaaS B2B"${f.seg === "SaaS B2B" ? " selected" : ""}>SaaS B2B</option><option value="ETI PME Industrielles"${f.seg === "ETI PME Industrielles" ? " selected" : ""}>ETI / PME</option><option value="ESN & ICT"${f.seg === "ESN & ICT" ? " selected" : ""}>ESN & ICT</option></select><select id="fstg"><option value="">Toutes étapes</option>${STAGES.map(s => `<option value="${s.k}"${f.stg === s.k ? " selected" : ""}>${s.l}</option>`).join("")}</select>${S.admin ? `<select id="fcons"><option value="">Tous consultants</option><option value="__none__"${f.cons === "__none__" ? " selected" : ""}>Non assignées</option>${S.cons.filter(c => c.is_active !== false).map(c => `<option value="${e(c.name)}"${f.cons === c.name ? " selected" : ""}>${e(c.name)}</option>`).join("")}</select>` : ""}</div>
+  <div class="cd"><div class="tw"><table><thead><tr><th>Entreprise</th><th>Segment</th><th>Contact</th><th>DURR</th><th>Pipeline</th><th>Actions</th>${S.admin ? "<th>Consultant</th>" : ""}</tr></thead><tbody id="TBD"></tbody></table></div></div>`;
+      $("fq").oninput = function () { S.fl.q = this.value; rTRows() }; $("fseg").onchange = function () { S.fl.seg = this.value; rTRows() }; $("fstg").onchange = function () { S.fl.stg = this.value; rTRows() }; if (S.admin && $("fcons")) $("fcons").onchange = function () { S.fl.cons = this.value; rTRows() };
+      rTRows();
+    }
+    function rTRows() {
+      const f = S.fl; let items = S.targets.slice();
+      if (f.q) { const q = f.q.toLowerCase(); items = items.filter(t => (t.entreprise || "").toLowerCase().includes(q) || (t.ceo_nom || "").toLowerCase().includes(q)) }
+      if (f.seg) items = items.filter(t => t.segment === f.seg);
+      if (f.stg) items = items.filter(t => t.pipeline_etape === f.stg);
+      if (S.admin && f.cons === "__none__") items = items.filter(t => !t.consultant_name);
+      else if (S.admin && f.cons) items = items.filter(t => t.consultant_name === f.cons);
+      const tc = $("TC"); if (tc) tc.textContent = items.length;
+      const tbody = $("TBD"); if (!tbody) return;
+      tbody.innerHTML = '';
+      items.forEach(t => {
+        const st = stg(t.pipeline_etape); const acts = [t.action_connecte, t.action_email_envoye, t.action_appel, t.action_rdv, t.action_demo, t.action_proposition, t.action_signe].filter(Boolean).length;
+        const sc = t.durr_score || 0; const dCols = ['#F87171', '#FB923C', '#FBBF24', '#34D399'];
+        const durrBlocks = `<div style="display:flex;gap:3px;align-items:center">${[0, 1, 2, 3].map(i => `<div style="width:11px;height:11px;border-radius:2px;background:${i < sc ? dCols[sc - 1] : 'var(--bd)'}"></div>`).join('')}<span style="font-size:10px;color:var(--t3);margin-left:4px;font-family:var(--fm)">${sc}/4</span></div>`;
+        const ws = t.warmth_score || 0; const wCol = ws >= 7 ? 'var(--g)' : ws >= 4 ? 'var(--yw)' : 'var(--t3)';
+        const warmDots = `<div style="display:flex;gap:2px;margin-top:3px">${[...Array(10)].map((_, i) => `<div style="width:5px;height:5px;border-radius:50%;background:${i < ws ? wCol : 'var(--bd)'}"></div>`).join('')}</div>`;
+        const tr = document.createElement("tr"); tr.style.cursor = "pointer";
+        tr.innerHTML = `<td><div style="font-weight:600">${e(t.entreprise)}</div>${t.priorite ? badge(t.priorite, t.priorite === "P1" ? "#F87171" : t.priorite === "P2" ? "#FBBF24" : "#60A5FA") : ""}</td><td>${badge(t.segment, segC(t.segment))}</td><td style="color:var(--t2);font-size:12px">${e(t.ceo_nom || t.dirco_nom || "—")}</td><td>${durrBlocks}</td><td><div>${badge(st.l, st.c)}</div>${warmDots}</td><td><div class="pd">${[...Array(7)].map((_, i) => `<div class="ds" style="background:${i < acts ? "var(--g)" : "var(--bd)"}"></div>`).join("")}</div></td>${S.admin ? '<td class="atd"></td>' : ""}`;
+        tr.onclick = () => openDetail(t.id);
+        if (S.admin) {
+          const td = tr.querySelector(".atd"); const sel = document.createElement("select");
+          sel.style.cssText = "padding:4px 6px;background:var(--bg);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:11px;width:140px";
+          sel.innerHTML = `<option value="">${t.consultant_name || "— Assigner —"}</option>${S.cons.filter(c => c.is_active !== false).map(c => `<option value="${c.id}::${e(c.name)}">${e(c.name)}</option>`).join("")}${t.consultant_name ? '<option value="__rm__">✕ Retirer</option>' : ""}`;
+          sel.onclick = ev => ev.stopPropagation();
+          sel.onchange = function () { assignT(t.id, this.value); this.blur() }; td.appendChild(sel)
+        }
+        tbody.appendChild(tr)
+      })
+    }
+    // FIX #6: assignation envoie consultant_id + consultant_name
+    async function assignT(id, v) {
+      let p;
+      if (v === "__rm__") { p = { consultant_name: null, consultant_id: null } }
+      else if (v && v.includes("::")) { const [cid, cnm] = v.split("::"); p = { consultant_name: cnm, consultant_id: cid } }
+      else return;
+      const u = await PATCH(`targets?id=eq.${id}`, p);
+      if (u?.[0]) { const i = S.targets.findIndex(t => t.id === id); if (i >= 0) S.targets[i] = u[0]; render() }
+    }
+
+    // ===== KANBAN ===== (FIX #4: click sur carte → fiche détail)
+    function rKanban(el) {
+      el.innerHTML = `<h2 class="pt">Pipeline</h2><div class="kan" id="KAN"></div>`;
+      STAGES.forEach(s => {
+        const col = S.targets.filter(t => t.pipeline_etape === s.k);
+        const div = document.createElement("div"); div.className = "kc";
+        div.innerHTML = `<div class="kch"><div class="dt" style="background:${s.c}"></div><span class="ct">${s.l}</span><span class="cn" style="background:${s.c}22;color:${s.c}">${col.length}</span></div><div class="ki"></div>`;
+        const ki = div.querySelector(".ki");
+        col.forEach(t => { const card = document.createElement("div"); card.className = "kit"; card.innerHTML = `<div style="font-size:12px;font-weight:600;margin-bottom:3px">${e(t.entreprise)}</div><div style="font-size:10px;color:var(--t3)">${e(t.ceo_nom || "—")}</div><div style="margin-top:4px">${badge(t.segment, segC(t.segment))}</div>`; card.onclick = () => openDetail(t.id); ki.appendChild(card) });
+        if (!col.length) ki.innerHTML = '<div style="text-align:center;padding:20px;color:var(--t3);font-size:11px">—</div>';
+        $("KAN").appendChild(div)
+      })
+    }
+
+    // ===== POSTS ===== (FIX #1: bouton utilisé/remettre, FIX #2: filtre consultant admin)
+    function rPosts(el) {
+      const allPosts = S.posts;
+      if (!S.pfl) S.pfl = { f: "all", cons: "", type: "" };
+      el.innerHTML = `<h2 class="pt">Contenus Éditoriaux <small>${allPosts.length} contenus</small></h2>
+  <div class="fb" style="flex-wrap:wrap;gap:8px">
+    <div class="tb" id="PTB" style="margin-bottom:0"></div>
+    <div class="tb" id="TTB" style="margin-bottom:0"></div>
+    ${S.admin ? `<select id="pfcons" style="padding:8px 12px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--rs);color:var(--tx);font-size:13px"><option value="">Tous consultants</option>${S.cons.filter(c => c.is_active !== false).map(c => `<option value="${e(c.name)}"${S.pfl.cons === c.name ? " selected" : ""}>${e(c.name)}</option>`).join("")}</select>` : ""}
+  </div><div id="PL"></div>`;
+      ["all", "av", "us"].forEach((f, i) => { const b = document.createElement("button"); b.className = "tbtn" + (S.pfl.f === f || (!S.pfl.f && i === 0) ? " ac" : ""); b.textContent = ["Tous", "Disponibles", "Utilisés"][i]; b.onclick = () => { S.pfl.f = f; rPosts(el) }; $("PTB").appendChild(b) });
+      ["", "POST LI", "GUIDE", "NEWSLETTER"].forEach((t, i) => { const b = document.createElement("button"); b.className = "tbtn" + (S.pfl.type === t ? " ac" : ""); b.innerHTML = ["Tous types", ic('posts', '12px') + " Posts LI", ic('book', '12px') + " Guides", ic('mail', '12px') + " Newsletters"][i]; b.style.cssText = "font-size:12px"; b.onclick = () => { S.pfl.type = t; rPosts(el) }; $("TTB").appendChild(b) });
+      if (S.admin && $("pfcons")) $("pfcons").onchange = function () { S.pfl.cons = this.value; rPosts(el) };
+      renderPosts()
+    }
+    function renderPosts() {
+      let items = S.posts.slice();
+      if (S.admin && S.pfl.cons) items = items.filter(p => p.consultant_name === S.pfl.cons);
+      if (S.pfl.type) items = items.filter(p => p.type_contenu === S.pfl.type);
+      const f = S.pfl.f || "all";
+      if (f === "av") items = items.filter(p => !p.used_at && p.statut !== "publie");
+      if (f === "us") items = items.filter(p => p.used_at || p.statut === "publie");
+      const pl = $("PL"); pl.innerHTML = "";
+      const typeIco = t => t === "GUIDE" ? 'book' : t === "NEWSLETTER" ? 'mail' : 'posts';
+      const typeBg = t => t === "GUIDE" ? 'rgba(244,114,182,.12)' : t === "NEWSLETTER" ? 'rgba(251,146,60,.12)' : 'rgba(96,165,250,.12)';
+      const typeCol = t => t === "GUIDE" ? '#F472B6' : t === "NEWSLETTER" ? '#FB923C' : '#60A5FA';
+      const durrCol = d => { if (!d) return '#71717A'; if (d.includes('D')) return '#F87171'; if (d.includes('U')) return '#FB923C'; if (d.includes('R')) return '#FBBF24'; return '#A78BFA'; };
+      // Format content: replace P1: P2: etc with visual paragraphs
+      const fmtContent = (txt) => {
+        if (!txt) return '';
+        return txt.split(/\n/).map(line => {
+          const pm = line.match(/^(P\d+)\s*(?:\(([^)]+)\))?:\s*(.*)/);
+          if (pm) return `<div style="margin-bottom:10px"><span style="display:inline-block;padding:1px 6px;font-size:10px;font-weight:700;border-radius:3px;background:rgba(96,165,250,.1);color:var(--bl);margin-right:6px">${e(pm[1])}${pm[2] ? ' · ' + e(pm[2]) : ''}</span><span style="color:var(--tx)">${e(pm[3])}</span></div>`;
+          return `<div style="margin-bottom:6px;color:var(--tx)">${e(line)}</div>`;
+        }).join('');
+      };
+      // Format DURR structure with colored labels
+      const fmtDurr = (txt) => {
+        if (!txt) return '';
+        const dColors = { D: '#F87171', U: '#FB923C', R: '#FBBF24' };
+        return txt.split(/\n/).map(line => {
+          const dm = line.match(/^([DUR]):\s*(.*)/);
+          if (dm) return `<div style="margin-bottom:4px;display:flex;gap:6px;align-items:flex-start"><span style="min-width:20px;padding:1px 5px;font-size:10px;font-weight:700;border-radius:3px;background:${dColors[dm[1]] || '#71717A'}22;color:${dColors[dm[1]] || '#71717A'};text-align:center">${dm[1]}</span><span style="color:var(--t2);font-size:12px">${e(dm[2])}</span></div>`;
+          return `<div style="margin-bottom:3px;color:var(--t2);font-size:12px">${e(line)}</div>`;
+        }).join('');
+      };
+
+      items.forEach(p => {
+        const u = p.used_at || p.statut === "publie";
+        const expanded = S._expandedPost === p.id;
+        const div = document.createElement("div"); div.className = "cd"; div.style.cssText = `margin-bottom:12px;transition:all .2s;${u ? "opacity:.55" : ""}`;
+        // Header with type icon + badges
+        let headerHtml = `<div style="padding:16px 20px;cursor:pointer" class="post-header">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:6px;background:${typeBg(p.type_contenu)};font-size:12px;font-weight:700;color:${typeCol(p.type_contenu)}">${ic(typeIco(p.type_contenu), '13px')} ${e(p.type_contenu || 'POST LI')}</div>
+            <span style="padding:3px 8px;font-size:11px;border-radius:4px;background:rgba(113,113,122,.12);color:#71717A;font-weight:600">S${p.semaine}</span>
+            ${S.admin && p.consultant_name ? `<span style="padding:3px 8px;font-size:11px;border-radius:4px;background:rgba(96,165,250,.12);color:#60A5FA;font-weight:600">${e(p.consultant_name)}</span>` : ''}
+            ${p.persona_cible ? `<span style="padding:3px 8px;font-size:11px;border-radius:4px;background:rgba(167,139,250,.12);color:#A78BFA;font-weight:600">${e(p.persona_cible)}</span>` : ''}
+            ${p.objectif_durr ? `<span style="padding:3px 8px;font-size:11px;border-radius:4px;background:${durrCol(p.objectif_durr)}18;color:${durrCol(p.objectif_durr)};font-weight:600">${e(p.objectif_durr)}</span>` : ''}
+            ${p.format_contenu ? `<span style="padding:3px 8px;font-size:11px;border-radius:4px;background:rgba(113,113,122,.08);color:#71717A">${e(p.format_contenu)}</span>` : ''}
+            ${u ? `<span style="padding:3px 8px;font-size:11px;border-radius:4px;background:rgba(52,211,153,.12);color:var(--g);font-weight:600">✓ Utilisé</span>` : ''}
+            <span class="post-act" style="margin-left:auto;display:flex;gap:6px;align-items:center"></span>
+          </div>
+          <div style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px;line-height:1.4">${e(p.titre)}</div>
+          ${p.accroche ? `<div style="font-size:13px;color:var(--yw);line-height:1.5;font-style:italic;white-space:pre-line">${e(p.accroche)}</div>` : ''}
+          ${!expanded && p.contenu ? `<div style="font-size:12px;color:var(--t3);margin-top:6px">${e((p.contenu || '').substring(0, 120))}… <span style="color:var(--bl);font-weight:600">▾ Voir plus</span></div>` : ''}
+        </div>`;
+
+        // Expanded content
+        let bodyHtml = '';
+        if (expanded) {
+          bodyHtml = `<div style="padding:0 20px 16px;border-top:1px solid var(--bd)">
+            <!-- Contenu principal -->
+            <div style="margin-top:14px;margin-bottom:16px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--bl);margin-bottom:8px">${ic('posts','13px')} Contenu</div>
+              <div style="font-size:13px;line-height:1.7;padding:12px 16px;background:rgba(96,165,250,.04);border:1px solid rgba(96,165,250,.1);border-radius:var(--rs)">${fmtContent(p.contenu)}</div>
+            </div>
+            ${p.donnee_chiffree ? `<div style="margin-bottom:14px;display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.15);border-radius:var(--rs)">
+              <div style="font-size:20px;font-weight:800;color:var(--yw);font-family:var(--fm)">${ic('chart','16px')}</div>
+              <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--yw)">Donnée chiffrée</div><div style="font-size:13px;color:var(--tx)">${e(p.donnee_chiffree)}</div></div>
+            </div>` : ''}
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+              ${p.structure_durr ? `<div style="padding:12px;background:rgba(248,113,113,.04);border:1px solid rgba(248,113,113,.1);border-radius:var(--rs)">
+                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--rd);margin-bottom:8px">Structure DURR</div>
+                ${fmtDurr(p.structure_durr)}
+              </div>` : ''}
+              ${p.ton_angle ? `<div style="padding:12px;background:rgba(167,139,250,.04);border:1px solid rgba(167,139,250,.1);border-radius:var(--rs)">
+                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--pp);margin-bottom:8px">${ic('brain','11px')} Ton & Angle</div>
+                <div style="font-size:12px;color:var(--t2);line-height:1.6;white-space:pre-line">${e(p.ton_angle)}</div>
+              </div>` : ''}
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              ${p.etude_source ? `<div style="padding:10px 12px;background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.1);border-radius:var(--rs)">
+                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g);margin-bottom:4px">${ic('globe','11px')} Source / Étude</div>
+                <div style="font-size:12px;color:var(--t2)">${e(p.etude_source)}</div>
+              </div>` : ''}
+              ${p.prompt_image ? `<div style="padding:10px 12px;background:rgba(96,165,250,.04);border:1px solid rgba(96,165,250,.1);border-radius:var(--rs)">
+                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--bl);margin-bottom:4px">${ic('image','11px')} Prompt Image</div>
+                <div style="font-size:12px;color:var(--t2);font-style:italic">${e(p.prompt_image)}</div>
+              </div>` : ''}
+            </div>
+            ${p.url_post ? `<div style="margin-top:12px"><a href="${e(p.url_post)}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);border-radius:var(--rs);font-size:12px;font-weight:600;color:var(--bl);text-decoration:none">${ic('linkedin','12px')} Voir sur LinkedIn →</a></div>` : ''}
+            <div style="margin-top:8px;font-size:12px;color:var(--t3);text-align:right;cursor:pointer" class="post-collapse">▴ Réduire</div>
+          </div>`;
+        }
+
+        div.innerHTML = headerHtml + bodyHtml;
+        // Toggle expand/collapse
+        const header = div.querySelector(".post-header");
+        header.onclick = (ev) => { if (ev.target.closest('.post-act') || ev.target.closest('button')) return; S._expandedPost = expanded ? null : p.id; renderPosts(); };
+        const collapse = div.querySelector(".post-collapse");
+        if (collapse) collapse.onclick = () => { S._expandedPost = null; renderPosts(); };
+        // Action button
+        const actSpan = div.querySelector(".post-act");
+        const btn = document.createElement("button"); btn.className = "bt bsm";
+        if (u) { btn.style.cssText = "background:rgba(248,113,113,.1);color:var(--rd);border:1px solid rgba(248,113,113,.2);font-size:11px;padding:5px 12px"; btn.textContent = "↩ Remettre"; btn.onclick = ev => { ev.stopPropagation(); togglePost(p.id, false) } }
+        else { btn.style.cssText = "background:var(--gd);color:var(--g);border:1px solid rgba(62,200,120,.2);font-size:11px;padding:5px 12px"; btn.textContent = "✓ Marquer utilisé"; btn.onclick = ev => { ev.stopPropagation(); togglePost(p.id, true) } }
+        actSpan.appendChild(btn);
+        // Copy button
+        if (p.contenu) {
+          const cpBtn = document.createElement("button"); cpBtn.className = "bt bsm";
+          cpBtn.style.cssText = "background:rgba(96,165,250,.1);color:var(--bl);border:1px solid rgba(96,165,250,.2);font-size:11px;padding:5px 12px";
+          cpBtn.textContent = "📋 Copier"; cpBtn.onclick = ev => { ev.stopPropagation(); navigator.clipboard.writeText((p.accroche ? p.accroche + '\n\n' : '') + p.contenu).then(() => { cpBtn.textContent = "✓ Copié !"; setTimeout(() => cpBtn.textContent = "📋 Copier", 2000) }) };
+          actSpan.appendChild(cpBtn);
+        }
+        pl.appendChild(div)
+      });
+      if (!items.length) pl.innerHTML = '<div class="es">Aucun contenu trouvé</div>'
+    }
+    async function togglePost(id, used) {
+      const p = used ? { statut: "publie", used_at: new Date().toISOString().split("T")[0] } : { statut: "planifie", used_at: null };
+      const u = await PATCH(`editorial_posts?id=eq.${id}`, p);
+      if (u?.[0]) { const i = S.posts.findIndex(x => x.id === id); if (i >= 0) S.posts[i] = u[0]; renderPosts() }
+    }
+
+    // ===== PROFILE =====
+    function rProfile(el) { const c = S.cfgs.find(x => x.consultant_name === S.user); if (!c) { el.innerHTML = '<div class="es">Profil non trouvé</div>'; return } el.innerHTML = bPF(c, false); bindPF("p-", c.consultant_name) }
+    function bPF(c, adm) {
+      const x = adm ? "ap-" : "p-";
+      return `<h2 class="pt">${adm ? "Profil — " + e(c.consultant_name) : "Mon Profil"}</h2><p style="color:var(--t2);margin-bottom:20px;font-size:13px">Ces informations personnalisent les stratégies IA.</p>
+  <div class="g2"><div><div class="ig"><label>Titre</label><input id="${x}ti" value="${e(c.titre)}"></div><div class="ig"><label>Ton de voix</label><textarea id="${x}to">${e(c.ton_voix)}</textarea></div><div class="ig"><label>Parcours narratif</label><textarea id="${x}pa" style="min-height:100px">${e(c.parcours_narratif)}</textarea></div><div class="ig"><label>Anecdotes</label><textarea id="${x}an">${e(c.anecdotes_pro)}</textarea></div></div><div><div class="ig"><label>Secteurs</label><input id="${x}se" value="${e((c.secteurs_expertise || []).join(", "))}"></div><div class="ig"><label>Types clients</label><input id="${x}tc" value="${e((c.types_clients || []).join(", "))}"></div><div class="g3"><div class="ig"><label>DM</label><input type="number" id="${x}dm" value="${c.longueur_dm || 85}"></div><div class="ig"><label>Email</label><input type="number" id="${x}em" value="${c.longueur_email || 200}"></div><div class="ig"><label>Comment</label><input type="number" id="${x}cm" value="${c.longueur_comment || 45}"></div></div><div class="ig"><label>Mots interdits</label><input id="${x}mi" value="${e((c.mots_interdits || []).join(", "))}"></div><div class="ig"><label>Instructions IA</label><textarea id="${x}ex">${e(c.system_prompt_extra)}</textarea></div></div></div>
+  <div style="display:flex;gap:8px;margin-top:16px"><button class="bt bp" id="${x}sv">Sauvegarder</button><span id="${x}st" style="font-size:13px;color:var(--g);align-self:center"></span></div>`
+    }
+    function bindPF(x, nm) { const btn = $(x + "sv"); if (btn) btn.onclick = () => savePF(x, nm) }
+    async function savePF(x, nm) { const g = id => ($(id) || {}).value || ""; const sp = v => v.split(",").map(s => s.trim()).filter(Boolean); await PATCH(`agent_config?consultant_name=eq.${encodeURIComponent(nm)}`, { titre: g(x + "ti"), ton_voix: g(x + "to"), parcours_narratif: g(x + "pa"), anecdotes_pro: g(x + "an"), secteurs_expertise: sp(g(x + "se")), types_clients: sp(g(x + "tc")), longueur_dm: parseInt(g(x + "dm")) || 85, longueur_email: parseInt(g(x + "em")) || 200, longueur_comment: parseInt(g(x + "cm")) || 45, mots_interdits: sp(g(x + "mi")), system_prompt_extra: g(x + "ex") }); const st = $(x + "st"); if (st) { st.textContent = "✓ Sauvegardé"; setTimeout(() => st.textContent = "", 2000) } }
+
+    // ===== ADMIN ===== (FIX #5: onglet Assets)
+    function rAdmin(el) {
+      el.innerHTML = `<h2 class="pt">Administration</h2><div class="tb" id="ATB"></div><div id="ATC"></div>`;
+      ["cons", "prof", "assets", "intel", "config", "strat_ia"].forEach((t, i) => { const b = document.createElement("button"); b.className = "tbtn" + (i === 0 ? " ac" : ""); b.innerHTML = [ic('users', '13px') + ' Consultants', ic('brain', '13px') + ' Profils IA', ic('book', '13px') + ' Assets', ic('refresh', '13px') + ' Intelligence', ic('key', '13px') + ' Configuration', ic('brain', '13px') + ' Stratégie IA'][i]; b.onclick = () => { document.querySelectorAll("#ATB .tbtn").forEach(x => x.classList.remove("ac")); b.classList.add("ac"); sAT(t) }; $("ATB").appendChild(b) }); sAT("cons")
+    }
+    function sAT(tab) {
+      const el = $("ATC");
+      if (tab === "cons") {
+        el.innerHTML = `<div class="cd"><div class="ch"><h4>Consultants</h4><button class="bt bp bsm" id="addCBtn">+ Ajouter</button></div><div class="tw"><table><thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Cibles</th><th>Statut</th><th></th></tr></thead><tbody id="CTB"></tbody></table></div></div>`;
+        $("addCBtn").onclick = showAddCM;
+        S.cons.forEach(c => { const cnt = S.targets.filter(t => t.consultant_name === c.name).length; const tr = document.createElement("tr"); tr.style.cssText = `cursor:default;${c.is_active === false ? "opacity:.4" : ""}`; tr.innerHTML = `<td style="font-weight:600">${e(c.name)}</td><td style="color:var(--t2);font-size:12px">${e(c.email)}</td><td>${c.role === "admin" ? badge("Admin", "#3EC878") : badge("Consultant", "#60A5FA")}</td><td>${cnt}</td><td>${c.is_active === false ? badge("Inactif", "#F87171") : badge("Actif", "#3EC878")}</td><td class="act-td"></td>`; const td = tr.querySelector(".act-td"); const btn = document.createElement("button"); if (c.is_active === false) { btn.className = "bt bg2 bsm"; btn.textContent = "Réactiver"; btn.onclick = () => toggleC(c.id, true) } else { btn.className = "bt bsm"; btn.style.cssText = "background:rgba(248,113,113,.1);color:var(--rd);border:1px solid rgba(248,113,113,.2)"; btn.textContent = "Désactiver"; btn.onclick = () => toggleC(c.id, false) } td.appendChild(btn); $("CTB").appendChild(tr) })
+      } else if (tab === "prof") {
+        el.innerHTML = `<div class="ig" style="max-width:300px"><label>Consultant</label><select id="cpfSel"><option value="">—</option>${S.cfgs.map(c => `<option value="${e(c.consultant_name)}">${e(c.consultant_name)}</option>`).join("")}</select></div><div id="APF"></div>`;
+        $("cpfSel").onchange = function () { const c = S.cfgs.find(x => x.consultant_name === this.value); $("APF").innerHTML = c ? bPF(c, true) : ""; if (c) bindPF("ap-", c.consultant_name) }
+      } else if (tab === "assets") {
+        rAssets(el)
+      } else if (tab === "intel") {
+        rIntel(el)
+      } else if (tab === "config") {
+        rConfig(el)
+      } else if (tab === "strat_ia") {
+        rStratIA(el)
+      }
+    }
+    // Intelligence refresh admin tab
+    function rIntel(el) {
+      const assigned = S.targets.filter(t => t.consultant_name);
+      const stale = assigned.filter(t => { if (!t.last_news_check_at) return true; return (Date.now() - new Date(t.last_news_check_at).getTime()) > 7 * 86400000 });
+      el.innerHTML = `<div class="cd"><div class="ch"><h4>${ic('refresh', '15px')} Rafraîchissement Intelligence</h4></div><div class="cb"><p style="color:var(--t2);font-size:13px;margin-bottom:16px">${assigned.length} cibles assignées · ${stale.length} avec news obsolètes (&gt;7j)</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px"><button class="bt bp bsm" id="rfAllBtn">Rafraîchir toutes les cibles</button>${S.cons.filter(c => c.is_active !== false).map(c => `<button class="bt bg2 bsm rf-con-btn" data-con="${e(c.name)}">${e(c.name.split(" ")[0])}</button>`).join("")}</div><div id="rfRes" style="font-size:12px;font-family:var(--fm);color:var(--t2)"></div></div></div>
+  <div class="cd" style="margin-top:16px"><div class="ch"><h4>${ic('chart', '15px')} État des données</h4></div><div class="tw"><table><thead><tr><th>Entreprise</th><th>Consultant</th><th>Warmth</th><th>Freq. Posts</th><th>Dernière MàJ News</th><th>News</th></tr></thead><tbody id="ITB"></tbody></table></div></div>`;
+      assigned.sort((a, b) => (a.last_news_check_at || "") > (b.last_news_check_at || "") ? 1 : -1).forEach(t => {
+        const staleT = !t.last_news_check_at || (Date.now() - new Date(t.last_news_check_at).getTime()) > 7 * 86400000;
+        const nc = (t.dernieres_news || []).length;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td style="font-weight:600">${e(t.entreprise)}</td><td style="font-size:12px;color:var(--t2)">${e(t.consultant_name)}</td><td><span style="font-family:var(--fm);color:${t.warmth_score >= 7 ? "var(--g)" : t.warmth_score >= 4 ? "var(--yw)" : "var(--t3)"}">${t.warmth_score || 0}/10</span></td><td style="font-size:12px">${e(t.prospect_post_frequency || "—")}</td><td style="font-size:12px;color:${staleT ? "var(--rd)" : "var(--t2)"}">${t.last_news_check_at ? dateFr(t.last_news_check_at) : "Jamais"}</td><td style="font-family:var(--fm)">${nc}</td>`;
+        $("ITB").appendChild(tr)
+      });
+      $("rfAllBtn").onclick = () => refreshIntel();
+      document.querySelectorAll(".rf-con-btn").forEach(b => { b.onclick = () => refreshIntel(b.dataset.con) })
+    }
+    async function refreshIntel(conName) {
+      const el = $("rfRes"); if (!el) return;
+      el.innerHTML = `<div style="color:var(--yw)">⏳ Rafraîchissement en cours${conName ? " pour " + conName : ""}...</div>`;
+      try {
+        const body = conName ? { consultant_name: conName } : {};
+        const r = await fetch(SB_URL + "/functions/v1/refresh-intelligence", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SB_KEY }, body: JSON.stringify(body) });
+        const d = await r.json();
+        if (d.success) {
+          el.innerHTML = `<div style="color:var(--g)">${ic('check', '13px')} ${d.refreshed} cibles rafraîchies · ${d.alerts} nouvelles alertes</div>${(d.details || []).filter(x => x.alert).map(x => `<div style="margin-top:4px;color:var(--yw)">${ic('trend', '12px')} ${x.entreprise}: ${x.new_news} nouvelle(s) actu</div>`).join("")}`;
+          await loadData(); render()
+        } else { el.innerHTML = `<div style="color:var(--rd)">Erreur: ${d.error || "inconnue"}</div>` }
+      } catch (err) { el.innerHTML = `<div style="color:var(--rd)">Erreur: ${err.message}</div>` }
+    }
+    // ===== CONFIG =====
+    async function rConfig(el) {
+      el.innerHTML = `
+    <div class="cd">
+      <div class="ch">
+        <h4>${ic('lock', '15px')} Sécurité — Clés API</h4>
+      </div>
+      <div class="cb">
+        <div style="background:var(--gd);border:1px solid var(--g);padding:16px;border-radius:var(--r);margin-bottom:16px;display:flex;gap:12px;align-items:flex-start">
+          <div style="color:var(--g);min-width:24px;margin-top:2px">${ic('check', '20px')}</div>
+          <div>
+            <h4 style="color:var(--g);margin-bottom:4px;font-size:15px">Secrets de production Sécurisés</h4>
+            <p style="color:var(--t2);font-size:13px;line-height:1.5">
+              Les clés d'API (Anthropic, Bright Data, Pappers, etc.) sont désormais gérées de manière ultra-sécurisée via les <strong>Secrets d'Environnement Supabase</strong>.
+              <br><br>
+              Pour des raisons de sécurité critiques, elles ne sont plus stockées dans la base de données et ne peuvent plus être ni lues, ni modifiées depuis cette interface publique.
+              Veuillez utiliser le Dashboard Supabase (Project Settings > Edge Functions > Secrets) pour toute modification.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    }
+    // ===== STRATÉGIE IA — Admin =====
+    const KG_LABELS = { company: 'Présentation Keep Growing', methodology: 'Méthodologie Pulse 360°', offers: 'Offres & Services', pain_points: 'Pain Points & Croyances', positioning: 'Positionnement & Différenciation', testimonials: 'Témoignages Clients', tone_rules: 'Règles de Ton & Communication' };
+
+    function rStratIA(el) {
+      const kgSections = S.kgCtx || [];
+      el.innerHTML = `
+    <div class="cd">
+      <div class="ch"><h4>${ic('brain', '15px')} Stratégie IA — Contexte Keep Growing</h4><span style="font-size:12px;color:var(--t2);margin-left:auto">Prompt v9.0 · Ces données alimentent le prompt système de l'IA</span></div>
+      <div class="cb">
+        <div style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);padding:12px 16px;border-radius:var(--r);margin-bottom:20px;font-size:12px;color:var(--bl);line-height:1.6">
+          ${ic('alert','13px')} <strong>Impact direct :</strong> Ces 7 sections sont injectées intégralement dans le prompt système de Claude. Chaque mot compte — plus le contexte est riche et précis, meilleures sont les stratégies générées. Les modifications sont appliquées immédiatement à toutes les prochaines analyses.
+        </div>
+        <div id="KG_SECTIONS"></div>
+        <div style="margin-top:20px;padding:16px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r)">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:8px">Prompt v9.0 — Architecture</div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.8">
+            <div>1. <strong style="color:var(--pp)">Identité & Philosophie</strong> — Stratège d'échecs, écoute active, pas de vente</div>
+            <div>2. <strong style="color:var(--bl)">Contexte KG</strong> — Les 7 sections ci-dessus (${kgSections.reduce((s, k) => s + (k.content || '').length, 0).toLocaleString()} caractères)</div>
+            <div>3. <strong style="color:var(--yw)">Consultant</strong> — Profil complet (éditable dans Profils IA)</div>
+            <div>4. <strong style="color:var(--g)">Méthode d'analyse</strong> — CEO/DirCo, posts, financier, DURR</div>
+            <div>5. <strong style="color:#F472B6">Communication</strong> — Ton pair-à-pair, 5 phases 60 jours, 3-5 commentaires</div>
+            <div>6. <strong style="color:var(--rd)">Objections</strong> — 4-5 objections anticipées par prospect</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+      const container = $("KG_SECTIONS");
+      const orderedSections = ['company', 'methodology', 'offers', 'pain_points', 'positioning', 'testimonials', 'tone_rules'];
+      orderedSections.forEach(secKey => {
+        const sec = kgSections.find(k => k.section === secKey);
+        const content = sec?.content || '';
+        const isActive = sec?.is_active !== false;
+        const div = document.createElement("div");
+        div.style.cssText = "margin-bottom:16px;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden";
+        div.innerHTML = `
+          <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--s1);cursor:pointer" class="kg-header" data-sec="${secKey}">
+            <span style="font-size:13px;font-weight:600;color:var(--tx)">${KG_LABELS[secKey] || secKey}</span>
+            <span style="margin-left:auto;font-size:11px;color:var(--t3)">${content.length} caractères</span>
+            ${isActive ? '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(52,211,153,.1);color:var(--g)">Actif</span>' : '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(248,113,113,.1);color:var(--rd)">Inactif</span>'}
+            <span style="color:var(--t3);font-size:11px" class="kg-arrow">▼</span>
+          </div>
+          <div class="kg-body" data-sec="${secKey}" style="display:none;padding:12px 16px;background:var(--bg)">
+            <textarea class="kg-ta" data-sec="${secKey}" style="width:100%;min-height:150px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--rs);padding:12px;font-size:12px;color:var(--tx);font-family:var(--fm);line-height:1.6;resize:vertical">${content.replace(/</g, '&lt;')}</textarea>
+            <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+              <button class="bt bt-grad bsm kg-save" data-sec="${secKey}">${ic('check','12px')} Sauvegarder</button>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--t2);cursor:pointer"><input type="checkbox" class="kg-active" data-sec="${secKey}" ${isActive ? 'checked' : ''}> Actif</label>
+              <span class="kg-status" data-sec="${secKey}" style="font-size:11px;color:var(--t3);margin-left:auto"></span>
+            </div>
+          </div>`;
+        container.appendChild(div);
+      });
+      // Toggle accordion
+      document.querySelectorAll(".kg-header").forEach(h => {
+        h.onclick = () => {
+          const sec = h.dataset.sec;
+          const body = document.querySelector(`.kg-body[data-sec="${sec}"]`);
+          const arrow = h.querySelector('.kg-arrow');
+          if (body.style.display === "none") { body.style.display = "block"; arrow.textContent = "▲"; }
+          else { body.style.display = "none"; arrow.textContent = "▼"; }
+        };
+      });
+      // Save handlers
+      document.querySelectorAll(".kg-save").forEach(btn => {
+        btn.onclick = async () => {
+          const sec = btn.dataset.sec;
+          const ta = document.querySelector(`.kg-ta[data-sec="${sec}"]`);
+          const active = document.querySelector(`.kg-active[data-sec="${sec}"]`);
+          const status = document.querySelector(`.kg-status[data-sec="${sec}"]`);
+          const newContent = ta.value;
+          const isActive = active.checked;
+          status.innerHTML = `<span style="color:var(--yw)">Sauvegarde...</span>`;
+          try {
+            const existing = S.kgCtx.find(k => k.section === sec);
+            if (existing) {
+              await PATCH(`kg_context?id=eq.${existing.id}`, { content: newContent, is_active: isActive, updated_at: new Date().toISOString() });
+              existing.content = newContent; existing.is_active = isActive;
+            } else {
+              await POST('kg_context', { section: sec, content: newContent, is_active: isActive });
+              S.kgCtx.push({ section: sec, content: newContent, is_active: isActive });
+            }
+            status.innerHTML = `<span style="color:var(--g)">✓ Sauvegardé</span>`;
+            // Update char count
+            const header = document.querySelector(`.kg-header[data-sec="${sec}"]`);
+            if (header) { const span = header.querySelectorAll("span")[1]; if (span) span.textContent = newContent.length + " caractères"; }
+            setTimeout(() => { status.innerHTML = ''; }, 3000);
+          } catch (err) {
+            status.innerHTML = `<span style="color:var(--rd)">Erreur: ${err.message}</span>`;
+          }
+        };
+      });
+    }
+
+    // FIX #5: Assets Keep Growing management
+    function rAssets(el) {
+      el.innerHTML = `<div class="cd"><div class="ch"><h4>Assets Keep Growing — Livres Blancs</h4><small style="color:var(--t2);margin-left:auto">${S.livres.length} assets</small><button class="bt bp bsm" id="addAsBtn" style="margin-left:8px">+ Ajouter</button></div><div class="tw"><table><thead><tr><th>Titre</th><th>Personas</th><th>Segments</th><th>Liens</th><th></th></tr></thead><tbody id="ASB"></tbody></table></div></div>`;
+      $("addAsBtn").onclick = showAddAsset;
+      S.livres.forEach(lb => {
+        const tr = document.createElement("tr"); tr.style.cursor = "default";
+        tr.innerHTML = `<td><div style="font-weight:600;font-size:12px">${e(lb.titre)}</div><div style="font-size:11px;color:var(--t3);margin-top:2px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e((lb.resume || "").substring(0, 80))}</div></td><td style="font-size:11px">${(lb.personas_cibles || []).map(p => badge(p, "#A78BFA")).join(" ")}</td><td style="font-size:11px">${(lb.segments_pertinents || []).map(s => badge(s, segC(s))).join(" ")}</td><td><a href="${e(lb.landing_page)}" target="_blank" style="font-size:11px">Page</a> · <a href="${e(lb.ressource_url)}" target="_blank" style="font-size:11px">PDF</a></td><td class="del-td"></td>`;
+        const td = tr.querySelector(".del-td"); const btn = document.createElement("button"); btn.className = "bt bsm"; btn.style.cssText = "background:rgba(248,113,113,.1);color:var(--rd);border:1px solid rgba(248,113,113,.2)"; btn.textContent = "✕"; btn.onclick = async () => { if (confirm("Supprimer cet asset ?")) { await DEL(`livres_blancs?id=eq.${lb.id}`); S.livres = S.livres.filter(x => x.id !== lb.id); rAssets(el) } }; td.appendChild(btn); $("ASB").appendChild(tr)
+      })
+    }
+    function showAddAsset() {
+      $("MOD").style.display = "block";
+      $("MOD").innerHTML = `<div class="modal-bg"><div class="modal"><div class="mh"><h3>Ajouter un Asset</h3><button class="mx" id="asx">✕</button></div><div class="mb">
+    <div class="ig"><label>Titre *</label><input id="as-ti" placeholder="Nom du livre blanc"></div>
+    <div class="ig"><label>Landing Page</label><input id="as-lp" placeholder="https://keepgrowing.fr/..."></div>
+    <div class="ig"><label>URL Ressource (Drive)</label><input id="as-ru" placeholder="https://drive.google.com/..."></div>
+    <div class="ig"><label>Résumé</label><textarea id="as-re" style="min-height:80px" placeholder="Description du contenu..."></textarea></div>
+    <div class="ig"><label>Personas cibles (virgules)</label><input id="as-pc" placeholder="P1 CEO Scale-up, P2 DirCo"></div>
+    <div class="ig"><label>Segments pertinents (virgules)</label><input id="as-sp" placeholder="SaaS B2B, ETI PME Industrielles"></div>
+    <div class="ig"><label>Mots-clés (virgules)</label><input id="as-mk" placeholder="diagnostic, commercial, audit"></div>
+    <div style="display:flex;gap:8px"><button class="bt bp" id="as-ok">Ajouter</button><button class="bt bs" id="as-no">Annuler</button></div>
+  </div></div></div>`;
+      $("asx").onclick = $("as-no").onclick = () => $("MOD").style.display = "none";
+      $("as-ok").onclick = addAsset
+    }
+    async function addAsset() {
+      const g = id => ($(id) || {}).value?.trim() || ""; const sp = v => v.split(",").map(s => s.trim()).filter(Boolean);
+      if (!g("as-ti")) return;
+      const r = await POST("livres_blancs", { titre: g("as-ti"), landing_page: g("as-lp"), ressource_url: g("as-ru"), resume: g("as-re"), personas_cibles: sp(g("as-pc")), segments_pertinents: sp(g("as-sp")), mots_cles: sp(g("as-mk")) });
+      if (r?.[0]) S.livres.push(r[0]);
+      $("MOD").style.display = "none"; sAT("assets")
+    }
+    async function toggleC(id, a) { await PATCH(`consultants?id=eq.${id}`, { is_active: a }); await loadData(); render() }
+    function showAddCM() {
+      $("MOD").style.display = "block"; $("MOD").innerHTML = `<div class="modal-bg"><div class="modal"><div class="mh"><h3>Ajouter un consultant</h3><button class="mx" id="mcx">✕</button></div><div class="mb"><div class="ig"><label>Nom complet</label><input id="nc-nm" placeholder="Prénom Nom"></div><div class="ig"><label>Email</label><input id="nc-em" placeholder="prenom@keepgrowing.fr"></div><div style="display:flex;gap:8px"><button class="bt bp" id="nc-ok">Ajouter</button><button class="bt bs" id="nc-no">Annuler</button></div></div></div></div>`;
+      $("mcx").onclick = $("nc-no").onclick = () => $("MOD").style.display = "none"; $("nc-ok").onclick = addC
+    }
+    async function addC() { const nm = $("nc-nm").value.trim(), em = $("nc-em").value.trim(); if (!nm) return; await POST("consultants", { name: nm, email: em, is_active: true, role: "consultant" }); await POST("agent_config", { consultant_name: nm, titre: "Consultant", ton_voix: "", parcours_narratif: "", secteurs_expertise: [], types_clients: [], longueur_dm: 85, longueur_email: 200, longueur_comment: 45 }); $("MOD").style.display = "none"; await loadData(); render() }
+
+    // ===== TARGET DETAIL =====
+    function openDetail(id) {
+      const t = S.targets.find(x => x.id === id); if (!t) return; S.sel = { ...t }; S.dtab = "exec";
+      $("DTT").textContent = t.entreprise; rBadges(t); rDTabs(); rDC(); $("DV").classList.add("on")
+    }
+    function rBadges(t) { $("DTB").innerHTML = `${badge(stg(t.pipeline_etape).l, stg(t.pipeline_etape).c)} ${badge(t.segment, segC(t.segment))} ${t.priorite ? badge(t.priorite, t.priorite === "P1" ? "#F87171" : t.priorite === "P2" ? "#FBBF24" : "#60A5FA") : ""}` }
+    function closeDetail() { hideAIBanner(); $("DV").classList.remove("on"); S.sel = null; render() }
+    function rDTabs() {
+      $("DTB2").innerHTML = "";
+      // FIX #3: ajout onglet DURR
+      [{ k: "exec", l: ic('building', '13px') + " Fiche" }, { k: "durr", l: ic('fire', '13px') + " DURR" }, { k: "strat", l: ic('brain', '13px') + " Stratégie 60j" }, { k: "act", l: ic('check', '13px') + " Actions" }, { k: "edit", l: ic('posts', '13px') + " Éditer" }].forEach(t => {
+        const b = document.createElement("button"); b.className = "tbtn" + (S.dtab === t.k ? " ac" : ""); b.innerHTML = t.l; b.onclick = () => { S.dtab = t.k; rDC() }; $("DTB2").appendChild(b)
+      })
+    }
+    function rDC() {
+      const el = $("DC"), t = S.sel; if (!t) return; el.className = "fi"; rDTabs();
+      ({ exec: rExec, durr: rDurr, strat: rStrat, act: rAct, edit: rEdit })[S.dtab]?.(el, t);
+      // Show AI banner if analysis is running/done/error for current target
+      const g = window.S_GEN?.[t.id];
+      if (g && (g.status === "running" || (g.status === "done" && S.dtab !== "strat") || g.status === "error")) {
+        renderAIBanner(t.id);
+      } else { hideAIBanner(); }
+    }
+
+    // ===== EXECUTIVE =====
+    function rExec(el, t) {
+      const flds = [{ l: "Chiffre d'affaires", v: t.ca }, { l: "EBITDA", v: t.ebitda }, { l: "Effectif", v: t.effectif || t.nb_employes_exact }, { l: "Commerciaux", v: t.taille_equipe_commerciale || t.nb_commerciaux_exact }, { l: "Croissance", v: t.taux_croissance }, { l: "Warmth", v: t.warmth_score != null ? t.warmth_score + "/10" : "—" }];
+      el.innerHTML = `<div style="max-width:1000px;margin:0 auto">
+  <div class="exec-row">${flds.map(f => `<div class="exec-item"><div class="ei-l">${f.l}</div><div class="ei-v">${e(f.v) || '<span style="color:var(--t3)">—</span>'}</div></div>`).join("")}</div>
+  ${(t.derniere_levee_montant || t.derniere_levee_date) ? `<div class="hb" style="background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2)"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--pp);margin-bottom:8px">Dernière Levée</div><div style="display:flex;gap:24px;flex-wrap:wrap;font-size:13px"><div><span style="color:var(--t2)">Montant: </span><strong>${e(t.derniere_levee_montant || "—")}</strong></div><div><span style="color:var(--t2)">Date: </span>${e(t.derniere_levee_date || "—")}</div><div><span style="color:var(--t2)">Type: </span>${e(t.derniere_levee_type || "—")}</div></div></div>` : ""}
+  <div class="g2"><div class="cd"><div class="ch"><h4>Contacts Clés</h4></div><div class="cb"><div style="margin-bottom:16px"><div style="font-size:11px;color:var(--g);font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">CEO / DG</div><div style="font-size:15px;font-weight:600">${e([t.ceo_prenom, t.ceo_nom].filter(Boolean).join(" ") || "—")}</div>${t.ceo_email ? `<div style="font-size:12px;color:var(--t2);margin-top:2px">${e(t.ceo_email)}</div>` : ""}${t.ceo_tel ? `<div style="font-size:12px;color:var(--t2)">${e(t.ceo_tel)}</div>` : ""}</div><div><div style="font-size:11px;color:var(--bl);font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Directeur Commercial</div><div style="font-size:15px;font-weight:600">${e([t.dirco_prenom, t.dirco_nom].filter(Boolean).join(" ") || "—")}</div>${t.dirco_email ? `<div style="font-size:12px;color:var(--t2);margin-top:2px">${e(t.dirco_email)}</div>` : ""}${t.dirco_tel ? `<div style="font-size:12px;color:var(--t2)">${e(t.dirco_tel)}</div>` : ""}</div></div></div>
+  <div class="cd"><div class="ch"><h4>Business & Contexte</h4></div><div class="cb" style="font-size:13px;line-height:2"><div><span style="color:var(--t2)">Go-to-Market:</span> <strong>${e(t.go_to_market || "—")}</strong></div><div><span style="color:var(--t2)">Clients Clés:</span> <strong>${e((t.clients_cles || []).join(", ") || "—")}</strong></div><div><span style="color:var(--t2)">Industrie:</span> ${e(t.industrie || "—")}</div><div><span style="color:var(--t2)">Spécialité:</span> ${e(t.specialite || "—")}</div><div><span style="color:var(--t2)">Signal Faible:</span> <span style="color:var(--yw)">${e(t.signal_faible || "—")}</span></div></div></div></div>
+  <div style="display:flex;gap:14px;margin-top:16px;flex-wrap:wrap" id="elinks"></div></div>`;
+      [{ u: t.site_web, l: ic('globe', '13px') + " Site web", c: "var(--g)" }, { u: t.linkedin_entreprise, l: ic('linkedin', '13px') + " Entreprise", c: "var(--bl)" }, { u: t.linkedin_ceo, l: ic('profile', '13px') + " CEO", c: "var(--yw)" }, { u: t.linkedin_contact, l: ic('users', '13px') + " DirCo", c: "var(--pp)" }].forEach(x => { if (x.u) { const a = document.createElement("a"); a.href = x.u; a.target = "_blank"; a.style.cssText = `font-size:12px;padding:8px 14px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--rs);color:${x.c};display:inline-flex;align-items:center;gap:6px`; a.innerHTML = x.l; $("elinks").appendChild(a) } });
+      // Warmth signals
+      const ws = t.warmth_signals || []; const pf = t.prospect_post_frequency; const dn = t.dernieres_news;
+      const _wsc = t.warmth_score || 0;
+      const _wcol = _wsc >= 7 ? "var(--g)" : _wsc >= 4 ? "var(--yw)" : "var(--t3)";
+      if (ws.length || pf || dn || _wsc > 0) {
+        let extra = '<div class="g2" style="margin-top:16px">';
+        extra += `<div class="cd"><div class="ch"><h4>${ic('fire', '15px')} Warmth & Timing</h4><span style="margin-left:auto;font-family:var(--fm);font-weight:700;color:${_wcol}">${_wsc}/10</span></div><div class="cb">${pf ? `<div style="font-size:12px;margin-bottom:8px"><span style="color:var(--t2)">Fréquence LinkedIn:</span> <strong>${e(pf)}</strong></div>` : ""}${t.warmth_assessment ? `<div style="font-size:12px;color:var(--tx);margin-bottom:8px;padding:8px 12px;background:rgba(255,255,255,.03);border-radius:var(--rs);border-left:3px solid ${_wcol};line-height:1.5">${e(t.warmth_assessment)}</div>` : ''}<div style="display:flex;flex-wrap:wrap;gap:4px">${ws.map(s => badge(s, _wsc >= 7 ? "#3EC878" : _wsc >= 4 ? "#FBBF24" : "#71717A")).join("")}</div>${t.prospect_last_active_at ? `<div style="font-size:11px;color:var(--t3);margin-top:8px">Dernier post: ${dateFr(t.prospect_last_active_at)}</div>` : ""}</div></div>`;
+        if (dn && Array.isArray(dn) && dn.length) { extra += `<div class="cd"><div class="ch"><h4>${ic('news', '15px')} Actualités</h4><small style="color:var(--t3);margin-left:auto">${t.last_news_check_at ? dateFr(t.last_news_check_at) : ""}</small></div><div class="cb">${dn.slice(0, 4).map(n => `<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--bd)"><div style="font-size:12px;font-weight:600">${e(n.titre)}</div><div style="font-size:11px;color:var(--t3)">${e(n.source || "")} · ${e(n.date || "")}</div></div>`).join("")}</div></div>` }
+        extra += '</div>'; el.innerHTML += extra
+      }
+
+      // v45: Company Historical Timeline — creation, levées, nominations, products
+      const timelineEvents = [];
+      // From date_creation_entreprise
+      if (t.date_creation_entreprise) timelineEvents.push({ date: t.date_creation_entreprise, type: 'creation', label: 'Création ' + (t.nom_juridique || t.entreprise), icon: ic('building','12px'), color: 'var(--g)' });
+      // From historique_entreprise (Pappers)
+      if (Array.isArray(t.historique_entreprise)) {
+        t.historique_entreprise.forEach(ev => {
+          if (!ev.date || !ev.label) return;
+          const isNomination = (ev.type === 'nomination' || ev.label.match(/président|directeur|nommé|nommée/i));
+          const isLevee = ev.label.match(/levée|capital|augmentation/i);
+          timelineEvents.push({ date: ev.date, type: ev.type || 'event', label: ev.label, icon: isNomination ? ic('profile','12px') : isLevee ? ic('trend','12px') : ic('check','12px'), color: isNomination ? 'var(--pp)' : isLevee ? 'var(--yw)' : 'var(--t2)' });
+        });
+      }
+      // From derniere_levee
+      if (t.derniere_levee_date) timelineEvents.push({ date: t.derniere_levee_date, type: 'levee', label: 'Levée ' + (t.derniere_levee_montant || '') + (t.derniere_levee_type ? ' (' + t.derniere_levee_type + ')' : ''), icon: ic('trend','12px'), color: 'var(--yw)' });
+      // From dernieres_news (key events)
+      if (Array.isArray(t.dernieres_news)) {
+        t.dernieres_news.forEach(n => {
+          if (!n.titre) return;
+          const titre = n.titre.toLowerCase();
+          if (titre.match(/nommé|nommée|nomination|rejoint|nouveau.*directeur|nouvelle.*directrice|appointed|head of|levée|acquisition|rachat|lancement|lance|nouveau produit|nouvelle offre/)) {
+            timelineEvents.push({ date: n.date || '', type: 'news', label: n.titre.split(' - ')[0] || n.titre, icon: ic('news','12px'), color: titre.match(/nommé|nomination|rejoint/) ? 'var(--pp)' : titre.match(/levée|acquisition/) ? 'var(--yw)' : 'var(--bl)' });
+          }
+        });
+      }
+      // Deduplicate by label similarity and sort by date desc
+      const seen = new Set();
+      const uniqueEvents = timelineEvents.filter(ev => {
+        const key = ev.label.toLowerCase().replace(/\s+/g, ' ').substring(0, 40);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      }).sort((a, b) => {
+        const da = new Date(a.date || 0).getTime(), db = new Date(b.date || 0).getTime();
+        return db - da;
+      }).slice(0, 12);
+
+      if (uniqueEvents.length > 0) {
+        let tlHtml = '<div class="cd" style="margin-top:16px"><div class="ch"><h4>' + ic('clock', '15px') + ' Frise Historique</h4><small style="color:var(--t3);margin-left:auto">' + uniqueEvents.length + ' événements</small></div><div class="cb">';
+        uniqueEvents.forEach((ev, i) => {
+          const dateStr = ev.date ? (() => { try { const d = new Date(ev.date); return d.getFullYear() > 1900 ? dateFr(ev.date) : ev.date; } catch(_) { return ev.date; } })() : '';
+          tlHtml += `<div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:${i < uniqueEvents.length - 1 ? '12px;padding-bottom:12px;border-bottom:1px solid var(--bd)' : '0'}">
+            <div style="min-width:80px;font-size:11px;color:var(--t3);padding-top:2px">${dateStr}</div>
+            <div style="color:${ev.color};margin-top:2px">${ev.icon}</div>
+            <div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--tx)">${e(ev.label)}</div>${ev.type !== 'creation' ? '<div style="font-size:10px;color:var(--t3);margin-top:2px">' + e(ev.type) + '</div>' : ''}</div>
+          </div>`;
+        });
+        tlHtml += '</div></div>';
+        el.innerHTML += tlHtml;
+      }
+
+      // v45: Legal & Corporate info (capital, forme juridique, actionnariat)
+      if (t.capital_social || t.forme_juridique || t.actionnariat || t.objet_social) {
+        let legalHtml = '<div class="cd" style="margin-top:16px"><div class="ch"><h4>' + ic('check', '15px') + ' Informations Légales</h4></div><div class="cb" style="font-size:13px;line-height:2">';
+        if (t.forme_juridique) legalHtml += '<div><span style="color:var(--t2)">Forme juridique:</span> <strong>' + e(t.forme_juridique) + '</strong></div>';
+        if (t.capital_social) legalHtml += '<div><span style="color:var(--t2)">Capital social:</span> <strong>' + e(t.capital_social) + '</strong></div>';
+        if (t.siren) legalHtml += '<div><span style="color:var(--t2)">SIREN:</span> ' + e(t.siren) + '</div>';
+        if (t.naf_code) legalHtml += '<div><span style="color:var(--t2)">Code NAF:</span> ' + e(t.naf_code) + '</div>';
+        if (t.siege_social) legalHtml += '<div><span style="color:var(--t2)">Siège:</span> ' + e(t.siege_social) + '</div>';
+        if (t.actionnariat) legalHtml += '<div><span style="color:var(--t2)">Actionnariat:</span> ' + e(t.actionnariat) + '</div>';
+        if (t.objet_social) legalHtml += '<div style="margin-top:4px"><span style="color:var(--t2)">Objet social:</span> <span style="font-size:12px">' + e(t.objet_social.substring(0, 300)) + '</span></div>';
+        legalHtml += '</div></div>';
+        el.innerHTML += legalHtml;
+      }
+
+      // v45: Dirigeants complets
+      if (Array.isArray(t.dirigeants_complet) && t.dirigeants_complet.length > 0) {
+        let dirHtml = '<div class="cd" style="margin-top:16px"><div class="ch"><h4>' + ic('users', '15px') + ' Dirigeants</h4><small style="color:var(--t3);margin-left:auto">' + t.dirigeants_complet.length + '</small></div><div class="cb">';
+        t.dirigeants_complet.slice(0, 8).forEach(d => {
+          dirHtml += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bd)">' +
+            '<div><div style="font-size:13px;font-weight:600">' + e(((d.prenom || '') + ' ' + (d.nom || '')).trim() || d.name || '—') + '</div>' +
+            '<div style="font-size:11px;color:var(--t3)">' + e(d.qualite || d.title || '') + '</div></div>' +
+            (d.date_nomination ? '<div style="font-size:11px;color:var(--t3)">' + e(d.date_nomination) + '</div>' : '') + '</div>';
+        });
+        dirHtml += '</div></div>';
+        el.innerHTML += dirHtml;
+      }
+
+      // v45: Finances historiques
+      if (Array.isArray(t.finances_historique) && t.finances_historique.length > 0) {
+        let finHtml = '<div class="cd" style="margin-top:16px"><div class="ch"><h4>' + ic('trend', '15px') + ' Finances Historiques</h4></div><div class="cb"><div class="tw"><table><thead><tr><th>Année</th><th>CA</th><th>Résultat</th><th>Effectif</th><th>Croissance</th></tr></thead><tbody>';
+        t.finances_historique.slice(0, 5).forEach(f => {
+          finHtml += '<tr><td>' + e(f.annee || f.year || '—') + '</td><td style="font-weight:600">' + (f.ca ? Math.round(f.ca / 1e6) + 'M€' : '—') + '</td><td style="color:' + (f.resultat > 0 ? 'var(--g)' : f.resultat < 0 ? 'var(--rd)' : 'var(--t3)') + '">' + (f.resultat != null ? Math.round(f.resultat / 1000) + 'K€' : '—') + '</td><td>' + (f.effectif || '—') + '</td><td>' + (f.croissance != null ? f.croissance + '%' : '—') + '</td></tr>';
+        });
+        finHtml += '</tbody></table></div></div></div>';
+        el.innerHTML += finHtml;
+      }
+    }
+
+    // ===== DURR TAB ===== (FIX #3)
+    function rDurr(el, t) {
+      const score = [t.durr_d, t.durr_u, t.durr_r1, t.durr_r2].filter(Boolean).length;
+      const colors = ["#F87171", "#FB923C", "#FBBF24", "#3EC878"];
+      el.innerHTML = `<div style="max-width:700px;margin:0 auto">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">
+      <div style="font-family:var(--fm);font-size:48px;font-weight:700;color:${colors[score] || "var(--t3)"}">${score}/4</div>
+      <div><div style="font-family:var(--fh);font-weight:700;font-size:16px">${score === 4 ? "PROSPECT CHAUD" : score === 3 ? "PROSPECT TIÈDE" : score === 2 ? "PROSPECT FROID" : "PAS QUALIFIÉ"}</div><div style="font-size:12px;color:var(--t2)">${score >= 3 ? "Proposer un RDV" : score === 2 ? "Nurturing long — contenu ciblé" : "Rester visible via LinkedIn"}</div></div>
+    </div>
+    <div class="durr-g" id="DG"></div>
+    <div class="ig" style="margin-top:16px"><label>Notes DURR</label><textarea id="durr-notes" placeholder="Observations de qualification...">${e(t.durr_notes || "")}</textarea></div>
+    <button class="bt bs bsm" id="svDN">Sauvegarder notes</button>
+  </div>`;
+      $("svDN").onclick = () => updTF("durr_notes", $("durr-notes").value);
+      const dg = $("DG");
+      DURR_DEF.forEach(d => {
+        const on = !!t[d.k]; const card = document.createElement("div"); card.className = `durr-c${on ? " on" : ""}`;
+        card.innerHTML = `<div class="dc-h" style="color:${on ? "var(--g)" : "var(--t2)"}">${on ? "✓ " : "◇ "}${d.l}</div><div class="dc-d">${d.d}</div><div style="margin-top:8px;font-size:11px;color:var(--yw)">Signal: ${d.sig}</div><div style="margin-top:6px;font-size:11px;font-style:italic;color:var(--t2)">« ${d.q} »</div>`;
+        card.onclick = async () => {
+          const nv = !t[d.k]; const p = { [d.k]: nv };
+          // NOTE: durr_score is a GENERATED column — do NOT include in PATCH (auto-computed from d+u+r1+r2)
+          const u = await PATCH(`targets?id=eq.${t.id}`, p); if (u?.[0]) { const i = S.targets.findIndex(x => x.id === t.id); if (i >= 0) S.targets[i] = u[0]; S.sel = u[0]; rDC() }
+        }; dg.appendChild(card)
+      })
+    }
+
+    // ===== STRATEGY =====
+    function rStrat(el, t) {
+      const s = S.strats.find(x => x.target_id === t.id); const ok1 = !!t.site_web, ok2 = !!t.linkedin_entreprise, ok3 = !!t.linkedin_ceo, ready = ok1 && ok2 && ok3;
+      if (!s) {
+        el.innerHTML = `<div style="max-width:600px;margin:40px auto;text-align:center"><div class="cd"><div class="cb" style="padding:32px"><div style="font-size:24px;margin-bottom:8px;color:var(--g)">◈</div><h3 style="font-family:var(--fh);margin-bottom:12px">Préparer l'analyse IA</h3><p style="color:var(--t2);font-size:13px;margin-bottom:20px">L'agent collecte les données et crée votre stratégie personnalisée.</p><div style="display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap">${[{ ok: ok1, l: "Site Web" }, { ok: ok2, l: "LinkedIn Entreprise" }, { ok: ok3, l: "LinkedIn CEO" }].map(x => `<div style="padding:8px 16px;border-radius:var(--rs);font-size:12px;font-weight:600;background:${x.ok ? "var(--gd)" : "rgba(248,113,113,.1)"};border:1px solid ${x.ok ? "rgba(62,200,120,.3)" : "rgba(248,113,113,.3)"};color:${x.ok ? "var(--g)" : "var(--rd)"}">${x.ok ? "✓" : "✕"} ${x.l}</div>`).join("")}</div>${!ready ? '<p style="font-size:12px;color:var(--yw);margin-bottom:12px">Complétez dans l\'onglet Éditer</p>' : ""}<button class="bt bt-grad" id="launchBtn" ${ready ? "" : "disabled"}>${ic('play', '14px')} Lancer l'agent IA</button><div id="gen-st" style="margin-top:12px;font-size:13px"></div></div></div></div>`;
+        if (ready) $("launchBtn").onclick = () => launchAI(t.id); return
+      }
+
+      const recLB = S.livres.filter(lb => (lb.segments_pertinents || []).some(seg => seg === t.segment)).slice(0, 3);
+      const branches = s.strategie_branches; const dsLog = s.data_sources_log;
+
+      let smode = s.approche_ceo ? "ceo" : "dirco";
+
+      // Step tracking constants & pipeline auto-advance
+      const STEP_DEFS = [
+        { key: 'commentaire', l: 'Commentaires', ic: 'comment', c: '#60A5FA', act: 'action_commente_post', actD: null, pipe: 'premier_contact' },
+        { key: 'connexion', l: 'Connexion', ic: 'connect', c: '#A78BFA', act: 'action_connecte', actD: 'action_connecte_date', pipe: 'premier_contact' },
+        { key: 'suivi', l: 'DM', ic: 'send', c: '#FBBF24', act: 'action_echange_en_cours', actD: 'action_echange_date', pipe: 'en_discussion' },
+        { key: 'email', l: 'Email', ic: 'mail', c: '#F472B6', act: 'action_email_envoye', actD: 'action_email_date', pipe: 'en_discussion' },
+        { key: 'relance', l: 'Relances', ic: 'refresh', c: '#FB923C', act: null, actD: null, pipe: 'en_discussion' },
+        { key: 'rdv', l: 'RDV', ic: 'calendar', c: '#3EC878', act: 'action_rdv', actD: 'action_rdv_date', pipe: 'rdv' },
+        { key: 'nurturing', l: 'Nurturing', ic: 'clock', c: '#71717A', act: null, actD: null, pipe: null },
+      ];
+      const PIPE_ORDER = ['non_traite', 'strategie_generee', 'premier_contact', 'en_discussion', 'rdv', 'proposition', 'gagne', 'perdu'];
+
+      async function autoMarkStep(key, forceValue) {
+        const isCeo = smode === "ceo";
+        const pfx = isCeo ? 'step_' : 'dirco_step_';
+        const fieldDone = pfx + key + '_done';
+        const newVal = forceValue !== undefined ? forceValue : !s[fieldDone];
+        if (s[fieldDone] === newVal) return;
+        const patch = { [fieldDone]: newVal };
+        const fieldDate = pfx + key + '_date';
+        if (newVal) patch[fieldDate] = new Date().toISOString().split('T')[0];
+        else patch[fieldDate] = null;
+        const upd = await PATCH(`communication_strategies?id=eq.${s.id}`, patch);
+        if (upd?.[0]) {
+          Object.assign(s, upd[0]);
+          const si = S.strats.findIndex(x => x.id === s.id);
+          if (si >= 0) S.strats[si] = s;
+          // Build target PATCH: auto-check action + auto-advance pipeline
+          const tPatch = {};
+          // Always auto-check the matching action on targets when step is marked done
+          const sd = STEP_DEFS.find(d => d.key === key);
+          if (sd?.act && newVal && !S.sel[sd.act]) {
+            tPatch[sd.act] = sd.act === 'action_commente_post' ? 1 : true;
+            if (sd.actD) tPatch[sd.actD] = new Date().toISOString().split('T')[0];
+          }
+          // Auto-advance pipeline based on highest done step (never go back)
+          let bestPipe = null;
+          for (let i = STEP_DEFS.length - 1; i >= 0; i--) {
+            if (s[pfx + STEP_DEFS[i].key + '_done'] && STEP_DEFS[i].pipe) { bestPipe = STEP_DEFS[i].pipe; break; }
+          }
+          if (bestPipe) {
+            const curIdx = PIPE_ORDER.indexOf(S.sel.pipeline_etape);
+            const newIdx = PIPE_ORDER.indexOf(bestPipe);
+            if (newIdx > curIdx) tPatch.pipeline_etape = bestPipe;
+          }
+          if (Object.keys(tPatch).length > 0) {
+            const tu = await PATCH(`targets?id=eq.${S.sel.id}`, tPatch);
+            if (tu?.[0]) {
+              const ti = S.targets.findIndex(x => x.id === S.sel.id);
+              if (ti >= 0) S.targets[ti] = tu[0];
+              S.sel = tu[0]; t = tu[0];
+              rBadges(tu[0]);
+            }
+          }
+          paint();
+        }
+      }
+
+      const paint = () => {
+        const isCeo = smode === "ceo";
+        const approche = isCeo ? s.approche_ceo : s.approche_dirco;
+        // v45: DirCo gets DirCo-source post (normalized to postRef format) or fallback to CEO post
+        const _dircoPost = !isCeo ? s.prospect_posts_data?.find(p => p._source === 'DirCo') : null;
+        const postRef = isCeo ? s.post_prospect_ref : (_dircoPost ? { content: _dircoPost.text, url: _dircoPost.post_url || _dircoPost.link, date: _dircoPost.date, why: 'Post du Directeur Commercial — créer la visibilité' } : s.post_prospect_ref);
+        const dircoPostTarget = s.prospect_posts_data?.find(p => p._source === 'DirCo');
+        const multiCom = isCeo ? (s.commentaires_multi || []) : (s.dirco_commentaires_multi?.length ? s.dirco_commentaires_multi : (s.dirco_commentaire_linkedin ? [{ commentaire: s.dirco_commentaire_linkedin, post_cible: dircoPostTarget ? (dircoPostTarget.text || '').substring(0, 80) + '...' : 'Post DirCo', objectif: 'Créer visibilité auprès du DirCo', source: 'DirCo', post_url: dircoPostTarget?.post_url || dircoPostTarget?.link || '' }] : []));
+
+        const steps = [
+          { w: "J0-7", l: "Commentaires LinkedIn", ch: "LinkedIn", msg: isCeo ? s.commentaire_linkedin : s.dirco_commentaire_linkedin, c: "#60A5FA", a: postRef ? "Commenter: «" + ((postRef.content || "").substring(0, 60)) + "...»" : "Commenter des posts pertinents (3-5 commentaires)", why: postRef?.why || "Créer la visibilité et la familiarité", link: postRef?.url, sk: 'commentaire' },
+          { w: "J7-14", l: "Demande de connexion", ch: "LinkedIn", msg: isCeo ? s.message_connexion : (s.dirco_message_connexion || s.message_connexion_dirco), c: "#A78BFA", a: "Connexion personnalisée référençant les échanges", why: "Amorcer le lien après familiarité", sk: 'connexion' },
+          { w: "J14-25", l: "Premier DM de valeur", ch: "DM", msg: isCeo ? s.message_suivi_1 : (s.dirco_message_suivi || s.message_suivi_dirco), c: "#FBBF24", a: "DM insight unique, question ouverte", why: "Approfondir l'angle — écoute active", sk: 'suivi' },
+          { w: "J15-25", l: "Email personnalisé", ch: "Email", msg: isCeo ? s.message_email : s.dirco_message_email, c: "#F472B6", a: "Email structuré — canal différent", why: "Diversifier les touchpoints", sk: 'email' },
+          { w: "J25-30", l: "Relance guide", ch: "DM", msg: isCeo ? s.message_relance_guide : s.dirco_message_relance_guide, c: "#FB923C", a: "Partager: " + (s.ressource_a_partager || "Guide pertinent"), why: "Valeur concrète sans pression", sk: 'relance' },
+          { w: "J30-35", l: "Relance témoignage", ch: "DM", msg: isCeo ? s.message_relance_temoignage : s.dirco_message_relance_temoignage, c: "#FB923C", a: "Partager un cas client similaire", why: "Preuve sociale — légitimité", sk: 'relance' },
+          { w: "J35-45", l: "Proposition RDV", ch: "Multi", msg: isCeo ? s.message_proposition_rdv : s.dirco_message_proposition_rdv, c: "#3EC878", a: "Proposer un échange 15 min — valeur claire", why: "4+ touchpoints atteints", sk: 'rdv' },
+          { w: "J50-60", l: "Nurturing long terme", ch: "Email", msg: isCeo ? s.message_nurturing_long : s.dirco_message_nurturing, c: "#71717A", a: "Email de valeur pure sans CTA", why: "Préparer le prochain cycle", sk: 'nurturing' }
+        ].filter(x => x.msg);
+
+        let html = "";
+
+        // Tabs
+        if (s.approche_ceo && s.approche_dirco) {
+          html += `<div style="display:flex; gap:12px; margin-bottom: 24px;" id="stgTabs">
+            <button class="strat-toggle ${isCeo ? 'active-ceo' : ''}" id="t-ceo">${ic('profile','15px')} Cible : CEO</button>
+            <button class="strat-toggle ${!isCeo ? 'active-dirco' : ''}" id="t-dirco">${ic('users','15px')} Cible : Dir. Commercial</button>
+          </div>`;
+        }
+
+        // === STEP TRACKER ===
+        const _pfx = isCeo ? 'step_' : 'dirco_step_';
+        const _doneCount = STEP_DEFS.filter(sd => s[_pfx + sd.key + '_done']).length;
+        const _pct = Math.round(_doneCount / STEP_DEFS.length * 100);
+        html += `<div id="stepTracker" style="margin-bottom:20px;padding:16px 20px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3)">${ic('check','13px')} Progression séquence ${isCeo ? 'CEO' : 'DirCo'}</div>
+            <div style="font-size:13px;font-weight:700;font-family:var(--fm);color:${_pct >= 70 ? 'var(--g)' : _pct >= 30 ? '#FBBF24' : 'var(--t3)'}">${_doneCount}/${STEP_DEFS.length} — ${_pct}%</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0;margin-bottom:14px">
+            ${STEP_DEFS.map((sd, i) => {
+              const done = !!s[_pfx + sd.key + '_done'];
+              const isNext = !done && (i === 0 || !!s[_pfx + STEP_DEFS[i-1].key + '_done']);
+              const dt = s[_pfx + sd.key + '_date'];
+              return (i > 0 ? `<div style="flex:0 0 auto;height:2px;width:16px;margin-top:14px;background:${done ? 'var(--g)' : 'var(--bd)'}"></div>` : '') +
+              `<div class="st-node" data-step="${sd.key}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;min-width:0" title="${sd.l}${dt ? ' — fait le ' + dt : ''}">
+                <div style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .25s;border:2px solid ${done ? 'var(--g)' : isNext ? sd.c + 'aa' : 'var(--bd)'};background:${done ? 'var(--g)' : 'var(--bg)'};color:${done ? '#000' : isNext ? sd.c : 'var(--t3)'};${isNext ? 'box-shadow:0 0 12px ' + sd.c + '33;animation:aib-pulse 2s infinite' : ''}">${done ? ic('check','13px') : ic(sd.ic,'12px')}</div>
+                <div style="font-size:9px;font-weight:700;color:${done ? 'var(--g)' : isNext ? sd.c : 'var(--t3)'};text-transform:uppercase;letter-spacing:.3px;text-align:center;line-height:1.2">${sd.l}</div>
+              </div>`;
+            }).join('')}
+          </div>
+          <div style="height:3px;background:var(--bd);border-radius:2px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,var(--g),var(--g-light));border-radius:2px;width:${_pct}%;transition:width .5s"></div></div>
+        </div>`;
+
+        // Analyse prospect (v9)
+        if (s.analyse_prospect) {
+          const ap = s.analyse_prospect;
+          html += `<div class="hb" style="background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);margin-bottom:16px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--pp);margin-bottom:10px">${ic('brain','14px')} Analyse approfondie du prospect</div>
+            ${ap.synthese ? `<div style="margin-bottom:10px">${ap.synthese.map(obs => `<div style="font-size:12px;color:var(--tx);margin-bottom:4px;padding-left:12px;border-left:2px solid var(--pp)">◈ ${e(obs)}</div>`).join('')}</div>` : ''}
+            ${ap.proposition_valeur ? `<div style="font-size:12px;margin-bottom:6px"><span style="color:var(--t3)">Proposition de valeur:</span> ${e(ap.proposition_valeur)}</div>` : ''}
+            ${ap.parcours_ceo ? `<div style="font-size:12px;margin-bottom:6px"><span style="color:var(--t3)">Parcours CEO:</span> ${e(ap.parcours_ceo)}</div>` : ''}
+            ${ap.parcours_dirco && ap.parcours_dirco !== 'Non identifié' ? `<div style="font-size:12px;margin-bottom:6px"><span style="color:var(--t3)">Parcours DirCo:</span> ${e(ap.parcours_dirco)}</div>` : ''}
+            ${ap.style_communication ? `<div style="font-size:12px;margin-bottom:6px"><span style="color:var(--t3)">Style communication:</span> ${e(ap.style_communication)}</div>` : ''}
+            ${ap.enjeux_identifies?.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px">${ap.enjeux_identifies.map(ej => `<span style="padding:3px 8px;font-size:11px;border-radius:4px;background:rgba(167,139,250,.12);color:var(--pp)">${e(ej)}</span>`).join('')}</div>` : ''}
+          </div>`;
+        }
+
+        // Sujets d'intérêt & Hooks (v45)
+        if (s.sujets_interet?.length || s.hooks_identifies?.length) {
+          html += `<div class="hb" style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);margin-bottom:16px">
+            <div style="display:flex;gap:24px;flex-wrap:wrap">
+              ${s.sujets_interet?.length ? `<div style="flex:1;min-width:180px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--yw);margin-bottom:8px">${ic('trend','13px')} Sujets d'intérêt</div><div style="display:flex;flex-wrap:wrap;gap:4px">${s.sujets_interet.map(s2 => `<span style="padding:4px 10px;font-size:11px;border-radius:6px;background:rgba(251,191,36,.12);color:var(--yw);font-weight:600">${e(s2)}</span>`).join('')}</div></div>` : ''}
+              ${s.hooks_identifies?.length ? `<div style="flex:1;min-width:180px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g);margin-bottom:8px">${ic('check','13px')} Hooks identifiés</div><div style="display:flex;flex-wrap:wrap;gap:4px">${s.hooks_identifies.map(h => `<span style="padding:4px 10px;font-size:11px;border-radius:6px;background:rgba(52,211,153,.12);color:var(--g);font-weight:600">${e(h)}</span>`).join('')}</div></div>` : ''}
+            </div>
+          </div>`;
+        }
+
+        // Stratégie globale (v45)
+        if (s.strategie_globale) {
+          html += `<div class="hb" style="background:rgba(167,139,250,.04);border:1px solid rgba(167,139,250,.15);margin-bottom:16px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--pp);margin-bottom:8px">${ic('brain','14px')} Stratégie globale</div>
+            <div style="font-size:13px;line-height:1.7;color:var(--tx)">${e(s.strategie_globale)}</div>
+          </div>`;
+        }
+
+        // Approche overview
+        html += `<div class="hb" style="background:var(--gd);border:1px solid rgba(62,200,120,.2)"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g);margin-bottom:8px">Angle d'attaque (${isCeo ? 'CEO' : 'DirCo'})</div><div style="font-size:13px;line-height:1.7">${e(approche || s.angle_attaque)}</div>${s.trigger_event ? `<div style="margin-top:8px;font-size:12px;color:var(--t2)"><span style="color:var(--yw)">${ic('trend', '12px')}</span> ${e(s.trigger_event)}</div>` : ""}</div>`;
+
+        // Branches
+        if (branches) {
+          html += `<div class="hb" style="background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);margin-bottom:16px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--yw);margin-bottom:8px">Branches Conditionnelles</div><div style="font-size:12px;line-height:2">${branches.si_connexion_acceptee ? `<div>✓ Connexion acceptée → <strong>${e(branches.si_connexion_acceptee)}</strong></div>` : ""}${branches.si_connexion_refusee ? `<div>✕ Connexion refusée → <strong>${e(branches.si_connexion_refusee)}</strong></div>` : ""}${branches.si_pas_de_reponse_dm ? `<div>◇ Pas de réponse DM → <strong>${e(branches.si_pas_de_reponse_dm)}</strong></div>` : ""}${branches.si_reponse_positive ? `<div style="color:var(--g)">↑ Réponse positive → <strong>${e(branches.si_reponse_positive)}</strong></div>` : ""}${branches.si_reponse_negative ? `<div style="color:var(--rd)">↓ Réponse négative → <strong>${e(branches.si_reponse_negative)}</strong></div>` : ""}</div></div>`;
+        }
+
+        // Objections anticipées (v9)
+        if (s.objections_anticipees?.length) {
+          html += `<div class="hb" style="background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2);margin-bottom:16px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--rd);margin-bottom:10px">${ic('alert','14px')} Objections anticipées & réponses</div>
+            ${s.objections_anticipees.map(obj => `<div style="margin-bottom:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--bd);border-radius:var(--rs)">
+              <div style="font-size:12px;font-weight:600;color:var(--rd);margin-bottom:6px">❝ ${e(obj.objection)} ❞</div>
+              <div style="font-size:12px;color:var(--tx);padding-left:12px;border-left:2px solid var(--g)">→ ${e(obj.reponse_consultant)}</div>
+            </div>`).join('')}
+          </div>`;
+        }
+
+        // Timeline 60 jours (v9)
+        if (s.timeline_60_jours?.length) {
+          html += `<div class="hb" style="background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);margin-bottom:16px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g);margin-bottom:10px">${ic('clock','14px')} Plan stratégique 60 jours</div>
+            ${s.timeline_60_jours.map(ph => `<div style="display:flex;gap:12px;margin-bottom:8px;padding:8px;background:var(--bg);border-radius:var(--rs)">
+              <div style="min-width:60px;font-size:11px;font-weight:700;color:var(--g);padding:4px 8px;background:rgba(52,211,153,.1);border-radius:4px;text-align:center">${e(ph.periode)}</div>
+              <div style="flex:1;font-size:12px">
+                <div style="color:var(--tx);margin-bottom:2px"><strong>CEO:</strong> ${e(ph.actions_ceo)}</div>
+                ${ph.actions_dirco && ph.actions_dirco !== 'vide' && ph.actions_dirco !== '' ? `<div style="color:var(--bl);margin-bottom:2px"><strong>DirCo:</strong> ${e(ph.actions_dirco)}</div>` : ''}
+                <div style="font-size:11px;color:var(--t3);font-style:italic">→ ${e(ph.objectif)}</div>
+              </div>
+            </div>`).join('')}
+          </div>`;
+        }
+
+        // Post ref
+        if (postRef) {
+          html += `<div class="hb" style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);margin-bottom:16px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--bl);margin-bottom:8px">${ic('linkedin', '14px')} Post ${isCeo ? 'du CEO' : 'du DirCo'} à commenter</div><div style="font-size:13px;line-height:1.6;margin-bottom:6px;white-space:pre-wrap">"${e(postRef.content || "")}"</div>${postRef.date ? `<div style="font-size:11px;color:var(--t3)">Publié le ${e(postRef.date)}</div>` : ""}${postRef.why ? `<div style="font-size:12px;color:var(--yw);margin-top:4px">→ ${e(postRef.why)}</div>` : ""}${postRef.url ? `<a href="${e(postRef.url)}" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;padding:6px 14px;background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.3);border-radius:var(--rs);font-size:12px;font-weight:600;color:var(--bl);text-decoration:none">${ic('linkedin', '12px')} Ouvrir le post LinkedIn →</a>` : ""}</div>`;
+        }
+
+        // Multi com
+        if (multiCom.length) {
+          const srcBadge = (src) => {
+            const colors = { CEO: { bg: 'rgba(52,211,153,.12)', col: 'var(--g)' }, DirCo: { bg: 'rgba(96,165,250,.12)', col: 'var(--bl)' }, Company: { bg: 'rgba(167,139,250,.12)', col: 'var(--pp)' } };
+            const c = colors[src] || colors.Company;
+            return src ? `<span style="padding:2px 8px;font-size:10px;font-weight:700;border-radius:4px;background:${c.bg};color:${c.col};margin-right:6px">${src === 'CEO' ? ic('profile','9px') : src === 'DirCo' ? ic('users','9px') : ic('building','9px')} ${src}</span>` : '';
+          };
+          html += `<div class="hb" style="background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.2);margin-bottom:16px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--bl);margin-bottom:10px">${ic('linkedin','14px')} Commentaires LinkedIn à poster (${multiCom.length})</div>${multiCom.map((c, i) => `<div style="background:var(--bg);border:1px solid var(--bd);border-radius:var(--rs);padding:10px 14px;margin-bottom:8px;position:relative"><div style="font-size:11px;color:var(--t3);margin-bottom:6px;display:flex;align-items:center;flex-wrap:wrap;gap:4px">${srcBadge(c.source)}${c.post_cible ? '<span style="color:var(--bl)">📌 ' + e(typeof c.post_cible === 'string' ? c.post_cible.substring(0, 100) : '') + '</span>' : 'Commentaire ' + (i + 1)}${c.objectif ? ' — <em>' + e(c.objectif) + '</em>' : ''}</div><div style="font-size:13px;line-height:1.6;margin-bottom:6px">${e(c.commentaire || c.texte || c)}</div><div style="display:flex;align-items:center;gap:8px">${c.post_url ? '<a href="' + e(c.post_url) + '" target="_blank" rel="noopener" style="font-size:11px;color:var(--bl);text-decoration:none;display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);border-radius:4px">' + ic('linkedin','11px') + ' Ouvrir le post →</a>' : '<span style="font-size:11px;color:var(--t3);font-style:italic">Lien non disponible</span>'}</div><button class="cpb cpbc" data-txt="${e((c.commentaire || c.texte || c || "").replace(/"/g, "&quot;"))}" style="position:absolute;top:6px;right:6px">Copier</button></div>`).join("")}</div>`;
+        }
+
+        // Prospect Posts Data (v45) — show collected posts from CEO/DirCo/Company
+        if (s.prospect_posts_data?.length) {
+          const srcBg = { CEO: 'rgba(52,211,153,.12)', DirCo: 'rgba(96,165,250,.12)', Company: 'rgba(167,139,250,.12)' };
+          const srcCol = { CEO: 'var(--g)', DirCo: 'var(--bl)', Company: 'var(--pp)' };
+          const srcIcons = { CEO: ic('profile','11px'), DirCo: ic('users','11px'), Company: ic('building','11px') };
+          html += `<div class="hb" style="background:rgba(96,165,250,.04);border:1px solid rgba(96,165,250,.15);margin-bottom:16px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--bl);margin-bottom:10px">${ic('posts','14px')} Posts LinkedIn collectés (${s.prospect_posts_data.length})</div>
+            ${s.prospect_posts_data.map((p, i) => {
+              const src = p._source || 'CEO';
+              return `<div style="background:var(--bg);border:1px solid var(--bd);border-radius:var(--rs);padding:10px 14px;margin-bottom:6px">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+                  <span style="padding:2px 8px;font-size:10px;font-weight:700;border-radius:4px;background:${srcBg[src] || 'rgba(113,113,122,.12)'};color:${srcCol[src] || 'var(--t2)'}">${srcIcons[src] || ''} ${src}</span>
+                  ${p.date ? `<span style="font-size:10px;color:var(--t3)">${e(p.date)}</span>` : ''}
+                  ${p.likes_count ? `<span style="font-size:10px;color:var(--t3)">♥ ${p.likes_count}</span>` : ''}
+                </div>
+                <div style="font-size:12px;color:var(--tx);line-height:1.5">${e((p.text || '').substring(0, 200))}${(p.text || '').length > 200 ? '...' : ''}</div>
+                ${p.post_url || p.link ? `<a href="${e(p.post_url || p.link)}" target="_blank" rel="noopener" style="font-size:11px;color:var(--bl);text-decoration:none;margin-top:4px;display:inline-block">${ic('linkedin','11px')} Voir le post →</a>` : ''}
+              </div>`;
+            }).join('')}
+          </div>`;
+        }
+
+        // Timeline
+        html += `<div class="tl" id="TL_IN"></div>`;
+
+        $("S_CONTENT").innerHTML = html;
+
+        // Bind tabs
+        if ($("t-ceo")) $("t-ceo").onclick = () => { smode = "ceo"; paint(); };
+        if ($("t-dirco")) $("t-dirco").onclick = () => { smode = "dirco"; paint(); };
+
+        // Bind step tracker clicks
+        document.querySelectorAll(".st-node").forEach(node => {
+          node.onclick = () => autoMarkStep(node.dataset.step);
+        });
+
+        // Bind copy (multi-comments → auto-mark 'commentaire')
+        document.querySelectorAll(".cpbc").forEach(btn => {
+          btn.onclick = (ev) => { ev.stopPropagation(); cpTxt(btn.dataset.txt); btn.textContent = "✓ Copié"; setTimeout(() => btn.textContent = "Copier", 2000); autoMarkStep('commentaire', true); };
+        });
+
+        // Render timeline items (with step done indicator)
+        const _pfx2 = isCeo ? 'step_' : 'dirco_step_';
+        const tl = $("TL_IN");
+        steps.forEach(st => {
+          const isDone = st.sk ? !!s[_pfx2 + st.sk + '_done'] : false;
+          const div = document.createElement("div"); div.className = "ts";
+          div.innerHTML = `<div class="dot2" style="background:${isDone ? 'var(--g)' : st.c};${isDone ? 'box-shadow:0 0 8px rgba(52,211,153,.4)' : ''}"></div><div class="scd" style="${isDone ? 'border-color:rgba(52,211,153,.25);background:rgba(52,211,153,.03)' : ''}"><div class="shd">${badge(st.w, st.c)}<strong style="font-size:13px">${st.l}</strong><span style="margin-left:auto;display:flex;align-items:center;gap:6px">${isDone ? '<span style="padding:2px 8px;font-size:10px;font-weight:700;border-radius:4px;background:rgba(52,211,153,.15);color:var(--g)">✓ Fait</span>' : ''}${badge(st.ch, "#71717A")}</span></div><div class="sbd"><div style="font-size:12px;color:var(--t2);margin-bottom:8px">${st.a}</div>${st.msg ? `<div class="sm"><span>${e(st.msg)}</span><button class="cpb" data-sk="${st.sk || ''}">Copier</button></div>` : ""}${st.link ? `<a href="${e(st.link)}" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:6px;font-size:11px;color:var(--bl);text-decoration:none;padding:3px 8px;background:rgba(96,165,250,.1);border-radius:4px">${ic('linkedin', '11px')} Voir le post →</a>` : ""}<div style="font-size:11px;font-style:italic;color:${st.c};margin-top:8px">◈ ${st.why}</div></div></div>`;
+          if (st.msg) {
+            const cpb = div.querySelector(".cpb");
+            if (cpb) cpb.onclick = ev => { ev.stopPropagation(); cpTxt(st.msg); cpb.textContent = "✓ Copié"; setTimeout(() => cpb.textContent = "Copier", 2000); if (st.sk) autoMarkStep(st.sk, true); }
+          }
+          tl.appendChild(div);
+        });
+      };
+
+      // Header shell
+      const ws = t.warmth_score || 0;
+      const wCol = ws >= 7 ? 'var(--g)' : ws >= 4 ? '#FBBF24' : 'var(--t3)';
+      const wSigs = t.warmth_signals || [];
+      const wBg = ws >= 7 ? "#3EC878" : ws >= 4 ? "#FBBF24" : "#71717A";
+
+      // v45: Pre-compute data sources HTML with proper labels and post counts
+      let dsHtml = '';
+      if (dsLog && Object.keys(dsLog).length > 0) {
+        const dsLabels = { linkedin_person: ic('profile','11px') + ' Profil CEO', linkedin_company: ic('building','11px') + ' Entreprise LI', website: ic('globe','11px') + ' Site web', website_about: 'À propos', website_team: 'Équipe', website_legal: 'Mentions légales', pappers: 'Pappers' };
+        const dsItems = Object.entries(dsLog).filter(([k]) => k !== 'claude').map(([k, v]) => {
+          if (k === 'news') return `<div style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:${v ? 'rgba(52,211,153,.1)' : 'rgba(248,113,113,.1)'};color:${v ? 'var(--g)' : 'var(--rd)'};display:flex;align-items:center;gap:6px"><span>${v ? '✓' : '✕'}</span> <span>Actualités (${v})</span></div>`;
+          if (k === 'prospect_posts') return `<div style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:${v ? 'rgba(52,211,153,.1)' : 'rgba(248,113,113,.1)'};color:${v ? 'var(--g)' : 'var(--rd)'};display:flex;align-items:center;gap:6px"><span>${v ? '✓' : '✕'}</span> <span>${ic('posts','11px')} Posts (${v})</span></div>`;
+          if (k === 'posts_ceo' || k === 'posts_dirco' || k === 'posts_company') return `<div style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(96,165,250,.08);color:var(--bl);display:flex;align-items:center;gap:4px"><span>${k === 'posts_ceo' ? 'CEO' : k === 'posts_dirco' ? 'DirCo' : 'Ent.'}: ${v}</span></div>`;
+          const label = dsLabels[k] || k.replace(/_/g, ' ');
+          return `<div style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;background:${v ? 'rgba(52,211,153,.1)' : 'rgba(248,113,113,.1)'};color:${v ? 'var(--g)' : 'var(--rd)'};display:flex;align-items:center;gap:6px"><span>${v ? '✓' : '✕'}</span> <span>${label}</span></div>`;
+        }).join('');
+        dsHtml = `<div class="scd" style="margin:0;padding:16px;"><div class="shd" style="margin-bottom:16px;"><h4 style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);">Sources de données</h4></div><div style="display:flex;gap:8px;flex-wrap:wrap">${dsItems}</div></div>`;
+      }
+
+      el.innerHTML = `<div style="max-width:800px;margin:0 auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3 style="font-family:var(--fh)">Stratégie 60 jours</h3><button class="bt bt-grad bsm" id="regenBtn" style="color:#000">${ic('refresh', '13px')} Régénérer</button></div><div id="gen-st" style="margin-bottom:12px;font-size:13px"></div>
+
+  <div class="g2" style="margin-bottom:24px;gap:16px;">
+    <div class="scd" style="margin:0;padding:16px;"><div class="shd" style="margin-bottom:16px;"><h4>${ic('fire', '15px')} Warmth & Timing</h4><span style="font-family:var(--fm);font-weight:700;color:${wCol};margin-left:auto">${ws}/10</span></div><div><div style="font-size:12px;margin-bottom:8px"><span style="color:var(--t2)">Fréquence LinkedIn:</span> <strong style="color:var(--tx)">${t.prospect_post_frequency || "inactive"}</strong></div>${s.warmth_assessment ? `<div style="font-size:12px;color:var(--tx);margin-bottom:8px;padding:8px 12px;background:rgba(255,255,255,.03);border-radius:var(--rs);border-left:3px solid ${wCol};line-height:1.5">${e(s.warmth_assessment)}</div>` : ''}${wSigs.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px">${wSigs.map(sig => badge(sig, wBg)).join("")}</div>` : `<div class="cpb" style="display:inline-block;color:var(--t3);cursor:default;">Aucun post LinkedIn détecté</div>`}</div></div>
+
+    ${dsHtml}
+  </div>
+
+  ${recLB.length ? `<div class="scd" style="margin-bottom:24px;padding:16px;"><div class="shd" style="margin-bottom:12px"><h4 style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--pp);">${ic('book', '13px')} Ressources à partager</h4></div>${recLB.map(lb => `<div class="res-card"><div style="font-weight:600;font-size:13px;margin-bottom:4px">${e(lb.titre)}</div><div style="font-size:11px;color:var(--t2);margin-bottom:6px">${e((lb.resume || "").substring(0, 120))}...</div><a href="${e(lb.landing_page)}" target="_blank" style="font-size:12px">Landing page →</a></div>`).join("")}</div>` : ""}
+  
+  <div id="S_CONTENT"></div>
+</div>`;
+
+      $("regenBtn").onclick = () => launchAI(t.id);
+      paint();
+    }
+    // ===== GENERATION ASYNC EN ARRIÈRE-PLAN =====
+    function renderGenSt(tid) {
+      const st = $("gen-st");
+      if (!st || S.sel?.id !== tid) return;
+      const g = window.S_GEN?.[tid];
+      if (!g) return;
+      if (g.status === "running") {
+        const stepPct = Math.round((g.step + 1) / g.steps.length * 100);
+        st.innerHTML = `<div style="margin-bottom:8px;padding:12px;background:rgba(255,255,255,0.03);border:1px solid var(--bd);border-radius:var(--rs)">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--g);font-weight:600;margin-bottom:8px"><span>${ic('refresh', '13px')} ${g.steps[g.step]}</span><span>${stepPct}%</span></div>
+          <div style="height:4px;background:var(--bd);border-radius:2px;overflow:hidden"><div style="height:100%;background:var(--g);border-radius:2px;width:${stepPct}%;transition:width .5s"></div></div>
+          <div style="font-size:11px;color:var(--t3);margin-top:6px;font-style:italic;">L'analyse continue en arrière-plan, vous pouvez changer d'onglet.</div>
+        </div>`;
+      } else if (g.status === "error") {
+        st.innerHTML = `<div style="padding:10px;background:rgba(248,113,113,.1);border-radius:var(--rs);font-size:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="color:var(--rd)">Erreur: ${e(g.err)}</span><button class="bt bsm" style="background:var(--gd);color:var(--g);border:1px solid rgba(52,211,153,.3);font-size:12px;padding:6px 14px" onclick="launchAI('${tid}')">${ic('refresh','12px')} Réessayer</button></div>`;
+      } else if (g.status === "done") {
+        const d = g.d;
+        const missingSrc = d.data_sources ? Object.entries(d.data_sources).filter(([k, v]) => !v).map(([k]) => k.replace(/_/g, " ")) : [];
+        st.innerHTML = `<div style="color:var(--g);padding:10px;background:rgba(52,211,153,.1);border-radius:var(--rs);font-size:12px;margin-bottom:12px">✓ Stratégie générée ! Confiance: ${d.confidence || "?"} · Sources: ${Object.entries(d.data_sources || {}).filter(([k, v]) => v).map(([k]) => k.replace("_", " ")).join(", ")}${d.warmth_score != null ? " · Warmth: " + d.warmth_score + "/10" : ""}</div>${missingSrc.length ? `<div style="padding:8px 12px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:var(--rs);font-size:11px;color:var(--yw);margin-bottom:12px">Sources manquantes: ${missingSrc.join(", ")}</div>` : ""}`;
+      }
+    }
+
+    // Persistent AI banner (survives tab switches)
+    function renderAIBanner(tid) {
+      const ban = $("AI_BANNER");
+      if (!ban) return;
+      const g = window.S_GEN?.[tid];
+      if (!g) { ban.className = ""; ban.innerHTML = ""; return; }
+
+      if (g.status === "running") {
+        const stepPct = Math.round((g.step + 1) / g.steps.length * 100);
+        const tName = S.targets.find(t => t.id === tid)?.entreprise || "";
+        ban.className = "running";
+        ban.innerHTML = `<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <span class="aib-spinner" style="color:var(--g);font-size:14px">${ic('refresh','14px')}</span>
+          <span style="font-size:13px;font-weight:600;color:var(--g)">${g.steps[g.step]}</span>
+          <span style="font-size:12px;color:var(--t3)">${tName} — ${stepPct}%</span>
+          <span style="margin-left:auto;font-size:11px;color:var(--t3);font-style:italic">Vous pouvez naviguer librement</span>
+        </div><div class="aib-bar"><div class="aib-fill" style="width:${stepPct}%"></div></div>`;
+      } else if (g.status === "done") {
+        ban.className = "done";
+        ban.innerHTML = `<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="color:var(--g);font-size:14px">✓</span>
+          <span style="font-size:13px;font-weight:600;color:var(--g)">Stratégie générée</span>
+          <button class="bt bsm" style="margin-left:auto;background:var(--gd);color:var(--g);border:1px solid rgba(52,211,153,.3);font-size:12px;padding:6px 14px" onclick="S.dtab='strat';rDC();$('AI_BANNER').className='';$('AI_BANNER').innerHTML=''">Voir la stratégie</button>
+        </div>`;
+      } else if (g.status === "error") {
+        ban.className = "error";
+        ban.innerHTML = `<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="color:var(--rd);font-size:14px">✕</span>
+          <span style="font-size:13px;color:var(--rd)">${e(g.err)}</span>
+          <button class="bt bsm" style="margin-left:auto;background:var(--gd);color:var(--g);border:1px solid rgba(52,211,153,.3);font-size:12px;padding:6px 14px" onclick="launchAI('${tid}')">${ic('refresh','12px')} Réessayer</button>
+        </div>`;
+      }
+    }
+
+    function hideAIBanner() {
+      const ban = $("AI_BANNER");
+      if (ban) { ban.className = ""; ban.innerHTML = ""; }
+    }
+
+    function launchAI(tid) {
+      if (!window.S_GEN) window.S_GEN = {};
+      if (window.S_GEN[tid]?.status === "running") return;
+
+      // Abort any previous controller
+      if (window.S_GEN[tid]?.ctrl) try { window.S_GEN[tid].ctrl.abort(); } catch(_) {}
+
+      const ctrl = new AbortController();
+      const timeout = setTimeout(() => ctrl.abort(), 180000);
+
+      window.S_GEN[tid] = { step: 0, steps: ["Initialisation...", "Collecte LinkedIn profil...", "Collecte LinkedIn entreprise...", "Scraping site web...", "Recherche actualités...", "Exploration Edge Function...", "Analyse IA Claude...", "Génération Nurturing...", "Finalisation de la stratégie..."], status: "running", ctrl };
+
+      const updateProgress = () => {
+        const g = window.S_GEN[tid];
+        if (!g || g.status !== "running") return;
+        if (g.step < g.steps.length - 1) g.step++;
+        renderGenSt(tid);
+        renderAIBanner(tid);
+      };
+      const iv = setInterval(updateProgress, 10000);
+      window.S_GEN[tid].iv = iv;
+      renderGenSt(tid);
+      renderAIBanner(tid);
+
+      fetch(SB_URL + "/functions/v1/generate-strategy", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SB_KEY }, body: JSON.stringify({ target_id: tid, consultant_name: S.user }), signal: ctrl.signal })
+        .then(async r => {
+          clearInterval(iv);
+          clearTimeout(timeout);
+          if (r.status === 502 || r.status === 504) {
+            window.S_GEN[tid] = { status: "error", err: "Le serveur a mis trop de temps (erreur " + r.status + "). Réessayez, la 2e tentative est souvent plus rapide." };
+            renderGenSt(tid); renderAIBanner(tid);
+            if ($('launchBtn')) $('launchBtn').disabled = false;
+            return;
+          }
+          const d = await r.json().catch(() => ({ success: false, error: "Réponse invalide du serveur (JSON parse error)" }));
+          if (r.ok && d.success) {
+            window.S_GEN[tid] = { status: "done", d };
+            S.strats = await GET("communication_strategies?select=*");
+            const up = await GET(`targets?id=eq.${tid}`);
+            if (up?.[0]) {
+              const i = S.targets.findIndex(t => t.id === tid);
+              if (i >= 0) S.targets[i] = up[0];
+              if (S.sel && S.sel.id === tid) S.sel = up[0];
+            }
+            renderAIBanner(tid);
+            if (S.sel && S.sel.id === tid) { S.dtab = "strat"; rDC(); }
+            else if (S.page === 'targets') render();
+          } else {
+            window.S_GEN[tid] = { status: "error", err: d.error || `Erreur serveur ${r.status}` };
+            renderGenSt(tid);
+            renderAIBanner(tid);
+            if ($('launchBtn')) $('launchBtn').disabled = false;
+          }
+        })
+        .catch(err => {
+          clearInterval(iv);
+          clearTimeout(timeout);
+          const msg = err.name === "AbortError" ? "L'analyse a dépassé le délai de 3 minutes. Réessayez." : err.message;
+          window.S_GEN[tid] = { status: "error", err: msg };
+          renderGenSt(tid);
+          renderAIBanner(tid);
+          if ($('launchBtn')) $('launchBtn').disabled = false;
+        });
+    }
+
+    // ===== ACTIONS =====
+    function rAct(el, t) {
+      const actions = [{ f: "action_commente_post", d: null, l: "Commenté posts" }, { f: "action_connecte", d: "action_connecte_date", l: "Connexion LinkedIn" }, { f: "action_email_envoye", d: "action_email_date", l: "Email envoyé" }, { f: "action_appel", d: "action_appel_date", l: "Appel" }, { f: "action_echange_en_cours", d: "action_echange_date", l: "Échange en cours" }, { f: "action_rdv", d: "action_rdv_date", l: "RDV obtenu" }, { f: "action_demo", d: "action_demo_date", l: "Démo" }, { f: "action_proposition", d: "action_proposition_date", l: "Proposition envoyée" }, { f: "action_signe", d: "action_signe_date", l: "Deal signé" }];
+      el.innerHTML = `<div style="max-width:700px;margin:0 auto"><h3 style="font-family:var(--fh);margin-bottom:16px">Pipeline & Actions</h3><div style="margin-bottom:20px"><div style="font-size:12px;color:var(--t2);margin-bottom:8px">Étape</div><div style="display:flex;gap:6px;flex-wrap:wrap" id="stgBtns"></div></div><div class="cd" style="margin-bottom:16px"><div class="cb" id="actCks"></div></div>${t.action_signe ? `<div class="ig" style="max-width:200px"><label>Montant signé (€)</label><input id="sm-v" value="${t.action_signe_montant || ""}"></div>` : ""}<div class="ig"><label>Notes</label><textarea id="t-notes">${e(t.notes)}</textarea></div><button class="bt bs bsm" id="svNotes">Sauvegarder notes</button></div>`;
+      STAGES.forEach(s => { const b = document.createElement("button"); b.className = "bt bsm"; b.style.cssText = t.pipeline_etape === s.k ? `background:${s.c}22;color:${s.c};border:1px solid ${s.c}44` : ""; b.textContent = s.l; b.onclick = () => updTF("pipeline_etape", s.k); $("stgBtns").appendChild(b) });
+      actions.forEach(a => { const d = document.createElement("div"); d.className = "ckr"; d.innerHTML = `<div class="ck ${t[a.f] ? "on" : ""}">${t[a.f] ? "✓" : ""}</div><span style="font-size:13px;color:${t[a.f] ? "var(--tx)" : "var(--t2)"}">${a.l}</span>${a.d && t[a.d] ? `<span style="margin-left:auto;font-size:11px;color:var(--t3)">${dateFr(t[a.d])}</span>` : ""}`; d.onclick = () => togAct(a.f, a.d); $("actCks").appendChild(d) });
+      $("svNotes").onclick = () => { updTF("notes", $("t-notes").value); if ($("sm-v")) updTF("action_signe_montant", $("sm-v").value) }
+    }
+    async function togAct(f, df) {
+      const t = S.sel, nv = !t[f], p = { [f]: nv }; if (df) p[df] = nv ? new Date().toISOString().split("T")[0] : null;
+      if (nv) { if (f === "action_connecte" && t.pipeline_etape === "strategie_generee") p.pipeline_etape = "premier_contact"; if (f === "action_echange_en_cours" && ["strategie_generee", "premier_contact"].includes(t.pipeline_etape)) p.pipeline_etape = "en_discussion"; if (f === "action_rdv" && ["premier_contact", "en_discussion"].includes(t.pipeline_etape)) p.pipeline_etape = "rdv"; if (f === "action_proposition") p.pipeline_etape = "proposition"; if (f === "action_signe") p.pipeline_etape = "gagne" }
+      const u = await PATCH(`targets?id=eq.${t.id}`, p); if (u?.[0]) { const i = S.targets.findIndex(x => x.id === t.id); if (i >= 0) S.targets[i] = u[0]; S.sel = u[0]; rBadges(u[0]); rDC() }
+    }
+    async function updTF(f, v) { const t = S.sel; const u = await PATCH(`targets?id=eq.${t.id}`, { [f]: v || null }); if (u?.[0]) { const i = S.targets.findIndex(x => x.id === t.id); if (i >= 0) S.targets[i] = u[0]; S.sel = u[0]; rBadges(u[0]) } }
+
+    // ===== EDIT =====
+    function rEdit(el, t) {
+      el.innerHTML = `<div style="max-width:900px;margin:0 auto"><h3 style="font-family:var(--fh);margin-bottom:16px">Informations</h3><div class="g2"><div>
+    <div class="hb" style="background:var(--gd);border:1px solid rgba(62,200,120,.2)"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g)">Liens requis pour l'agent IA</div></div>
+    <div class="ig"><label>Site Web *</label><input id="e-sw" value="${e(t.site_web)}"></div><div class="ig"><label>LinkedIn Entreprise *</label><input id="e-le" value="${e(t.linkedin_entreprise)}"></div><div class="ig"><label>LinkedIn CEO *</label><input id="e-lc" value="${e(t.linkedin_ceo)}"></div><div class="ig"><label>LinkedIn DirCo</label><input id="e-ld" value="${e(t.linkedin_contact)}"></div>
+    <h4 style="font-family:var(--fh);margin:16px 0 12px;color:var(--g)">CEO / DG</h4>
+    <div class="g2"><div class="ig"><label>Prénom</label><input id="e-cp" value="${e(t.ceo_prenom)}"></div><div class="ig"><label>Nom</label><input id="e-cn" value="${e(t.ceo_nom)}"></div></div><div class="ig"><label>Email</label><input id="e-ce" value="${e(t.ceo_email)}"></div><div class="ig"><label>Téléphone</label><input id="e-ct" value="${e(t.ceo_tel)}"></div>
+  </div><div>
+    <h4 style="font-family:var(--fh);margin-bottom:12px;color:var(--pp)">Entreprise</h4>
+    <div class="ig"><label>Nom</label><input id="e-en" value="${e(t.entreprise)}"></div><div class="ig"><label>CA</label><input id="e-ca" value="${e(t.ca)}"></div><div class="ig"><label>EBITDA</label><input id="e-eb" value="${e(t.ebitda)}"></div><div class="ig"><label>Effectif</label><input id="e-ef" value="${e(t.effectif)}"></div><div class="ig"><label>Commerciaux</label><input id="e-co" value="${e(t.taille_equipe_commerciale)}"></div><div class="ig"><label>Go-to-Market</label><input id="e-gm" value="${e(t.go_to_market)}"></div>
+    <h4 style="font-family:var(--fh);margin:16px 0 12px;color:var(--bl)">Directeur Commercial</h4>
+    <div class="g2"><div class="ig"><label>Prénom</label><input id="e-dp" value="${e(t.dirco_prenom)}"></div><div class="ig"><label>Nom</label><input id="e-dn" value="${e(t.dirco_nom)}"></div></div><div class="ig"><label>Email</label><input id="e-de" value="${e(t.dirco_email)}"></div><div class="ig"><label>Téléphone</label><input id="e-dt" value="${e(t.dirco_tel)}"></div>
+  </div></div>
+  ${S.admin ? `<div class="ig" style="margin-top:16px;max-width:300px"><label>Consultant assigné</label><select id="e-cs"><option value="">— Non assigné —</option>${S.cons.filter(c => c.is_active !== false).map(c => `<option value="${c.id}::${e(c.name)}"${t.consultant_name === c.name ? " selected" : ""}>${e(c.name)}</option>`).join("")}</select></div>` : ""}
+  <div style="display:flex;gap:8px;margin-top:20px"><button class="bt bp" id="svEdit">Sauvegarder</button><span id="e-st" style="font-size:13px;color:var(--g);align-self:center"></span></div></div>`;
+      $("svEdit").onclick = saveEdit
+    }
+    async function saveEdit() {
+      const g = id => ($(id) || {}).value || ""; const t = S.sel;
+      const p = { site_web: g("e-sw"), linkedin_entreprise: g("e-le"), linkedin_ceo: g("e-lc"), linkedin_contact: g("e-ld"), ceo_prenom: g("e-cp"), ceo_nom: g("e-cn"), ceo_email: g("e-ce"), ceo_tel: g("e-ct"), entreprise: g("e-en"), ca: g("e-ca"), ebitda: g("e-eb"), effectif: g("e-ef"), taille_equipe_commerciale: g("e-co"), go_to_market: g("e-gm"), dirco_prenom: g("e-dp"), dirco_nom: g("e-dn"), dirco_email: g("e-de"), dirco_tel: g("e-dt") };
+      if (S.admin && $("e-cs")) { const cv = g("e-cs"); if (cv && cv.includes("::")) { const [cid, cnm] = cv.split("::"); p.consultant_name = cnm; p.consultant_id = cid } else { p.consultant_name = null; p.consultant_id = null } }
+      p.analysis_ready = !!(p.site_web && p.linkedin_entreprise && p.linkedin_ceo);
+      const u = await PATCH(`targets?id=eq.${t.id}`, p);
+      if (u?.[0]) { const i = S.targets.findIndex(x => x.id === t.id); if (i >= 0) S.targets[i] = u[0]; S.sel = u[0]; $("DTT").textContent = u[0].entreprise; const st = $("e-st"); if (st) { st.textContent = "✓ Sauvegardé"; setTimeout(() => st.textContent = "", 2000) } }
+    }
+
+    initLogin();
+  </script>
+</body>
+
+</html>
