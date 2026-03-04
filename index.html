@@ -1992,7 +1992,13 @@
     }
 
     // ===== PROFILE =====
-    function rProfile(el) { const c = S.cfgs.find(x => x.consultant_name === S.user); if (!c) { el.innerHTML = '<div class="es">Profil non trouvé</div>'; return } el.innerHTML = bPF(c, false); bindPF("p-", c.consultant_name) }
+    function rProfile(el) { const c = S.cfgs.find(x => x.consultant_name === S.user); if (!c) { el.innerHTML = '<div class="es">Profil non trouvé</div>'; return } el.innerHTML = bPF(c, false); bindPF("p-", c.consultant_name);
+      // Add change password section
+      const pwDiv = document.createElement("div"); pwDiv.className = "cd"; pwDiv.style.marginTop = "24px";
+      pwDiv.innerHTML = `<div class="ch"><h4>${ic('lock','15px')} Sécurité</h4></div><div class="cb"><p style="color:var(--t2);font-size:13px;margin-bottom:12px">Modifier votre mot de passe de connexion.</p><button class="bt bg2" id="myPwBtn">${ic('key','13px')} Changer mon mot de passe</button></div>`;
+      el.appendChild(pwDiv);
+      $("myPwBtn").onclick = () => showChangePwModal(S.uid, null);
+    }
     function bPF(c, adm) {
       const x = adm ? "ap-" : "p-";
       return `<h2 class="pt">${adm ? "Profil — " + e(c.consultant_name) : "Mon Profil"}</h2><p style="color:var(--t2);margin-bottom:20px;font-size:13px">Ces informations personnalisent les stratégies IA.</p>
@@ -2001,6 +2007,52 @@
     }
     function bindPF(x, nm) { const btn = $(x + "sv"); if (btn) btn.onclick = () => savePF(x, nm) }
     async function savePF(x, nm) { const g = id => ($(id) || {}).value || ""; const sp = v => v.split(",").map(s => s.trim()).filter(Boolean); await PATCH(`agent_config?consultant_name=eq.${encodeURIComponent(nm)}`, { titre: g(x + "ti"), ton_voix: g(x + "to"), parcours_narratif: g(x + "pa"), anecdotes_pro: g(x + "an"), secteurs_expertise: sp(g(x + "se")), types_clients: sp(g(x + "tc")), longueur_dm: parseInt(g(x + "dm")) || 85, longueur_email: parseInt(g(x + "em")) || 200, longueur_comment: parseInt(g(x + "cm")) || 45, mots_interdits: sp(g(x + "mi")), system_prompt_extra: g(x + "ex") }); const st = $(x + "st"); if (st) { st.textContent = "✓ Sauvegardé"; setTimeout(() => st.textContent = "", 2000) } }
+
+    // ===== PASSWORD CHANGE =====
+    function showChangePwModal(userId, userName) {
+      let m = document.getElementById("pwModal");
+      if (m) m.remove();
+      m = document.createElement("div");
+      m.id = "pwModal";
+      m.style.cssText = "position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center";
+      m.innerHTML = `<div style="background:var(--c2);border:1px solid var(--bd);border-radius:var(--r);padding:24px;width:360px;max-width:90vw">
+        <h3 style="margin-bottom:16px">${ic('lock','16px')} Changer le mot de passe</h3>
+        <p style="color:var(--t2);font-size:13px;margin-bottom:16px">${userName ? 'Pour <strong>' + e(userName) + '</strong>' : 'Mon mot de passe'}</p>
+        <div class="ig"><label>Nouveau mot de passe</label><input type="password" id="newPwIn" placeholder="Nouveau mot de passe" style="width:100%"></div>
+        <div class="ig"><label>Confirmer</label><input type="password" id="cfmPwIn" placeholder="Confirmer le mot de passe" style="width:100%"></div>
+        <div id="pwMsg" style="font-size:13px;margin:8px 0;min-height:20px"></div>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button class="bt bg2" onclick="document.getElementById('pwModal').remove()">Annuler</button>
+          <button class="bt bp" id="pwSaveBtn">Enregistrer</button>
+        </div>
+      </div>`;
+      document.body.appendChild(m);
+      m.querySelector("#pwSaveBtn").onclick = () => doChangePw(userId);
+      m.querySelector("#newPwIn").focus();
+      m.addEventListener("click", ev => { if (ev.target === m) m.remove() });
+    }
+    async function doChangePw(targetUserId) {
+      const pw1 = $("newPwIn").value, pw2 = $("cfmPwIn").value, msg = $("pwMsg");
+      if (!pw1) { msg.innerHTML = '<span style="color:var(--rd)">Entrez un mot de passe</span>'; return }
+      if (pw1.length < 3) { msg.innerHTML = '<span style="color:var(--rd)">Minimum 3 caractères</span>'; return }
+      if (pw1 !== pw2) { msg.innerHTML = '<span style="color:var(--rd)">Les mots de passe ne correspondent pas</span>'; return }
+      msg.innerHTML = '<span style="color:var(--yw)">Enregistrement...</span>';
+      try {
+        const isSelf = targetUserId === S.uid;
+        const r = await fetch(SB_URL + "/functions/v1/change-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SB_TOKEN },
+          body: JSON.stringify(isSelf ? { self: true, new_password: pw1 } : { target_user_id: targetUserId, new_password: pw1 })
+        });
+        const d = await r.json();
+        if (d.success) {
+          msg.innerHTML = '<span style="color:var(--g)">' + ic('check','13px') + ' Mot de passe mis à jour !</span>';
+          setTimeout(() => { const m = document.getElementById("pwModal"); if (m) m.remove() }, 1500);
+        } else {
+          msg.innerHTML = '<span style="color:var(--rd)">' + (d.error || "Erreur") + '</span>';
+        }
+      } catch (err) { msg.innerHTML = '<span style="color:var(--rd)">Erreur: ' + err.message + '</span>' }
+    }
 
     // ===== ADMIN ===== (FIX #5: onglet Assets)
     function rAdmin(el) {
@@ -2012,7 +2064,10 @@
       if (tab === "cons") {
         el.innerHTML = `<div class="cd"><div class="ch"><h4>Consultants</h4><button class="bt bp bsm" id="addCBtn">+ Ajouter</button></div><div class="tw"><table><thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Cibles</th><th>Statut</th><th></th></tr></thead><tbody id="CTB"></tbody></table></div></div>`;
         $("addCBtn").onclick = showAddCM;
-        S.cons.forEach(c => { const cnt = S.targets.filter(t => t.consultant_name === c.name).length; const tr = document.createElement("tr"); tr.style.cssText = `cursor:default;${c.is_active === false ? "opacity:.4" : ""}`; tr.innerHTML = `<td style="font-weight:600">${e(c.name)}</td><td style="color:var(--t2);font-size:12px">${e(c.email)}</td><td>${c.role === "admin" ? badge("Admin", "#3EC878") : badge("Consultant", "#60A5FA")}</td><td>${cnt}</td><td>${c.is_active === false ? badge("Inactif", "#F87171") : badge("Actif", "#3EC878")}</td><td class="act-td"></td>`; const td = tr.querySelector(".act-td"); const btn = document.createElement("button"); if (c.is_active === false) { btn.className = "bt bg2 bsm"; btn.textContent = "Réactiver"; btn.onclick = () => toggleC(c.id, true) } else { btn.className = "bt bsm"; btn.style.cssText = "background:rgba(248,113,113,.1);color:var(--rd);border:1px solid rgba(248,113,113,.2)"; btn.textContent = "Désactiver"; btn.onclick = () => toggleC(c.id, false) } td.appendChild(btn); $("CTB").appendChild(tr) })
+        S.cons.forEach(c => { const cnt = S.targets.filter(t => t.consultant_name === c.name).length; const tr = document.createElement("tr"); tr.style.cssText = `cursor:default;${c.is_active === false ? "opacity:.4" : ""}`; tr.innerHTML = `<td style="font-weight:600">${e(c.name)}</td><td style="color:var(--t2);font-size:12px">${e(c.email)}</td><td>${c.role === "admin" ? badge("Admin", "#3EC878") : badge("Consultant", "#60A5FA")}</td><td>${cnt}</td><td>${c.is_active === false ? badge("Inactif", "#F87171") : badge("Actif", "#3EC878")}</td><td class="act-td"></td>`; const td = tr.querySelector(".act-td");
+          // Password change button
+          const pwBtn = document.createElement("button"); pwBtn.className = "bt bg2 bsm"; pwBtn.style.cssText = "margin-right:6px"; pwBtn.innerHTML = ic('lock','11px') + ' MDP'; pwBtn.onclick = () => showChangePwModal(c.id, c.name); td.appendChild(pwBtn);
+          const btn = document.createElement("button"); if (c.is_active === false) { btn.className = "bt bg2 bsm"; btn.textContent = "Réactiver"; btn.onclick = () => toggleC(c.id, true) } else { btn.className = "bt bsm"; btn.style.cssText = "background:rgba(248,113,113,.1);color:var(--rd);border:1px solid rgba(248,113,113,.2)"; btn.textContent = "Désactiver"; btn.onclick = () => toggleC(c.id, false) } td.appendChild(btn); $("CTB").appendChild(tr) })
       } else if (tab === "prof") {
         el.innerHTML = `<div class="ig" style="max-width:300px"><label>Consultant</label><select id="cpfSel"><option value="">—</option>${S.cfgs.map(c => `<option value="${e(c.consultant_name)}">${e(c.consultant_name)}</option>`).join("")}</select></div><div id="APF"></div>`;
         $("cpfSel").onchange = function () { const c = S.cfgs.find(x => x.consultant_name === this.value); $("APF").innerHTML = c ? bPF(c, true) : ""; if (c) bindPF("ap-", c.consultant_name) }
