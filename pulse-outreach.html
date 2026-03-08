@@ -2524,7 +2524,19 @@
         const fieldDate = pfx + key + '_date';
         if (newVal) patch[fieldDate] = new Date().toISOString().split('T')[0];
         else patch[fieldDate] = null;
+        // Visual feedback: flash the clicked step node
+        const clickedNode = document.querySelector(`.st-node[data-step="${key}"]`);
+        if (clickedNode) clickedNode.style.opacity = '0.5';
         const upd = await PATCH(`communication_strategies?id=eq.${s.id}`, patch);
+        if (!upd?.[0]) {
+          if (clickedNode) clickedNode.style.opacity = '1';
+          const toast = document.createElement('div');
+          toast.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;padding:10px 16px;background:rgba(248,113,113,.95);color:#fff;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.3)';
+          toast.textContent = 'Erreur: mise à jour impossible';
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 3000);
+          return;
+        }
         if (upd?.[0]) {
           Object.assign(s, upd[0]);
           const si = S.strats.findIndex(x => x.id === s.id);
@@ -2556,6 +2568,13 @@
               rBadges(tu[0]);
             }
           }
+          // Success toast
+          const sd2 = STEP_DEFS.find(d => d.key === key);
+          const toast = document.createElement('div');
+          toast.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;padding:10px 16px;background:rgba(62,200,120,.95);color:#000;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.3)';
+          toast.textContent = newVal ? '✓ ' + (sd2?.l || key) + ' validé' : '↩ ' + (sd2?.l || key) + ' annulé';
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 2000);
           paint();
         }
       }
@@ -2569,15 +2588,35 @@
         const dircoPostTarget = s.prospect_posts_data?.find(p => p._source === 'DirCo');
         const multiCom = isCeo ? (s.commentaires_multi || []) : (s.dirco_commentaires_multi?.length ? s.dirco_commentaires_multi : (s.dirco_commentaire_linkedin ? [{ commentaire: s.dirco_commentaire_linkedin, post_cible: dircoPostTarget ? (dircoPostTarget.text || '').substring(0, 80) + '...' : 'Post DirCo', objectif: 'Créer visibilité auprès du DirCo', source: 'DirCo', post_url: dircoPostTarget?.post_url || dircoPostTarget?.link || '' }] : []));
 
+        // Build individual comment steps from multiCom (spread over 2-3 weeks)
+        const comSteps = multiCom.length > 0 ? multiCom.map((c, i) => {
+          const gap = Math.round(21 / multiCom.length); // spread over ~3 weeks
+          const start = i * gap;
+          const end = start + gap - 1;
+          const srcBdg = c.source === 'CEO' ? '👤 CEO' : c.source === 'DirCo' ? '👥 DirCo' : c.source === 'Company' ? '🏢 Company' : '';
+          return {
+            w: `J${start}-${end}`,
+            l: `Commentaire ${i + 1}/${multiCom.length}` + (srcBdg ? ' — ' + srcBdg : ''),
+            ch: "LinkedIn",
+            msg: c.commentaire || c.texte || (typeof c === 'string' ? c : ''),
+            c: "#60A5FA",
+            a: c.post_cible ? "Post: «" + (typeof c.post_cible === 'string' ? c.post_cible.substring(0, 70) : '') + "»" : "Commentaire LinkedIn",
+            why: c.objectif || "Créer la visibilité et la familiarité",
+            link: c.post_url || null,
+            sk: 'commentaire'
+          };
+        }) : [{ w: "J0-7", l: "Commentaires LinkedIn", ch: "LinkedIn", msg: isCeo ? s.commentaire_linkedin : s.dirco_commentaire_linkedin, c: "#60A5FA", a: postRef ? "Commenter: «" + ((postRef.content || "").substring(0, 60)) + "...»" : "Commenter des posts pertinents", why: postRef?.why || "Créer la visibilité et la familiarité", link: postRef?.url, sk: 'commentaire' }];
+        // Calculate offset for remaining steps (after comment phase)
+        const comEnd = multiCom.length > 0 ? Math.round(21 / multiCom.length) * multiCom.length : 7;
         const steps = [
-          { w: "J0-7", l: "Commentaires LinkedIn", ch: "LinkedIn", msg: isCeo ? s.commentaire_linkedin : s.dirco_commentaire_linkedin, c: "#60A5FA", a: postRef ? "Commenter: «" + ((postRef.content || "").substring(0, 60)) + "...»" : "Commenter des posts pertinents (3-5 commentaires)", why: postRef?.why || "Créer la visibilité et la familiarité", link: postRef?.url, sk: 'commentaire' },
-          { w: "J7-14", l: "Demande de connexion", ch: "LinkedIn", msg: isCeo ? s.message_connexion : (s.dirco_message_connexion || s.message_connexion_dirco), c: "#A78BFA", a: "Connexion personnalisée référençant les échanges", why: "Amorcer le lien après familiarité", sk: 'connexion' },
-          { w: "J14-25", l: "Premier DM de valeur", ch: "DM", msg: isCeo ? s.message_suivi_1 : (s.dirco_message_suivi || s.message_suivi_dirco), c: "#FBBF24", a: "DM insight unique, question ouverte", why: "Approfondir l'angle — écoute active", sk: 'suivi' },
-          { w: "J15-25", l: "Email personnalisé", ch: "Email", msg: isCeo ? s.message_email : s.dirco_message_email, c: "#F472B6", a: "Email structuré — canal différent", why: "Diversifier les touchpoints", sk: 'email' },
-          { w: "J25-30", l: "Relance guide", ch: "DM", msg: isCeo ? s.message_relance_guide : s.dirco_message_relance_guide, c: "#FB923C", a: "Partager: " + (s.ressource_a_partager || "Guide pertinent"), why: "Valeur concrète sans pression", sk: 'relance' },
-          { w: "J30-35", l: "Relance témoignage", ch: "DM", msg: isCeo ? s.message_relance_temoignage : s.dirco_message_relance_temoignage, c: "#FB923C", a: "Partager un cas client similaire", why: "Preuve sociale — légitimité", sk: 'relance' },
-          { w: "J35-45", l: "Proposition RDV", ch: "Multi", msg: isCeo ? s.message_proposition_rdv : s.dirco_message_proposition_rdv, c: "#3EC878", a: "Proposer un échange 15 min — valeur claire", why: "4+ touchpoints atteints", sk: 'rdv' },
-          { w: "J50-60", l: "Nurturing long terme", ch: "Email", msg: isCeo ? s.message_nurturing_long : s.dirco_message_nurturing, c: "#71717A", a: "Email de valeur pure sans CTA", why: "Préparer le prochain cycle", sk: 'nurturing' }
+          ...comSteps,
+          { w: `J${comEnd}-${comEnd+7}`, l: "Demande de connexion", ch: "LinkedIn", msg: isCeo ? s.message_connexion : (s.dirco_message_connexion || s.message_connexion_dirco), c: "#A78BFA", a: "Connexion personnalisée référençant les échanges", why: "Amorcer le lien après familiarité", sk: 'connexion' },
+          { w: `J${comEnd+7}-${comEnd+14}`, l: "Premier DM de valeur", ch: "DM", msg: isCeo ? s.message_suivi_1 : (s.dirco_message_suivi || s.message_suivi_dirco), c: "#FBBF24", a: "DM insight unique, question ouverte", why: "Approfondir l'angle — écoute active", sk: 'suivi' },
+          { w: `J${comEnd+10}-${comEnd+17}`, l: "Email personnalisé", ch: "Email", msg: isCeo ? s.message_email : s.dirco_message_email, c: "#F472B6", a: "Email structuré — canal différent", why: "Diversifier les touchpoints", sk: 'email' },
+          { w: `J${comEnd+17}-${comEnd+22}`, l: "Relance guide", ch: "DM", msg: isCeo ? s.message_relance_guide : s.dirco_message_relance_guide, c: "#FB923C", a: "Partager: " + (s.ressource_a_partager || "Guide pertinent"), why: "Valeur concrète sans pression", sk: 'relance' },
+          { w: `J${comEnd+22}-${comEnd+27}`, l: "Relance témoignage", ch: "DM", msg: isCeo ? s.message_relance_temoignage : s.dirco_message_relance_temoignage, c: "#FB923C", a: "Partager un cas client similaire", why: "Preuve sociale — légitimité", sk: 'relance' },
+          { w: `J${comEnd+27}-${comEnd+37}`, l: "Proposition RDV", ch: "Multi", msg: isCeo ? s.message_proposition_rdv : s.dirco_message_proposition_rdv, c: "#3EC878", a: "Proposer un échange 15 min — valeur claire", why: "4+ touchpoints atteints", sk: 'rdv' },
+          { w: `J${comEnd+40}-${comEnd+50}`, l: "Nurturing long terme", ch: "Email", msg: isCeo ? s.message_nurturing_long : s.dirco_message_nurturing, c: "#71717A", a: "Email de valeur pure sans CTA", why: "Préparer le prochain cycle", sk: 'nurturing' }
         ].filter(x => x.msg);
 
         let html = "";
