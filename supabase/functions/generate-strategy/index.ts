@@ -814,13 +814,17 @@ ESTIMATION OBLIGATOIRE de la taille d'équipe commerciale : utilise le CA, l'eff
 [PRINCIPES DE COMMUNICATION]
 1. TON DE PAIR : chaque message sonne comme un message d'un confrère dirigeant qui partage un vécu. Pas un consultant qui prospecte. Le consultant parle depuis son expérience de CEO/dirigeant ayant géré des transformations, PAS depuis son rôle de consultant. Les commentaires LinkedIn en particulier doivent être indistinguables de ceux d'un pair entrepreneur — aucun biais commercial détectable.
 2. PERSONNALISATION RADICALE : chaque message DOIT contenir au moins une référence concrète au prospect (un de ses posts, un chiffre Pappers, un fait de son parcours, une actualité).
-3. COMMENTAIRES LINKEDIN MULTIPLES : génère 4 à 6 commentaires sur des posts DIFFÉRENTS du prospect (CEO + DirCo + page Entreprise). Chaque commentaire :
-   - RÈGLE N°1 : le commentaire RÉPOND AU SUJET DU POST, pas au sujet de Keep Growing. Si le post parle de recrutement tech → commente sur le recrutement tech. Si le post parle d'internationalisation → commente sur l'internationalisation. Ne redirige JAMAIS vers des sujets de consulting commercial.
-   - Apporte une VRAIE VALEUR au lecteur du post : un insight original, un retour d'expérience concret, un chiffre surprenant, une question qui fait réfléchir, un angle que personne n'a vu. Le commentaire doit enrichir la discussion, pas la détourner.
-   - Ne mentionne JAMAIS Keep Growing, le consulting, la performance commerciale, la structuration sales, le diagnostic commercial, ni aucun service du consultant. Le commentaire ne doit avoir AUCUNE arrière-pensée commerciale visible.
-   - Le consultant commente EN TANT QUE DIRIGEANT qui a vécu des situations similaires, pas en tant que consultant qui prospecte. Il partage son expérience de terrain sur LE SUJET DU POST.
-   - Exemples de BONS commentaires : "Intéressant. On a testé cette approche avec 3 pays en parallèle — le piège c'est de vouloir dupliquer le playbook FR tel quel. Ce qui a marché : adapter le cycle de décision local avant le messaging." / "Question sincère : comment vous mesurez l'impact de ça sur le terrain ? J'ai souvent vu un gap entre l'annonce et l'exécution à 6 mois."
-   - Exemples de MAUVAIS commentaires (À NE PAS FAIRE) : "La structuration commerciale est clé pour scaler..." / "Vos rituels commerciaux sont-ils calibrés pour..." / "Le passage à l'échelle commercial est le prochain défi..." / "process commerciaux non alignés = friction partout" / "calibrer le système pour qu'il tienne la charge" / "Chez [grande entreprise], on a appris ça à nos dépens" → ces formulations trahissent une intention de prospection ou inventent une fausse expérience.
+3. COMMENTAIRES LINKEDIN MULTIPLES : génère 4 à 6 commentaires sur des posts DIFFÉRENTS du prospect (CEO + DirCo + page Entreprise).
+   ⚠️ RÈGLE ABSOLUE — TEST DE COHÉRENCE OBLIGATOIRE : Pour chaque commentaire, tu DOIS d'abord identifier le SUJET EXACT du post (ex: "IA vocale avec ElevenLabs", "recrutement d'un CTO", "partenariat tech"). Ensuite, ton commentaire DOIT parler de CE SUJET et UNIQUEMENT ce sujet. Si le post parle de tech/IA → commente sur la tech/IA. Si le post parle de recrutement → commente sur le recrutement. Si le post parle d'un partenariat → commente sur ce partenariat. JAMAIS de pivot vers le commercial, les process, les rituels, ou la structuration. TESTE : si ton commentaire pourrait être posté sous n'importe quel post LinkedIn → il est MAUVAIS. Un bon commentaire ne fait sens QUE sous CE post spécifique.
+   Chaque commentaire :
+   - Apporte une VRAIE VALEUR au lecteur du post : un insight original SUR LE SUJET DU POST, un retour d'expérience concret SUR CE SUJET, une question qui fait réfléchir SUR CE SUJET.
+   - Ne mentionne JAMAIS Keep Growing, le consulting, la performance commerciale, la structuration sales, le diagnostic commercial, les process, les rituels, le recrutement commercial, ni aucun thème lié au consulting. Le commentaire ne doit avoir AUCUNE arrière-pensée commerciale.
+   - Le consultant commente en tant que dirigeant curieux SUR LE SUJET DU POST, pas en tant que consultant commercial.
+   - Exemples CONCRETS de BONS vs MAUVAIS commentaires :
+     POST : "Nous lançons notre produit IA vocale avec ElevenLabs" → BON : "La qualité vocale est le game-changer. On sous-estime souvent la latence perçue par l'utilisateur — vous avez mesuré le delta avant/après ?" → MAUVAIS : "Les 100 premiers jours d'un CSO post-levée sont décisifs. Vous priorisez quoi en premier — recruter, process, ou rituels ?"
+     POST : "On recrute un VP Engineering à Berlin" → BON : "Berlin est devenu hyper compétitif pour les profils senior. Le salaire ne suffit plus, c'est l'equity + le projet qui font la différence." → MAUVAIS : "L'alignement de la force commerciale avec la croissance est clé..."
+     POST : "Notre CA a doublé en 18 mois" → BON : "Bravo. La vraie question maintenant : comment vous gardez la culture qui a permis ça quand vous doublez les effectifs ?" → MAUVAIS : "Le scaling commercial nécessite des rituels adaptés..."
+   - Dans le JSON, le champ "sujet_du_post" doit contenir le VRAI sujet du post (pas un thème commercial inventé). Le commentaire sera REJETÉ si sujet_du_post ne correspond pas au contenu réel du post.
    - Crée une PRÉSENCE et une FAMILIARITÉ avant la demande de connexion
    - Est suffisamment intelligent pour que le prospect ait envie de regarder le profil du consultant
    - DOIT inclure le post_url (lien direct vers le post LinkedIn) et la source (CEO/DirCo/Company)
@@ -831,8 +835,8 @@ ESTIMATION OBLIGATOIRE de la taille d'équipe commerciale : utilise le CA, l'eff
    - Phase 3 (J35→J45) : Premier DM de valeur — insight unique, question ouverte, partage d'expérience terrain
    - Phase 4 (J45→J55) : Nurturing — guide pertinent, cas client similaire, contenus de valeur sans pression
    - Phase 5 (J55→J60) : Proposition de RDV 15min avec valeur claire et spécifique, sans urgence artificielle
-5. MOTS STRICTEMENT INTERDITS dans TOUS les messages : "je me permets", "notre solution", "optimiser", "booster", "n'hésitez pas", "je serais ravi", "bénéficier de", "ROI", "synergie", "win-win", "accompagnement", "partenariat", "structuration commerciale", "performance commerciale", "rituels commerciaux", "passage à l'échelle", "diagnostic commercial", "process sales", "process commerciaux", "calibrer le système", "friction partout", "alignement commercial", "industrialiser", "pipe commercial", "playbook commercial"
-   THÈMES INTERDITS DANS LES COMMENTAIRES LINKEDIN : ne JAMAIS orienter un commentaire vers la structuration sales, l'optimisation commerciale, le coaching commercial, les process commerciaux, le pipe commercial, ou tout sujet qui trahit une intention de vente de services de consulting. Le commentaire doit être 100% sur le sujet du post.
+5. MOTS STRICTEMENT INTERDITS dans TOUS les messages : "je me permets", "notre solution", "optimiser", "booster", "n'hésitez pas", "je serais ravi", "bénéficier de", "ROI", "synergie", "win-win", "accompagnement", "partenariat", "structuration commerciale", "performance commerciale", "rituels commerciaux", "passage à l'échelle", "diagnostic commercial", "process sales", "process commerciaux", "calibrer le système", "friction partout", "alignement commercial", "industrialiser", "pipe commercial", "playbook commercial", "rituels", "process", "changer de vitesse", "machine qui tourne", "force de vente"
+   THÈMES INTERDITS DANS LES COMMENTAIRES LINKEDIN : ne JAMAIS orienter un commentaire vers la structuration sales, l'optimisation commerciale, le coaching commercial, les process commerciaux, le pipe commercial, le recrutement commercial, les rituels managériaux, l'onboarding commercial, ou tout sujet qui trahit une intention de vente de services de consulting. Si le post NE PARLE PAS de ces sujets, le commentaire NE DOIT PAS en parler non plus.
    INTERDICTION ABSOLUE DE FABRIQUER DES EXPÉRIENCES : le consultant ne doit JAMAIS prétendre avoir travaillé chez une entreprise spécifique (ex: "Chez Intel", "Quand j'étais chez Google") sauf si c'est explicitement mentionné dans son PARCOURS COMPLET ci-dessus. Utiliser uniquement des formulations vagues : "dans un contexte similaire", "sur un projet comparable", "j'ai vu ça plusieurs fois".
 6. SIGNATURE : prénom du consultant uniquement, jamais nom complet ni titre
 
@@ -873,12 +877,12 @@ CONCISION : Sois PERCUTANT et CONCIS dans chaque champ. Les messages doivent res
       '"niveau_confiance":"high|medium|low",' +
       '"strategie_globale":"vision stratégie 60j en 3-4 phrases",' +
       '"warmth_assessment":"réceptivité en 1-2 phrases",' +
-      '"commentaires_linkedin":[{"post_cible":"sujet du post","post_url":"lien LinkedIn exact du post","source":"CEO ou DirCo ou Company","commentaire":"<' + cm + ' mots","objectif":"rôle stratégique"},' +
-      '{"post_cible":"2e post","post_url":"lien","source":"CEO/DirCo/Company","commentaire":"<' + cm + ' mots","objectif":"..."},' +
-      '{"post_cible":"3e post","post_url":"lien","source":"...","commentaire":"<' + cm + ' mots","objectif":"..."},' +
-      '{"post_cible":"4e post","post_url":"lien","source":"...","commentaire":"<' + cm + ' mots","objectif":"..."},' +
-      '{"post_cible":"5e post","post_url":"lien","source":"...","commentaire":"<' + cm + ' mots","objectif":"..."},' +
-      '{"post_cible":"6e post","post_url":"lien","source":"...","commentaire":"<' + cm + ' mots","objectif":"..."}],' +
+      '"commentaires_linkedin":[{"sujet_du_post":"LE VRAI SUJET du post en 5-10 mots (ex: lancement produit IA vocale, recrutement CTO Berlin, résultats Q3) — PAS un thème commercial inventé","post_cible":"résumé du post","post_url":"lien LinkedIn exact","source":"CEO ou DirCo ou Company","commentaire":"DOIT parler du sujet_du_post — <' + cm + ' mots","objectif":"rôle stratégique"},' +
+      '{"sujet_du_post":"sujet réel 2e post","post_cible":"2e post","post_url":"lien","source":"CEO/DirCo/Company","commentaire":"<' + cm + ' mots","objectif":"..."},' +
+      '{"sujet_du_post":"sujet réel 3e post","post_cible":"3e post","post_url":"lien","source":"...","commentaire":"<' + cm + ' mots","objectif":"..."},' +
+      '{"sujet_du_post":"sujet réel 4e post","post_cible":"4e post","post_url":"lien","source":"...","commentaire":"<' + cm + ' mots","objectif":"..."},' +
+      '{"sujet_du_post":"sujet réel 5e post","post_cible":"5e post","post_url":"lien","source":"...","commentaire":"<' + cm + ' mots","objectif":"..."},' +
+      '{"sujet_du_post":"sujet réel 6e post","post_cible":"6e post","post_url":"lien","source":"...","commentaire":"<' + cm + ' mots","objectif":"..."}],' +
       '"approche_ceo":"stratégie CEO en 2-3 phrases",' +
       '"message_connexion":"<280 chars connexion CEO",' +
       '"message_suivi_1":"<' + dm + ' mots DM post-connexion",' +
@@ -888,7 +892,7 @@ CONCISION : Sois PERCUTANT et CONCIS dans chaque champ. Les messages doivent res
       '"message_proposition_rdv":"<80 mots proposition RDV",' +
       '"message_nurturing_long":"<120 mots email nurturing",' +
       '"approche_dirco":"stratégie DirCo COMPLÈTE en 2-3 phrases (OBLIGATOIRE si DirCo identifié, vide UNIQUEMENT si aucun DirCo)",' +
-      '"dirco_commentaires_linkedin":[{"post_cible":"post","post_url":"lien","source":"DirCo ou Company","commentaire":"<' + cm + ' mots","objectif":"..."},{"post_cible":"2e","post_url":"lien","source":"...","commentaire":"<' + cm + ' mots","objectif":"..."}],' +
+      '"dirco_commentaires_linkedin":[{"sujet_du_post":"VRAI sujet du post DirCo","post_cible":"post","post_url":"lien","source":"DirCo ou Company","commentaire":"DOIT parler du sujet_du_post — <' + cm + ' mots","objectif":"..."},{"sujet_du_post":"sujet réel 2e post","post_cible":"2e","post_url":"lien","source":"...","commentaire":"<' + cm + ' mots","objectif":"..."}],' +
       '"dirco_commentaire_linkedin":"meilleur commentaire DirCo (pour rétro-compat)",' +
       '"dirco_message_connexion":"<280 chars (OBLIGATOIRE si DirCo identifié)",' +
       '"dirco_message_suivi":"<' + dm + ' mots (OBLIGATOIRE si DirCo identifié)",' +
