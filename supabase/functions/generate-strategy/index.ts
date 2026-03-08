@@ -820,7 +820,7 @@ ESTIMATION OBLIGATOIRE de la taille d'équipe commerciale : utilise le CA, l'eff
    - Ne mentionne JAMAIS Keep Growing, le consulting, la performance commerciale, la structuration sales, le diagnostic commercial, ni aucun service du consultant. Le commentaire ne doit avoir AUCUNE arrière-pensée commerciale visible.
    - Le consultant commente EN TANT QUE DIRIGEANT qui a vécu des situations similaires, pas en tant que consultant qui prospecte. Il partage son expérience de terrain sur LE SUJET DU POST.
    - Exemples de BONS commentaires : "Intéressant. On a testé cette approche avec 3 pays en parallèle — le piège c'est de vouloir dupliquer le playbook FR tel quel. Ce qui a marché : adapter le cycle de décision local avant le messaging." / "Question sincère : comment vous mesurez l'impact de ça sur le terrain ? J'ai souvent vu un gap entre l'annonce et l'exécution à 6 mois."
-   - Exemples de MAUVAIS commentaires (À NE PAS FAIRE) : "La structuration commerciale est clé pour scaler..." / "Vos rituels commerciaux sont-ils calibrés pour..." / "Le passage à l'échelle commercial est le prochain défi..." → ces formulations trahissent une intention de prospection.
+   - Exemples de MAUVAIS commentaires (À NE PAS FAIRE) : "La structuration commerciale est clé pour scaler..." / "Vos rituels commerciaux sont-ils calibrés pour..." / "Le passage à l'échelle commercial est le prochain défi..." / "process commerciaux non alignés = friction partout" / "calibrer le système pour qu'il tienne la charge" / "Chez [grande entreprise], on a appris ça à nos dépens" → ces formulations trahissent une intention de prospection ou inventent une fausse expérience.
    - Crée une PRÉSENCE et une FAMILIARITÉ avant la demande de connexion
    - Est suffisamment intelligent pour que le prospect ait envie de regarder le profil du consultant
    - DOIT inclure le post_url (lien direct vers le post LinkedIn) et la source (CEO/DirCo/Company)
@@ -831,8 +831,9 @@ ESTIMATION OBLIGATOIRE de la taille d'équipe commerciale : utilise le CA, l'eff
    - Phase 3 (J35→J45) : Premier DM de valeur — insight unique, question ouverte, partage d'expérience terrain
    - Phase 4 (J45→J55) : Nurturing — guide pertinent, cas client similaire, contenus de valeur sans pression
    - Phase 5 (J55→J60) : Proposition de RDV 15min avec valeur claire et spécifique, sans urgence artificielle
-5. MOTS STRICTEMENT INTERDITS dans TOUS les messages : "je me permets", "notre solution", "optimiser", "booster", "n'hésitez pas", "je serais ravi", "bénéficier de", "ROI", "synergie", "win-win", "accompagnement", "partenariat", "structuration commerciale", "performance commerciale", "rituels commerciaux", "passage à l'échelle", "diagnostic commercial", "process sales"
-   THÈMES INTERDITS DANS LES COMMENTAIRES LINKEDIN : ne JAMAIS orienter un commentaire vers la structuration sales, l'optimisation commerciale, le coaching commercial ou tout sujet qui trahit une intention de vente de services de consulting. Le commentaire doit être 100% sur le sujet du post.
+5. MOTS STRICTEMENT INTERDITS dans TOUS les messages : "je me permets", "notre solution", "optimiser", "booster", "n'hésitez pas", "je serais ravi", "bénéficier de", "ROI", "synergie", "win-win", "accompagnement", "partenariat", "structuration commerciale", "performance commerciale", "rituels commerciaux", "passage à l'échelle", "diagnostic commercial", "process sales", "process commerciaux", "calibrer le système", "friction partout", "alignement commercial", "industrialiser", "pipe commercial", "playbook commercial"
+   THÈMES INTERDITS DANS LES COMMENTAIRES LINKEDIN : ne JAMAIS orienter un commentaire vers la structuration sales, l'optimisation commerciale, le coaching commercial, les process commerciaux, le pipe commercial, ou tout sujet qui trahit une intention de vente de services de consulting. Le commentaire doit être 100% sur le sujet du post.
+   INTERDICTION ABSOLUE DE FABRIQUER DES EXPÉRIENCES : le consultant ne doit JAMAIS prétendre avoir travaillé chez une entreprise spécifique (ex: "Chez Intel", "Quand j'étais chez Google") sauf si c'est explicitement mentionné dans son PARCOURS COMPLET ci-dessus. Utiliser uniquement des formulations vagues : "dans un contexte similaire", "sur un projet comparable", "j'ai vu ça plusieurs fois".
 6. SIGNATURE : prénom du consultant uniquement, jamais nom complet ni titre
 
 [DIFFÉRENCIATION CEO vs DIRCO]
@@ -1028,6 +1029,11 @@ CONCISION : Sois PERCUTANT et CONCIS dans chaque champ. Les messages doivent res
     console.log('v9.0 post_url fix: matched ' + usedPostIdx.size + ' real URLs from ' + postsArr.length + ' scraped posts');
 
     // Save strategy (DELETE then INSERT — sequential dependency)
+    // PRESERVE progress: read old strategy's step tracking before delete
+    const prevStrat = await sb('communication_strategies?target_id=eq.' + target_id + '&select=items_checked,step_commentaire_done,step_commentaire_date,step_connexion_done,step_connexion_date,step_suivi_done,step_suivi_date,step_email_done,step_email_date,step_relance_done,step_relance_date,step_rdv_done,step_rdv_date,step_nurturing_done,step_nurturing_date,dirco_step_commentaire_done,dirco_step_commentaire_date,dirco_step_connexion_done,dirco_step_connexion_date,dirco_step_suivi_done,dirco_step_suivi_date,dirco_step_email_done,dirco_step_email_date,dirco_step_relance_done,dirco_step_relance_date,dirco_step_rdv_done,dirco_step_rdv_date,dirco_step_nurturing_done,dirco_step_nurturing_date,step_commentaire_edited,step_connexion_edited,step_suivi_edited,step_email_edited,step_relance_edited&order=created_at.desc&limit=1');
+    const prev = prevStrat?.[0] || {};
+    const hadProgress = prev.step_commentaire_done || prev.step_connexion_done || prev.step_suivi_done || prev.step_email_done || prev.step_relance_done || prev.step_rdv_done || prev.step_nurturing_done || prev.dirco_step_commentaire_done || prev.dirco_step_connexion_done || (prev.items_checked && Object.keys(prev.items_checked).length > 0);
+    if (hadProgress) console.log('v9.0 PRESERVING progress: items_checked=' + Object.keys(prev.items_checked || {}).length + ' steps=' + [prev.step_commentaire_done, prev.step_connexion_done, prev.step_suivi_done, prev.step_email_done, prev.step_relance_done, prev.step_rdv_done, prev.step_nurturing_done].filter(Boolean).length);
     await fetch(SUPABASE_URL + '/rest/v1/communication_strategies?target_id=eq.' + target_id, { method: 'DELETE', headers: SB_H });
     const postRef = p.post_prospect_reference || null;
     if (postRef && !postRef.url && bestPost) { postRef.url = bestPost.post_url || bestPost.url || bestPost.link || (liUrl ? liUrl + '/recent-activity/' : null); }
@@ -1075,12 +1081,24 @@ CONCISION : Sois PERCUTANT et CONCIS dans chaque champ. Les messages doivent res
       website_data: webS ? { content: webS, about: webData.about?.slice(0, 500) || null } : null,
       news_data: newsArr || null, pappers_data: pappers || null,
       data_sources_log: { linkedin_person: !!liPS, linkedin_company: !!liCS, website: !!webData.main, website_about: !!webData.about, website_team: !!webData.team, website_legal: !!webData.legal, news: newsArr?.length || 0, prospect_posts: postsArr.length, posts_ceo: postsArr.filter((p: any) => p._source === 'CEO').length, posts_dirco: postsArr.filter((p: any) => p._source === 'DirCo').length, posts_company: postsArr.filter((p: any) => p._source === 'Company').length, pappers: !!pappersS, claude: _claudeDiag ? { len: _claudeDiag.raw_len, stop: _claudeDiag.stop, in: _claudeDiag.in_tok, out: _claudeDiag.out_tok, parsed: !usedFallback, err: _claudeDiag.err || null, preview: _claudeDiag.preview?.slice(0, 200) || null } : null },
-      // Steps tracking CEO
-      step_commentaire_done: false, step_connexion_done: false, step_suivi_done: false,
-      step_email_done: false, step_relance_done: false, step_rdv_done: false, step_nurturing_done: false,
-      // Steps tracking DirCo
-      dirco_step_commentaire_done: false, dirco_step_connexion_done: false, dirco_step_suivi_done: false,
-      dirco_step_email_done: false, dirco_step_relance_done: false, dirco_step_rdv_done: false, dirco_step_nurturing_done: false,
+      // Steps tracking CEO — PRESERVE from previous strategy if exists
+      step_commentaire_done: prev.step_commentaire_done || false, step_commentaire_date: prev.step_commentaire_date || null, step_commentaire_edited: prev.step_commentaire_edited || false,
+      step_connexion_done: prev.step_connexion_done || false, step_connexion_date: prev.step_connexion_date || null, step_connexion_edited: prev.step_connexion_edited || false,
+      step_suivi_done: prev.step_suivi_done || false, step_suivi_date: prev.step_suivi_date || null, step_suivi_edited: prev.step_suivi_edited || false,
+      step_email_done: prev.step_email_done || false, step_email_date: prev.step_email_date || null, step_email_edited: prev.step_email_edited || false,
+      step_relance_done: prev.step_relance_done || false, step_relance_date: prev.step_relance_date || null, step_relance_edited: prev.step_relance_edited || false,
+      step_rdv_done: prev.step_rdv_done || false, step_rdv_date: prev.step_rdv_date || null,
+      step_nurturing_done: prev.step_nurturing_done || false, step_nurturing_date: prev.step_nurturing_date || null,
+      // Steps tracking DirCo — PRESERVE from previous strategy if exists
+      dirco_step_commentaire_done: prev.dirco_step_commentaire_done || false, dirco_step_commentaire_date: prev.dirco_step_commentaire_date || null,
+      dirco_step_connexion_done: prev.dirco_step_connexion_done || false, dirco_step_connexion_date: prev.dirco_step_connexion_date || null,
+      dirco_step_suivi_done: prev.dirco_step_suivi_done || false, dirco_step_suivi_date: prev.dirco_step_suivi_date || null,
+      dirco_step_email_done: prev.dirco_step_email_done || false, dirco_step_email_date: prev.dirco_step_email_date || null,
+      dirco_step_relance_done: prev.dirco_step_relance_done || false, dirco_step_relance_date: prev.dirco_step_relance_date || null,
+      dirco_step_rdv_done: prev.dirco_step_rdv_done || false, dirco_step_rdv_date: prev.dirco_step_rdv_date || null,
+      dirco_step_nurturing_done: prev.dirco_step_nurturing_done || false, dirco_step_nurturing_date: prev.dirco_step_nurturing_date || null,
+      // Granular item-level checkmarks — PRESERVE
+      items_checked: prev.items_checked || {},
       // Meta
       status: 'generated', ai_model: CLAUDE_MODEL, prompt_version: 'v9.0'
     };
