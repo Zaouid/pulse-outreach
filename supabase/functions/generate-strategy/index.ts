@@ -906,7 +906,7 @@ CONCISION : Sois PERCUTANT et CONCIS dans chaque champ. Les messages doivent res
       '{"periode":"J45-J60","actions_ceo":"nurturing + RDV CEO","actions_dirco":"nurturing + RDV DirCo","objectif":"convertir en rendez-vous"}],' +
       '"strategie_branches":{"si_connexion_acceptee":"action","si_connexion_refusee":"plan B","si_pas_de_reponse_dm":"relance","si_reponse_positive":"accélération","si_reponse_negative":"nurturing"},' +
       '"sujets_interet":["s1","s2","s3"],"hooks_identifies":["h1","h2","h3"],' +
-      '"ressource_a_partager":"titre du guide pertinent",' +
+      '"ressource_a_partager":"CHOISIS le titre EXACT d\'un des livres blancs listés dans LIVRES_BLANCS qui est le PLUS PERTINENT pour les enjeux spécifiques de ce prospect. Ne choisis PAS systématiquement le même — adapte au contexte (recrutement→Recruter le Bon Commercial, scaling→MEDDIC, nouveau DirCo→100 Premiers Jours, etc.)",' +
       '"post_prospect_reference":{"content":"post clé","date":"date","url":"lien","why":"pertinence"},' +
       '"durr_assessment":{"douloureux":true,"douloureux_detail":"fait","urgent":true,"urgent_detail":"fait","reconnu":true,"reconnu_detail":"fait","recurrent":true,"recurrent_detail":"fait"},' +
       '"intelligence_update":{"industrie":"secteur","taille_equipe_commerciale":"NOMBRE ESTIMÉ OBLIGATOIRE (déduis du CA, effectif, secteur, LinkedIn — ex: SaaS B2B 20M€ CA ~280 pers = ~30-50 commerciaux)","dirco_identifie":"nom ou vide","clients_cles":["client1"],"go_to_market":"modèle commercial"}}';

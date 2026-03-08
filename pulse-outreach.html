@@ -2613,7 +2613,38 @@
         if (ready) $("launchBtn").onclick = () => launchAI(t.id); return
       }
 
-      const recLB = S.livres.filter(lb => (lb.segments_pertinents || []).some(seg => seg === t.segment)).slice(0, 3);
+      // Smart resource matching — personalized per target using strategy data
+      const recLB = (() => {
+        const reco = (s.ressource_a_partager || "").toLowerCase();
+        const hooks = (s.hooks_identifies || []).join(" ").toLowerCase();
+        const sujets = (s.sujets_interet || []).join(" ").toLowerCase();
+        const ctxWords = (reco + " " + hooks + " " + sujets).split(/[\s,;.()]+/).filter(w => w.length > 3);
+        // Score each resource
+        const scored = S.livres.map(lb => {
+          let score = 0;
+          const titre = (lb.titre || "").toLowerCase();
+          // 1. Direct match with ressource_a_partager (highest priority)
+          if (reco && titre && reco.includes(titre.slice(0, 20))) score += 50;
+          if (reco && titre && titre.includes(reco.split("—")[0].trim().slice(0, 20))) score += 50;
+          // Fuzzy: title words in recommendation
+          const tWords = titre.split(/\s+/).filter(w => w.length > 3);
+          const matchCount = tWords.filter(w => reco.includes(w)).length;
+          if (matchCount >= 2) score += 20 + matchCount * 5;
+          // 2. Keyword matching (mots_cles vs hooks+sujets)
+          const mk = (lb.mots_cles || []).map(k => k.toLowerCase());
+          mk.forEach(k => { if (ctxWords.some(w => k.includes(w) || w.includes(k))) score += 8; });
+          // 3. Segment match (base relevance)
+          if ((lb.segments_pertinents || []).includes(t.segment)) score += 3;
+          // 4. Resume keywords match
+          const resume = (lb.resume || "").toLowerCase();
+          const resumeWords = resume.split(/\s+/).filter(w => w.length > 4);
+          const overlap = ctxWords.filter(w => resumeWords.some(rw => rw.includes(w))).length;
+          if (overlap > 0) score += Math.min(overlap * 2, 10);
+          return { ...lb, _score: score };
+        });
+        // Sort by score desc, take top 3
+        return scored.sort((a, b) => b._score - a._score).slice(0, 3).filter(x => x._score > 0);
+      })();
       const branches = s.strategie_branches; const dsLog = s.data_sources_log;
 
       let smode = s.approche_ceo ? "ceo" : "dirco";
