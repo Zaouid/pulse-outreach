@@ -2625,6 +2625,19 @@
       ];
       const PIPE_ORDER = ['non_traite', 'strategie_generee', 'premier_contact', 'en_discussion', 'rdv', 'proposition', 'gagne', 'perdu'];
 
+      async function toggleItemCheck(itemKey) {
+        const checked = { ...(s.items_checked || {}) };
+        checked[itemKey] = !checked[itemKey];
+        if (!checked[itemKey]) delete checked[itemKey];
+        const upd = await PATCH(`communication_strategies?id=eq.${s.id}`, { items_checked: checked });
+        if (upd?.[0]) {
+          Object.assign(s, upd[0]);
+          const si = S.strats.findIndex(x => x.id === s.id);
+          if (si >= 0) S.strats[si] = s;
+          paint();
+        }
+      }
+
       async function autoMarkStep(key, forceValue) {
         const isCeo = smode === "ceo";
         const pfx = isCeo ? 'step_' : 'dirco_step_';
@@ -2729,6 +2742,10 @@
           { w: `J${comEnd+27}-${comEnd+37}`, l: "Proposition RDV", ch: "Multi", msg: isCeo ? s.message_proposition_rdv : s.dirco_message_proposition_rdv, c: "#3EC878", a: "Proposer un échange 15 min — valeur claire", why: "4+ touchpoints atteints", sk: 'rdv' },
           { w: `J${comEnd+40}-${comEnd+50}`, l: "Nurturing long terme", ch: "Email", msg: isCeo ? s.message_nurturing_long : s.dirco_message_nurturing, c: "#71717A", a: "Email de valeur pure sans CTA", why: "Préparer le prochain cycle", sk: 'nurturing' }
         ].filter(x => x.msg);
+
+        // Assign unique index per step key for item-level tracking
+        const _skCounts = {};
+        steps.forEach(st => { const k = st.sk || 'x'; _skCounts[k] = (_skCounts[k] || 0); st.idx = _skCounts[k]++; });
 
         let html = "";
 
@@ -2886,16 +2903,27 @@
           btn.onclick = (ev) => { ev.stopPropagation(); cpTxt(btn.dataset.txt); btn.textContent = "✓ Copié"; setTimeout(() => btn.textContent = "Copier", 2000); autoMarkStep('commentaire', true); };
         });
 
-        // Render timeline items (with step done indicator)
+        // Render timeline items (with step done + item check indicator)
         const _pfx2 = isCeo ? 'step_' : 'dirco_step_';
+        const _ckMode = isCeo ? 'ceo_' : 'dirco_';
+        const _ckMap = s.items_checked || {};
         const tl = $("TL_IN");
         steps.forEach(st => {
           const isDone = st.sk ? !!s[_pfx2 + st.sk + '_done'] : false;
+          const itemKey = _ckMode + (st.sk || 'x') + '_' + (st.idx || 0);
+          const isChecked = !!_ckMap[itemKey];
+          const chkStyle = isChecked
+            ? 'background:rgba(52,211,153,.15);border-color:var(--g);color:var(--g)'
+            : 'background:rgba(255,255,255,.04);border-color:var(--bd);color:var(--t3)';
           const div = document.createElement("div"); div.className = "ts";
-          div.innerHTML = `<div class="dot2" style="background:${isDone ? 'var(--g)' : st.c};${isDone ? 'box-shadow:0 0 8px rgba(52,211,153,.4)' : ''}"></div><div class="scd" style="${isDone ? 'border-color:rgba(52,211,153,.25);background:rgba(52,211,153,.03)' : ''}"><div class="shd">${badge(st.w, st.c)}<strong style="font-size:13px">${st.l}</strong><span style="margin-left:auto;display:flex;align-items:center;gap:6px">${isDone ? '<span style="padding:2px 8px;font-size:10px;font-weight:700;border-radius:4px;background:rgba(52,211,153,.15);color:var(--g)">✓ Fait</span>' : ''}${badge(st.ch, "#71717A")}</span></div><div class="sbd"><div style="font-size:12px;color:var(--t2);margin-bottom:8px">${st.a}</div>${st.msg ? `<div class="sm"><span>${e(st.msg)}</span><button class="cpb" data-sk="${st.sk || ''}">Copier</button></div>` : ""}${st.link ? `<a href="${e(st.link)}" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:6px;font-size:11px;color:var(--bl);text-decoration:none;padding:3px 8px;background:rgba(96,165,250,.1);border-radius:4px">${ic('linkedin', '11px')} Voir le post →</a>` : ""}<div style="font-size:11px;font-style:italic;color:${st.c};margin-top:8px">◈ ${st.why}</div></div></div>`;
+          div.innerHTML = `<div class="dot2" style="background:${isChecked ? 'var(--g)' : isDone ? 'var(--g)' : st.c};${isChecked || isDone ? 'box-shadow:0 0 8px rgba(52,211,153,.4)' : ''}"></div><div class="scd" style="${isChecked ? 'border-color:rgba(52,211,153,.2);background:rgba(52,211,153,.02)' : isDone ? 'border-color:rgba(52,211,153,.25);background:rgba(52,211,153,.03)' : ''}"><div class="shd"><button class="ichk" data-ik="${itemKey}" style="width:22px;height:22px;min-width:22px;border-radius:5px;border:1.5px solid;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;font-weight:700;transition:all .2s;${chkStyle}" title="Marquer comme utilisé">${isChecked ? '✓' : ''}</button>${badge(st.w, st.c)}<strong style="font-size:13px;${isChecked ? 'text-decoration:line-through;opacity:.6' : ''}">${st.l}</strong><span style="margin-left:auto;display:flex;align-items:center;gap:6px">${isChecked ? '<span style="padding:2px 8px;font-size:10px;font-weight:700;border-radius:4px;background:rgba(52,211,153,.15);color:var(--g)">✓ Utilisé</span>' : isDone ? '<span style="padding:2px 8px;font-size:10px;font-weight:700;border-radius:4px;background:rgba(52,211,153,.15);color:var(--g)">✓ Fait</span>' : ''}${badge(st.ch, "#71717A")}</span></div><div class="sbd"><div style="font-size:12px;color:var(--t2);margin-bottom:8px">${st.a}</div>${st.msg ? `<div class="sm"><span>${e(st.msg)}</span><button class="cpb" data-sk="${st.sk || ''}">Copier</button></div>` : ""}${st.link ? `<a href="${e(st.link)}" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:6px;font-size:11px;color:var(--bl);text-decoration:none;padding:3px 8px;background:rgba(96,165,250,.1);border-radius:4px">${ic('linkedin', '11px')} Voir le post →</a>` : ""}<div style="font-size:11px;font-style:italic;color:${st.c};margin-top:8px">◈ ${st.why}</div></div></div>`;
+          // Bind item check button
+          const ichk = div.querySelector(".ichk");
+          if (ichk) ichk.onclick = ev => { ev.stopPropagation(); toggleItemCheck(ichk.dataset.ik); };
+          // Bind copy button
           if (st.msg) {
             const cpb = div.querySelector(".cpb");
-            if (cpb) cpb.onclick = ev => { ev.stopPropagation(); cpTxt(st.msg); cpb.textContent = "✓ Copié"; setTimeout(() => cpb.textContent = "Copier", 2000); if (st.sk) autoMarkStep(st.sk, true); }
+            if (cpb) cpb.onclick = ev => { ev.stopPropagation(); cpTxt(st.msg); cpb.textContent = "✓ Copié"; setTimeout(() => cpb.textContent = "Copier", 2000); toggleItemCheck(itemKey); if (st.sk) autoMarkStep(st.sk, true); }
           }
           tl.appendChild(div);
         });

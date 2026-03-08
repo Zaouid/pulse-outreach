@@ -2,9 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-const APIFY_TOKEN = Deno.env.get('APIFY_API_TOKEN');
 const SB_H = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' };
-
 const CORS_H = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type', 'Content-Type': 'application/json' };
 
 // ─── Supabase helper ───
@@ -15,75 +13,87 @@ async function sb(path: string, opts: any = {}) {
   return t ? JSON.parse(t) : null;
 }
 
-// ─── Apify helpers (from generate-strategy) ───
-async function runApifyActor(actorId: string, input: any, timeout = 60000): Promise<any[]> {
-  if (!APIFY_TOKEN) { console.log('Apify token missing'); return []; }
+// ─── Google News RSS — zero API key, fiable, gratuit ───
+async function fetchGoogleNewsRSS(query: string): Promise<any[]> {
   try {
-    const runRes = await fetch(`https://api.apify.com/v2/acts/${actorId}/runs?token=${APIFY_TOKEN}`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input)
+    const url = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=fr&gl=FR&ceid=FR:fr`;
+    console.log('RSS query: ' + query.substring(0, 60));
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PulseOutreach/1.0)' }
     });
-    if (!runRes.ok) { console.log('Apify run error: ' + runRes.status); return []; }
-    const runData = await runRes.json();
-    const runId = runData.data.id;
-    const defaultDatasetId = runData.data.defaultDatasetId;
-    const t0 = Date.now(); let apifyDelay = 2000;
-    while (Date.now() - t0 < timeout) {
-      await new Promise(r => setTimeout(r, apifyDelay));
-      apifyDelay = Math.min(apifyDelay * 1.5, 8000);
-      const statusRes = await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`);
-      if (!statusRes.ok) continue;
-      const statusData = await statusRes.json();
-      if (statusData.data.status === 'SUCCEEDED') {
-        const datasetRes = await fetch(`https://api.apify.com/v2/datasets/${defaultDatasetId}/items?token=${APIFY_TOKEN}`);
-        if (!datasetRes.ok) return [];
-        return await datasetRes.json();
-      } else if (statusData.data.status === 'FAILED' || statusData.data.status === 'ABORTED') {
-        console.log('Apify run failed: ' + statusData.data.status); return [];
-      }
-    }
-    console.log('Apify timeout'); return [];
-  } catch (e) { console.log('Apify exception: ' + e); return []; }
-}
+    if (!res.ok) { console.log('RSS error: ' + res.status); return []; }
+    const xml = await res.text();
 
-async function fetchGoogleNews(query: string): Promise<any[]> {
-  console.log('GoogleSearch query: ' + query);
-  const results = await runApifyActor('apify/google-search-scraper', {
-    queries: [query], maxPagesPerQuery: 1, resultsPerPage: 8, countryCode: 'fr', languageCode: 'fr'
-  }, 35000);
-  const items: any[] = [];
-  for (const r of results) {
-    if (r.organicResults) {
-      for (const org of r.organicResults) {
-        items.push({ titre: org.title, date: org.date || '', source: org.url });
-        if (items.length >= 8) break;
+    // Parse RSS XML items
+    const items: any[] = [];
+    const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+    let match;
+    while ((match = itemRegex.exec(xml)) !== null && items.length < 8) {
+      const itemXml = match[1];
+      const title = (itemXml.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '';
+      const link = (itemXml.match(/<link>([\s\S]*?)<\/link>/) || [])[1] || '';
+      const pubDate = (itemXml.match(/<pubDate>([\s\S]*?)<\/pubDate>/) || [])[1] || '';
+      const source = (itemXml.match(/<source[^>]*>([\s\S]*?)<\/source>/) || [])[1] || '';
+
+      // Clean CDATA and HTML entities
+      const cleanTitle = title
+        .replace(/<!\[CDATA\[|\]\]>/g, '')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .trim();
+
+      if (cleanTitle) {
+        items.push({
+          titre: cleanTitle,
+          date: pubDate,
+          source: link.replace(/<!\[CDATA\[|\]\]>/g, '').trim(),
+          media: source.replace(/<!\[CDATA\[|\]\]>/g, '').trim()
+        });
       }
     }
+    console.log('RSS found: ' + items.length + ' items');
+    return items;
+  } catch (e) {
+    console.log('RSS exception: ' + e);
+    return [];
   }
-  console.log('GoogleSearch extracted: ' + items.length + ' items for: ' + query.substring(0, 50));
-  return items;
 }
 
 // ─── Action suggestion generator ───
 function generateSuggestion(title: string, contactName: string, company: string): string {
   const t = (title || '').toLowerCase();
   const who = contactName || company;
-  if (t.match(/levée|fundrais|investis|série|fonds|million/))
+  if (t.match(/levée|fundrais|investis|série|fonds|million|financement/))
     return `Féliciter ${who} : "J'ai vu l'annonce de votre levée, bravo ! Ça doit accélérer vos ambitions commerciales..."`;
-  if (t.match(/nommé|nommée|nomination|appointed|rejoint|arrivée|nouveau.*directeur/))
+  if (t.match(/nommé|nommée|nomination|appointed|rejoint|arrivée|nouveau.*directeur|nouveau.*ceo/))
     return `Féliciter pour la nomination : "J'ai vu votre prise de poste, les 100 premiers jours sont clés pour structurer..."`;
   if (t.match(/recrut|hiring|embauche|recrutement|offre.*emploi/))
     return `Engager sur le recrutement : "Vous structurez l'équipe commerciale, c'est souvent le signal d'une belle accélération..."`;
-  if (t.match(/acquisition|rachat|merge|fusion|racheté/))
+  if (t.match(/acquisition|rachat|merge|fusion|racheté|rachète/))
     return `Rebondir sur l'acquisition : "L'intégration d'équipes commerciales post-acquisition est un moment charnière..."`;
-  if (t.match(/partenariat|partnership|alliance|collaboration/))
+  if (t.match(/partenariat|partnership|alliance|collaboration|s'associe/))
     return `Commenter le partenariat : "Un nouveau partenariat, c'est souvent un game-changer côté go-to-market..."`;
-  if (t.match(/croissance|growth|chiffre.*affaires|résultat|performance/))
+  if (t.match(/croissance|growth|chiffre.*affaires|résultat|performance|rentab/))
     return `Engager sur la croissance : "Votre trajectoire est impressionnante, le passage à l'échelle commercial est le prochain défi..."`;
-  if (t.match(/innovation|ia |intelligence artificielle|tech|produit|lancement/))
+  if (t.match(/innovation|ia |intelligence artificielle|tech|produit|lancement|lance/))
     return `Rebondir sur l'innovation : "J'ai vu votre dernière avancée, ça change la donne pour vos clients..."`;
   if (t.match(/événement|salon|conférence|webinar|event|mwc|vivatech/))
     return `Engager autour de l'événement : "J'ai vu que vous étiez présent à cet événement, les retours terrain sont toujours précieux..."`;
   return `Engager la conversation avec ${who} : "J'ai lu votre actualité récente, ça m'a interpellé..."`;
+}
+
+// ─── Safe parse dernieres_news (can be string or array) ───
+function parseDernieresNews(raw: any): any[] {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  if (typeof raw === 'string') {
+    try { const parsed = JSON.parse(raw); return Array.isArray(parsed) ? parsed : []; }
+    catch { return []; }
+  }
+  return [];
 }
 
 // ─── Main handler ───
@@ -94,7 +104,7 @@ Deno.serve(async (req: Request) => {
     const body = await req.json().catch(() => ({}));
     const filterConsultant = body.consultant_name || null;
 
-    // 1. Get all targets that have a strategy (communication_strategies exists)
+    // 1. Get all targets with a strategy
     const strats = await sb('communication_strategies?select=target_id,created_at');
     if (!strats || !strats.length) {
       return new Response(JSON.stringify({ success: true, refreshed: 0, alerts: 0, message: 'No strategies found' }), { headers: CORS_H });
@@ -120,18 +130,19 @@ Deno.serve(async (req: Request) => {
 
     console.log(`Refresh: ${staleTargets.length} stale targets out of ${allTargets.length} total (${stratTargetIds.size} with strategy)`);
 
-    // 4. Process each stale target sequentially
+    // 4. Process each stale target
     let refreshed = 0, alerts = 0;
     const details: any[] = [];
 
     for (const tg of staleTargets) {
       try {
         const ceoName = [tg.ceo_prenom, tg.ceo_nom].filter(Boolean).join(' ');
-        const searchQuery = ceoName
-          ? `"${ceoName}" OR "${tg.entreprise}" actualités OR news OR levée OR recrutement OR nomination`
-          : `"${tg.entreprise}" actualités OR news OR levée OR recrutement OR nomination`;
+        // Search query: company name + CEO name if available
+        const searchQuery = ceoName && ceoName !== 'À identifier'
+          ? `"${tg.entreprise}" OR "${ceoName}"`
+          : `"${tg.entreprise}"`;
 
-        const news = await fetchGoogleNews(searchQuery);
+        const news = await fetchGoogleNewsRSS(searchQuery);
 
         // Update targets.dernieres_news + last_news_check_at
         const update: any = { last_news_check_at: new Date().toISOString() };
@@ -142,8 +153,9 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify(update)
         });
 
-        // Detect NEW news (compare with previously stored)
-        const oldTitles = new Set((tg.dernieres_news || []).map((n: any) => (n.titre || '').toLowerCase().trim()));
+        // Detect NEW news (compare with previously stored) — safe parse
+        const oldNews = parseDernieresNews(tg.dernieres_news);
+        const oldTitles = new Set(oldNews.map((n: any) => (n.titre || '').toLowerCase().trim()));
         const newNews = news.filter((n: any) => !oldTitles.has((n.titre || '').toLowerCase().trim()));
 
         // Insert new items into target_news
@@ -158,7 +170,7 @@ Deno.serve(async (req: Request) => {
               type: 'news',
               title: n.titre || 'Actualité',
               url: n.source || null,
-              source: 'Google News',
+              source: n.media || 'Google News',
               snippet: (n.titre || '').substring(0, 200),
               contact_name: ceoName || tg.entreprise,
               action_suggestion: suggestion,
