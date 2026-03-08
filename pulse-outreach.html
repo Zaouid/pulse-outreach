@@ -2613,38 +2613,53 @@
         if (ready) $("launchBtn").onclick = () => launchAI(t.id); return
       }
 
-      // Smart resource matching — personalized per target using strategy data
-      const recLB = (() => {
+      // Smart resource matching — moved to paint() for CEO/DirCo reactivity
+      function scoreResources(persona) {
         const reco = (s.ressource_a_partager || "").toLowerCase();
         const hooks = (s.hooks_identifies || []).join(" ").toLowerCase();
         const sujets = (s.sujets_interet || []).join(" ").toLowerCase();
         const ctxWords = (reco + " " + hooks + " " + sujets).split(/[\s,;.()]+/).filter(w => w.length > 3);
-        // Score each resource
         const scored = S.livres.map(lb => {
           let score = 0;
           const titre = (lb.titre || "").toLowerCase();
-          // 1. Direct match with ressource_a_partager (highest priority)
-          if (reco && titre && reco.includes(titre.slice(0, 20))) score += 50;
-          if (reco && titre && titre.includes(reco.split("—")[0].trim().slice(0, 20))) score += 50;
-          // Fuzzy: title words in recommendation
-          const tWords = titre.split(/\s+/).filter(w => w.length > 3);
-          const matchCount = tWords.filter(w => reco.includes(w)).length;
-          if (matchCount >= 2) score += 20 + matchCount * 5;
-          // 2. Keyword matching (mots_cles vs hooks+sujets)
+          const pc = (lb.personas_cibles || []);
+          // Persona flags: P1 CEO Scale-up, P2 DirCo, P3 DG ETI, P4 DG ESN, P5 Operating Partner
+          const hasDirCo = pc.some(p => p.includes("P2"));
+          const hasCEO = pc.some(p => p.includes("P1") || p.includes("P3") || p.includes("P4") || p.includes("P5"));
+          const isExclusiveDirCo = hasDirCo && !hasCEO;
+          const isExclusiveCEO = hasCEO && !hasDirCo;
+          // 1. ressource_a_partager match — only for CEO mode
+          if (persona === "ceo" && reco) {
+            if (titre && reco.includes(titre.slice(0, 20))) score += 50;
+            if (titre && titre.includes(reco.split("—")[0].trim().slice(0, 20))) score += 50;
+            const tWords = titre.split(/\s+/).filter(w => w.length > 3);
+            const matchCount = tWords.filter(w => reco.includes(w)).length;
+            if (matchCount >= 2) score += 20 + matchCount * 5;
+          }
+          // 2. Persona scoring — strong differentiation
+          if (persona === "dirco") {
+            if (isExclusiveDirCo) score += 40;    // Best: only targets DirCo
+            else if (hasDirCo) score += 20;        // Good: includes DirCo
+            else if (isExclusiveCEO) score -= 20;  // Bad: only targets CEO
+          } else {
+            if (isExclusiveCEO) score += 40;       // Best: only targets CEO/DG
+            else if (hasCEO) score += 20;           // Good: includes CEO/DG
+            else if (isExclusiveDirCo) score -= 20; // Bad: only targets DirCo
+          }
+          // 3. Keyword matching (mots_cles vs hooks+sujets)
           const mk = (lb.mots_cles || []).map(k => k.toLowerCase());
           mk.forEach(k => { if (ctxWords.some(w => k.includes(w) || w.includes(k))) score += 8; });
-          // 3. Segment match (base relevance)
+          // 4. Segment match
           if ((lb.segments_pertinents || []).includes(t.segment)) score += 3;
-          // 4. Resume keywords match
+          // 5. Resume keywords match
           const resume = (lb.resume || "").toLowerCase();
           const resumeWords = resume.split(/\s+/).filter(w => w.length > 4);
           const overlap = ctxWords.filter(w => resumeWords.some(rw => rw.includes(w))).length;
           if (overlap > 0) score += Math.min(overlap * 2, 10);
           return { ...lb, _score: score };
         });
-        // Sort by score desc, take top 3
         return scored.sort((a, b) => b._score - a._score).slice(0, 3).filter(x => x._score > 0);
-      })();
+      }
       const branches = s.strategie_branches; const dsLog = s.data_sources_log;
 
       let smode = s.approche_ceo ? "ceo" : "dirco";
@@ -2925,6 +2940,11 @@
 
         $("S_CONTENT").innerHTML = html;
 
+        // Render resources — reactive to CEO/DirCo tab
+        const recLB = scoreResources(isCeo ? "ceo" : "dirco");
+        const resEl = $("RES_LB");
+        if (resEl) resEl.innerHTML = recLB.length ? `<div class="scd" style="margin-bottom:24px;padding:16px;"><div class="shd" style="margin-bottom:12px"><h4 style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--pp);">${ic('book', '13px')} Ressources à partager</h4></div>${recLB.map(lb => `<div class="res-card"><div style="font-weight:600;font-size:13px;margin-bottom:4px">${e(lb.titre)}</div><div style="font-size:11px;color:var(--t2);margin-bottom:6px">${e((lb.resume || "").substring(0, 120))}...</div><a href="${e(lb.landing_page)}" target="_blank" style="font-size:12px">Landing page →</a></div>`).join("")}</div>` : "";
+
         // Bind tabs
         if ($("t-ceo")) $("t-ceo").onclick = () => { smode = "ceo"; paint(); };
         if ($("t-dirco")) $("t-dirco").onclick = () => { smode = "dirco"; paint(); };
@@ -2993,8 +3013,8 @@
     ${dsHtml}
   </div>
 
-  ${recLB.length ? `<div class="scd" style="margin-bottom:24px;padding:16px;"><div class="shd" style="margin-bottom:12px"><h4 style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--pp);">${ic('book', '13px')} Ressources à partager</h4></div>${recLB.map(lb => `<div class="res-card"><div style="font-weight:600;font-size:13px;margin-bottom:4px">${e(lb.titre)}</div><div style="font-size:11px;color:var(--t2);margin-bottom:6px">${e((lb.resume || "").substring(0, 120))}...</div><a href="${e(lb.landing_page)}" target="_blank" style="font-size:12px">Landing page →</a></div>`).join("")}</div>` : ""}
-  
+  <div id="RES_LB"></div>
+
   <div id="S_CONTENT"></div>
 </div>`;
 
