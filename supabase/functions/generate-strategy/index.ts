@@ -697,10 +697,38 @@ Deno.serve(async (req: Request) => {
       if (webData.legalInfo.siren && !tg.siren) targetUpdate.siren = webData.legalInfo.siren;
       if (webData.legalInfo.forme_juridique && !tg.forme_juridique) targetUpdate.forme_juridique = webData.legalInfo.forme_juridique;
     }
+    // AUTO-ENRICHMENT: fill Éditer fields from raw data sources (no AI dependency)
+    // Industrie from Pappers NAF code
+    if (pappers?.libelle_naf && !tg.industrie) targetUpdate.industrie = pappers.libelle_naf;
+    // Telephone siege: extract from web legal page
+    if (!tg.telephone_siege && webData.legal) {
+      const telMatch = webData.legal.match(/(?:t[ée]l[ée]?phone|tel|tél|phone|☎)[^0-9]{0,20}((?:\+33|0)\s*[1-9](?:[\s.-]?\d{2}){4})/i);
+      if (telMatch) targetUpdate.telephone_siege = telMatch[1].replace(/[\s.-]/g, '');
+    }
+    // DirCo enrichment: split name into prenom/nom, set titre
+    if (orgInfo.dircoName && !tg.dirco_nom) {
+      const parts = orgInfo.dircoName.split(' ');
+      if (parts.length >= 2) { targetUpdate.dirco_prenom = parts[0]; targetUpdate.dirco_nom = parts.slice(1).join(' '); }
+      else { targetUpdate.dirco_nom = orgInfo.dircoName; }
+      if (orgInfo.dircoTitle) targetUpdate.dirco_titre = orgInfo.dircoTitle;
+    } else if (orgInfo.dircoTitle && !tg.dirco_titre) {
+      targetUpdate.dirco_titre = orgInfo.dircoTitle;
+    }
     // DirCo/sales team
     if (orgInfo.employees && !tg.effectif) targetUpdate.effectif = String(orgInfo.employees);
     if (orgInfo.salesTeamSize) targetUpdate.taille_equipe_commerciale = String(orgInfo.salesTeamSize);
-    if (orgInfo.dircoName && !tg.dirco_nom) { targetUpdate.dirco_nom = orgInfo.dircoName; if (orgInfo.dircoTitle) targetUpdate.dirco_titre = orgInfo.dircoTitle; }
+    // CEO titre from BD Person profile
+    const ceoProfile = liP ? (Array.isArray(liP) ? liP[0] : liP) : null;
+    if (ceoProfile) {
+      const ceoTitle = ceoProfile.title || ceoProfile.headline || ceoProfile.current_company_title || '';
+      if (ceoTitle && !tg.ceo_titre) targetUpdate.ceo_titre = ceoTitle;
+    }
+    // DirCo titre from BD Person profile (if scraped)
+    const dircoProfile = liDirco ? (Array.isArray(liDirco) ? liDirco[0] : liDirco) : null;
+    if (dircoProfile) {
+      const dTitle = dircoProfile.title || dircoProfile.headline || dircoProfile.current_company_title || '';
+      if (dTitle && !tg.dirco_titre) targetUpdate.dirco_titre = dTitle;
+    }
     // DURR auto (always update, overwrite) — NOTE: durr_score is a GENERATED column (auto-computed from d+u+r1+r2), do NOT include it in PATCH
     targetUpdate.durr_d = durr.d; targetUpdate.durr_u = durr.u; targetUpdate.durr_r1 = durr.r1; targetUpdate.durr_r2 = durr.r2;
     targetUpdate.durr_notes = durr.notes;
@@ -951,6 +979,24 @@ CONCISION : Sois PERCUTANT et CONCIS dans chaque champ. Les messages doivent res
     if (iu.dirco_identifie && !tg.dirco_nom) aiDurrUpdate.dirco_nom = iu.dirco_identifie;
     if (iu.clients_cles?.length > 0) aiDurrUpdate.clients_cles = iu.clients_cles;
     if (iu.go_to_market) aiDurrUpdate.go_to_market = iu.go_to_market;
+
+    // FALLBACK: if intelligence_update was truncated, fill from other AI fields or raw data
+    if (!iu.go_to_market && !tg.go_to_market) {
+      // Try to extract from analyse_prospect.proposition_valeur or strategie_globale
+      const pv = p.analyse_prospect?.proposition_valeur || '';
+      if (pv.length > 10) aiDurrUpdate.go_to_market = pv.split('.').slice(0, 2).join('.').trim();
+    }
+    if (!iu.industrie && !tg.industrie && pappers?.libelle_naf) {
+      aiDurrUpdate.industrie = pappers.libelle_naf;
+    }
+    if (!iu.taille_equipe_commerciale && !tg.taille_equipe_commerciale && orgInfo.salesTeamSize) {
+      aiDurrUpdate.taille_equipe_commerciale = String(orgInfo.salesTeamSize);
+    }
+    if (!iu.clients_cles && !tg.clients_cles) {
+      // Try to extract from analyse_prospect.enjeux or hooks
+      const hooks = p.hooks_identifies || p.sujets_interet || [];
+      if (hooks.length > 0) aiDurrUpdate.sujets_interet = hooks;
+    }
     // Fix post_url: replace AI-hallucinated URLs with real scraped post URLs
     const usedPostIdx = new Set();
     function matchPostUrl(comments: any[], posts: any[]) {
