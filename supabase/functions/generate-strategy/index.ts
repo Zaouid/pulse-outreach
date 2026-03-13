@@ -1030,6 +1030,17 @@ CONCISION : Sois PERCUTANT et CONCIS dans chaque champ. Les messages doivent res
     }
     matchPostUrl(p.commentaires_linkedin, postsArr);
     matchPostUrl(p.dirco_commentaires_linkedin, postsArr);
+    // Sanitize: remove N/A, hallucinated, or non-http URLs
+    function sanitizePostUrls(comments: any[]) {
+      if (!comments?.length) return;
+      for (const c of comments) {
+        if (c.post_url && (c.post_url === 'N/A' || c.post_url === 'n/a' || !c.post_url.startsWith('http') || c.post_url.includes('linkedin.com/posts/FAKE'))) {
+          c.post_url = '';
+        }
+      }
+    }
+    sanitizePostUrls(p.commentaires_linkedin);
+    sanitizePostUrls(p.dirco_commentaires_linkedin);
     console.log('v9.0 post_url fix: matched ' + usedPostIdx.size + ' real URLs from ' + postsArr.length + ' scraped posts');
 
     // Save strategy (DELETE then INSERT — sequential dependency)

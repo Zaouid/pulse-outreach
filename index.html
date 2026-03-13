@@ -2775,12 +2775,12 @@
             ch: "LinkedIn",
             msg: c.commentaire || c.texte || (typeof c === 'string' ? c : ''),
             c: "#60A5FA",
-            a: c.post_cible ? "Post: «" + (typeof c.post_cible === 'string' ? c.post_cible.substring(0, 70) : '') + "»" : "Commentaire LinkedIn",
+            a: (() => { const pUrl = c.post_url; const scrapedMatch = pUrl && s.prospect_posts_data?.find(p => (p.post_url || p.link) === pUrl); const interTxt = scrapedMatch?.interaction ? ' (' + scrapedMatch.interaction + ')' : ''; return c.post_cible ? "Post: «" + (typeof c.post_cible === 'string' ? c.post_cible.substring(0, 70) : '') + "»" + interTxt : "Commentaire LinkedIn"; })(),
             why: c.objectif || "Créer la visibilité et la familiarité",
-            link: c.post_url || null,
+            link: (c.post_url && c.post_url !== 'N/A' && c.post_url.startsWith('http')) ? c.post_url : null,
             sk: 'commentaire'
           };
-        }) : [{ w: "J0-7", l: "Commentaires LinkedIn", ch: "LinkedIn", msg: isCeo ? s.commentaire_linkedin : s.dirco_commentaire_linkedin, c: "#60A5FA", a: postRef ? "Commenter: «" + ((postRef.content || "").substring(0, 60)) + "...»" : "Commenter des posts pertinents", why: postRef?.why || "Créer la visibilité et la familiarité", link: postRef?.url, sk: 'commentaire' }];
+        }) : [{ w: "J0-7", l: "Commentaires LinkedIn", ch: "LinkedIn", msg: isCeo ? s.commentaire_linkedin : s.dirco_commentaire_linkedin, c: "#60A5FA", a: postRef ? "Commenter: «" + ((postRef.content || "").substring(0, 60)) + "...»" : "Commenter des posts pertinents", why: postRef?.why || "Créer la visibilité et la familiarité", link: (postRef?.url && postRef.url !== 'N/A' && postRef.url.startsWith('http')) ? postRef.url : null, sk: 'commentaire' }];
         // Calculate offset for remaining steps (after comment phase)
         const comEnd = multiCom.length > 0 ? Math.round(21 / multiCom.length) * multiCom.length : 7;
         const steps = [
@@ -2927,9 +2927,10 @@
                   <span style="padding:2px 8px;font-size:10px;font-weight:700;border-radius:4px;background:${srcBg[src] || 'rgba(113,113,122,.12)'};color:${srcCol[src] || 'var(--t2)'}">${srcIcons[src] || ''} ${src}</span>
                   ${p.date ? `<span style="font-size:10px;color:var(--t3)">${e(p.date)}</span>` : ''}
                   ${p.likes_count ? `<span style="font-size:10px;color:var(--t3)">♥ ${p.likes_count}</span>` : ''}
+                  ${p.interaction ? `<span style="font-size:10px;color:var(--t3);font-style:italic">${e(p.interaction)}</span>` : ''}
                 </div>
                 <div style="font-size:12px;color:var(--tx);line-height:1.5">${e((p.text || '').substring(0, 200))}${(p.text || '').length > 200 ? '...' : ''}</div>
-                ${p.post_url || p.link ? `<a href="${e(p.post_url || p.link)}" target="_blank" rel="noopener" style="font-size:11px;color:var(--bl);text-decoration:none;margin-top:4px;display:inline-block">${ic('linkedin','11px')} Voir le post →</a>` : ''}
+                ${(p.post_url || p.link) && (p.post_url || p.link) !== 'N/A' && (p.post_url || p.link).startsWith('http') ? `<a href="${e(p.post_url || p.link)}" target="_blank" rel="noopener" style="font-size:11px;color:var(--bl);text-decoration:none;margin-top:4px;display:inline-block">${ic('linkedin','11px')} Voir le post →</a>` : ''}
               </div>`;
             }).join('')}
           </div>`;
