@@ -1634,6 +1634,16 @@
     const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVocGZocnNvenN3anJ4dXljdWVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTU1ODIsImV4cCI6MjA4Nzc3MTU4Mn0.Hspa_kviprc6e25oTMTnYLl-m6MqFxbQ8cSr0_FqxHM";
     const supabaseCl = supabase.createClient(SB_URL, SB_KEY);
     let SB_TOKEN = SB_KEY;
+    // F4: Auto-refresh token on auth state change
+    supabaseCl.auth.onAuthStateChange((event, session) => {
+      if (session?.access_token) SB_TOKEN = session.access_token;
+      else if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED' && !session) { SB_TOKEN = SB_KEY; }
+    });
+    // F4: Session timeout — 30 min inactivity
+    let _lastActivity = Date.now();
+    const _SESSION_TIMEOUT = 30 * 60 * 1000;
+    ['click', 'keydown', 'mousemove', 'scroll'].forEach(ev => document.addEventListener(ev, () => { _lastActivity = Date.now(); if ($('sessionExpBanner')) $('sessionExpBanner').remove(); }, { passive: true }));
+    setInterval(() => { if (S.user && Date.now() - _lastActivity > _SESSION_TIMEOUT) { showSessionExpired(); } }, 60000);
     const STAGES = [{ k: "non_traite", l: "Non traité", c: "#71717A" }, { k: "strategie_generee", l: "Stratégie IA", c: "#A78BFA" }, { k: "premier_contact", l: "1er Contact", c: "#60A5FA" }, { k: "en_discussion", l: "Discussion", c: "#FBBF24" }, { k: "rdv", l: "RDV", c: "#FB923C" }, { k: "proposition", l: "Proposition", c: "#F472B6" }, { k: "gagne", l: "Gagné", c: "#3EC878" }, { k: "perdu", l: "Perdu", c: "#F87171" }];
     const SEGC = { "SaaS B2B": "#A78BFA", "ETI PME Industrielles": "#FBBF24", "ESN & ICT": "#60A5FA" };
     const DURR_DEF = [{ k: "durr_d", l: "D — Douloureux", d: "Le problème commercial est réel et mesurable", q: "Quel impact concret ce problème a-t-il sur vos résultats ?", sig: "CA stagne, quota non atteint, conversion chute" }, { k: "durr_u", l: "U — Urgent", d: "Le problème doit être résolu maintenant", q: "Que se passe-t-il si vous ne faites rien dans les 3 prochains mois ?", sig: "LBO récent, nouveau DirCo, restructuration" }, { k: "durr_r1", l: "R — Reconnu", d: "Le dirigeant reconnaît qu'il a un problème", q: "Depuis quand avez-vous identifié ce sujet ?", sig: "Il en parle, cherche des solutions, a déjà tenté des choses" }, { k: "durr_r2", l: "R — Récurrent", d: "Ce n'est pas un accident, c'est structurel", q: "Ce problème est-il nouveau ou revient-il régulièrement ?", sig: "Revient chaque trimestre, chaque année, à chaque recrutement" }];
@@ -1747,6 +1757,14 @@
       $("LS").style.display = "none"; $("A").classList.add("on");
       $("UN").textContent = name; $("UR").innerHTML = S.admin ? ic("admin", "12px") + " Administrateur" : "Consultant";
       renderNav(); await loadData(); nav("dashboard")
+    }
+    function showSessionExpired() {
+      if ($('sessionExpBanner')) return;
+      const b = document.createElement('div'); b.id = 'sessionExpBanner';
+      b.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:rgba(248,113,113,.95);padding:12px 24px;display:flex;align-items:center;justify-content:center;gap:12px;color:#fff;font-size:14px;font-weight:600';
+      b.innerHTML = `⏱ Session expirée (30 min d'inactivité) <button onclick="logout()" style="padding:6px 16px;background:#fff;color:#F87171;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px">Se reconnecter</button>`;
+      document.body.appendChild(b);
+      logout();
     }
     function logout() {
       supabaseCl.auth.signOut();
