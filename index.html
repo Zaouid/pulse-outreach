@@ -2025,7 +2025,63 @@
   <h3 style="font-family:var(--fh);margin-bottom:14px">Performance</h3>
   <div class="cd" style="margin-bottom:24px"><div class="tw"><table><thead><tr><th>Consultant</th><th>Cibles</th><th>Stratégies</th><th>Contactées</th><th>RDV</th><th>Signés</th></tr></thead><tbody>${Object.entries(byC).map(([n, d]) => `<tr style="cursor:default"><td style="font-weight:600">${e(n)}</td><td>${d.t}</td><td style="color:var(--pp)">${d.s}</td><td style="color:var(--yw)">${d.c}</td><td style="color:var(--g)">${d.r}</td><td style="font-weight:700;color:var(--g)">${d.sg}</td></tr>`).join("")}</tbody></table></div></div>
   <h3 style="font-family:var(--fh);margin-bottom:14px">Pipeline</h3>
-  <div style="display:flex;gap:10px;flex-wrap:wrap">${STAGES.map(s => `<div class="sc" style="--ac:${s.c};flex:1;min-width:90px;text-align:center"><div class="v" style="font-size:20px">${t.filter(x => x.pipeline_etape === s.k).length}</div><div class="l">${s.l}</div></div>`).join("")}</div>`;
+  <div style="display:flex;gap:10px;flex-wrap:wrap">${STAGES.map(s => `<div class="sc" style="--ac:${s.c};flex:1;min-width:90px;text-align:center"><div class="v" style="font-size:20px">${t.filter(x => x.pipeline_etape === s.k).length}</div><div class="l">${s.l}</div></div>`).join("")}</div>
+
+  ${(() => {
+    // F1: Funnel conversion
+    const total = t.length || 1;
+    const funnel = STAGES.map(st => ({ l: st.l, c: st.c, n: t.filter(x => x.pipeline_etape === st.k).length }));
+    const maxF = Math.max(...funnel.map(f => f.n), 1);
+    const funnelHtml = funnel.map(f => `<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><div style="width:120px;font-size:11px;color:var(--t2);text-align:right;flex-shrink:0">${f.l}</div><div style="flex:1;background:var(--s1);border-radius:4px;height:22px;overflow:hidden"><div style="width:${Math.round(f.n / maxF * 100)}%;height:100%;background:${f.c};border-radius:4px;display:flex;align-items:center;padding-left:8px"><span style="font-size:10px;font-weight:700;color:#000">${f.n}</span></div></div><div style="width:40px;font-size:11px;color:var(--t3);text-align:right">${Math.round(f.n / total * 100)}%</div></div>`).join('');
+
+    // F1: Heatmap warmth consultant × segment
+    const segs = [...new Set(t.map(x => x.segment).filter(Boolean))];
+    const consNames = [...new Set(t.map(x => x.consultant_name).filter(Boolean))].sort();
+    const heatCells = consNames.map(cn => {
+      const cells = segs.map(sg => {
+        const subset = t.filter(x => x.consultant_name === cn && x.segment === sg);
+        if (!subset.length) return '<td style="text-align:center;font-size:11px;color:var(--t3)">—</td>';
+        const avg = Math.round(subset.reduce((s, x) => s + (x.warmth_score || 0), 0) / subset.length * 10) / 10;
+        const bg = avg >= 7 ? 'rgba(52,211,153,.2)' : avg >= 4 ? 'rgba(251,191,36,.15)' : avg >= 1 ? 'rgba(248,113,113,.1)' : 'rgba(255,255,255,.03)';
+        const col = avg >= 7 ? 'var(--g)' : avg >= 4 ? '#FBBF24' : avg >= 1 ? 'var(--rd)' : 'var(--t3)';
+        return `<td style="text-align:center;font-size:12px;font-weight:600;color:${col};background:${bg}">${avg}</td>`;
+      });
+      return `<tr><td style="font-weight:600;font-size:12px">${e(cn.split(' ')[0])}</td>${cells.join('')}</tr>`;
+    }).join('');
+
+    // F1: Top 5 cibles chaudes
+    const hot = t.filter(x => (x.warmth_score || 0) >= 5).sort((a, b) => (b.warmth_score || 0) - (a.warmth_score || 0)).slice(0, 5);
+    const hotHtml = hot.length ? hot.map(h => `<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--s1);border-radius:8px;margin-bottom:6px;cursor:pointer" onclick="openDetail('${h.id}')"><div style="font-weight:700;font-size:18px;color:${(h.warmth_score || 0) >= 7 ? 'var(--g)' : '#FBBF24'};width:32px">${h.warmth_score || 0}</div><div><div style="font-size:13px;font-weight:600">${e(h.entreprise)}</div><div style="font-size:11px;color:var(--t3)">${e(h.ceo_prenom || '')} ${e(h.ceo_nom || '')} · ${e(h.segment || '')}</div></div><div style="margin-left:auto;font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(52,211,153,.1);color:var(--g)">${e(h.pipeline_etape || 'non_traite')}</div></div>`).join('') : '<div style="font-size:12px;color:var(--t3)">Aucune cible avec warmth >= 5</div>';
+
+    // F5: Admin overdue notifications
+    const today = new Date().toISOString().split('T')[0];
+    const overdueByC = {};
+    t.forEach(x => {
+      if (x.prochaine_action_date && x.prochaine_action_date < today && x.pipeline_etape !== 'gagne' && x.pipeline_etape !== 'perdu' && x.consultant_name) {
+        if (!overdueByC[x.consultant_name]) overdueByC[x.consultant_name] = [];
+        overdueByC[x.consultant_name].push(x);
+      }
+    });
+    const overdueTotal = Object.values(overdueByC).reduce((s, arr) => s + arr.length, 0);
+    const overdueHtml = overdueTotal > 0 ? `<div style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:10px;padding:14px 18px;margin-bottom:20px"><div style="font-size:13px;font-weight:700;color:var(--rd);margin-bottom:10px">⚠ ${overdueTotal} action${overdueTotal > 1 ? 's' : ''} en retard</div><div class="tw"><table><thead><tr><th>Consultant</th><th>Retards</th><th>Cible la + urgente</th></tr></thead><tbody>${Object.entries(overdueByC).sort((a, b) => b[1].length - a[1].length).map(([cn, arr]) => { const urgent = arr.sort((a, b) => a.prochaine_action_date.localeCompare(b.prochaine_action_date))[0]; return `<tr><td style="font-weight:600">${e(cn)}</td><td style="color:var(--rd);font-weight:700">${arr.length}</td><td style="cursor:pointer;color:var(--bl)" onclick="openDetail('${urgent.id}')">${e(urgent.entreprise)} <span style="font-size:10px;color:var(--t3)">(${urgent.prochaine_action_date})</span></td></tr>`; }).join('')}</tbody></table></div></div>` : '';
+
+    // F1: Performance semaine
+    const now = new Date();
+    const weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay() + 1); const ws2 = weekStart.toISOString().split('T')[0];
+    const prevWeekStart = new Date(weekStart); prevWeekStart.setDate(prevWeekStart.getDate() - 7); const pws = prevWeekStart.toISOString().split('T')[0];
+    const thisWeek = t.filter(x => x.date_dernier_contact && x.date_dernier_contact >= ws2).length;
+    const prevWeek = t.filter(x => x.date_dernier_contact && x.date_dernier_contact >= pws && x.date_dernier_contact < ws2).length;
+    const wkDiff = thisWeek - prevWeek;
+    const wkIcon = wkDiff > 0 ? '↑' : wkDiff < 0 ? '↓' : '=';
+    const wkCol = wkDiff > 0 ? 'var(--g)' : wkDiff < 0 ? 'var(--rd)' : 'var(--t3)';
+
+    return `${overdueHtml}
+  <div class="g2" style="margin-top:24px;gap:16px">
+    <div class="scd" style="margin:0;padding:16px"><div class="shd" style="margin-bottom:12px"><h4 style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--t3)">Funnel de Conversion</h4><span style="margin-left:auto;font-size:12px;color:${wkCol};font-weight:700">${wkIcon} ${thisWeek} actions cette semaine (${wkDiff >= 0 ? '+' : ''}${wkDiff} vs sem. préc.)</span></div>${funnelHtml}</div>
+    <div class="scd" style="margin:0;padding:16px"><div class="shd" style="margin-bottom:12px"><h4 style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--t3)">Warmth Moyen par Consultant × Segment</h4></div><div class="tw"><table><thead><tr><th></th>${segs.map(sg => `<th style="font-size:11px">${e(sg).substring(0, 12)}</th>`).join('')}</tr></thead><tbody>${heatCells}</tbody></table></div></div>
+  </div>
+  <div style="margin-top:16px"><div class="scd" style="margin:0;padding:16px"><div class="shd" style="margin-bottom:12px"><h4 style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--t3)">${ic('fire','13px')} Top Cibles Chaudes</h4></div>${hotHtml}</div></div>`;
+  })()}`;
     }
     function rCDash(el) {
       const my = S.targets, s = S.strats;
@@ -2039,8 +2095,13 @@
         else { a = "Avancer le deal"; p = 6 }
         return { ...t, _a: a, _p: p }
       }).sort((a, b) => a._p - b._p).slice(0, 10);
+      // F5: Consultant overdue notifications
+      const today = new Date().toISOString().split('T')[0];
+      const overdue = my.filter(x => x.prochaine_action_date && x.prochaine_action_date < today && x.pipeline_etape !== 'gagne' && x.pipeline_etape !== 'perdu').sort((a, b) => a.prochaine_action_date.localeCompare(b.prochaine_action_date));
+      const overdueHtml = overdue.length > 0 ? `<div style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:10px;padding:14px 18px;margin-bottom:20px"><div style="font-size:13px;font-weight:700;color:var(--rd);margin-bottom:10px">⚠ ${overdue.length} action${overdue.length > 1 ? 's' : ''} en retard</div>${overdue.slice(0, 5).map(o => `<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(248,113,113,.04);border-radius:8px;margin-bottom:4px;cursor:pointer" onclick="openDetail('${o.id}')"><div style="font-size:12px;font-weight:600">${e(o.entreprise)}</div><div style="margin-left:auto;font-size:10px;color:var(--rd)">${o.prochaine_action_date}</div><div style="font-size:11px;color:var(--t3)">${e(o.prochaine_action || '')}</div></div>`).join('')}${overdue.length > 5 ? `<div style="font-size:11px;color:var(--t3);margin-top:6px">+ ${overdue.length - 5} autres...</div>` : ''}</div>` : '';
+
       el.innerHTML = `<h2 class="pt">Bonjour ${e(S.user.split(" ")[0])}</h2>
-  ${rNewsBanner()}
+  ${rNewsBanner()}${overdueHtml}
   <div class="sg"><div class="sc"><div class="v">${my.length}</div><div class="l">Mes cibles</div></div><div class="sc" style="--ac:var(--pp)"><div class="v">${my.filter(x => s.some(z => z.target_id === x.id)).length}</div><div class="l">Stratégies IA</div></div><div class="sc" style="--ac:var(--bl)"><div class="v">${my.filter(x => x.action_connecte || x.action_email_envoye).length}</div><div class="l">Contactées</div></div><div class="sc" style="--ac:var(--og)"><div class="v">${my.filter(x => x.action_rdv).length}</div><div class="l">RDV</div></div></div>
   ${rActionsDuJour()}`
     }

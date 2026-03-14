@@ -13,8 +13,7 @@ async function sb(path: string, opts: any = {}) { const r = await fetch(SUPABASE
 
 async function bdDataset(dsId: string, input: any[], timeout = 55000): Promise<any> {
   const label = dsId === DS_LI_PERSON ? 'person' : dsId === DS_LI_COMPANY ? 'company' : dsId === DS_LI_POSTS ? 'posts' : dsId;
-  try {
-    console.log('BD[' + label + '] trigger url=' + JSON.stringify(input).slice(0, 200));
+  const attempt = async (): Promise<any> => {
     const tr = await fetch('https://api.brightdata.com/datasets/v3/trigger?dataset_id=' + dsId + '&format=json&include_errors=true', { method: 'POST', headers: BD_H, body: JSON.stringify(input) });
     if (!tr.ok) { const tb = await tr.text(); console.log('BD[' + label + '] trigger fail:' + tr.status + ' body=' + tb.slice(0, 300)); return null; }
     const td = await tr.json(); if (!td?.snapshot_id) { console.log('BD[' + label + '] no snapshot, resp=' + JSON.stringify(td).slice(0, 300)); return null; }
@@ -30,7 +29,6 @@ async function bdDataset(dsId: string, input: any[], timeout = 55000): Promise<a
       console.log('BD[' + label + '] done in ' + ((Date.now() - t0) / 1000).toFixed(1) + 's polls=' + pollCount + ' body=' + b.slice(0, 400));
       try {
         const parsed = JSON.parse(b);
-        // Check if BD returned errors
         if (Array.isArray(parsed) && parsed.length > 0 && parsed[0]?.error) { console.log('BD[' + label + '] returned error: ' + JSON.stringify(parsed[0].error).slice(0, 200)); }
         if (Array.isArray(parsed) && parsed.length === 0) { console.log('BD[' + label + '] returned empty array'); }
         return parsed;
@@ -38,7 +36,23 @@ async function bdDataset(dsId: string, input: any[], timeout = 55000): Promise<a
     }
     console.log('BD[' + label + '] TIMEOUT after ' + (timeout / 1000) + 's polls=' + pollCount);
     return null;
-  } catch (e) { console.log('BD[' + label + '] err:' + e); return null; }
+  };
+  try {
+    console.log('BD[' + label + '] trigger url=' + JSON.stringify(input).slice(0, 200));
+    const result = await attempt();
+    if (result != null) return result;
+    // Retry once after 3s
+    console.log('v9.1 RETRY: ' + dsId + ' attempt 2');
+    await new Promise(r => setTimeout(r, 3000));
+    return await attempt();
+  } catch (e) {
+    console.log('BD[' + label + '] err:' + e + ' — retrying...');
+    console.log('v9.1 RETRY: ' + dsId + ' attempt 2');
+    try {
+      await new Promise(r => setTimeout(r, 3000));
+      return await attempt();
+    } catch (e2) { console.log('BD[' + label + '] retry err:' + e2); return null; }
+  }
 }
 
 // Scrape main + about/team + MENTIONS LEGALES for SIREN/legal name
