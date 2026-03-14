@@ -2109,12 +2109,42 @@
     // ===== TARGETS =====
     function rTargets(el) {
       const f = S.fl;
-      el.innerHTML = `<h2 class="pt">${S.admin ? "Toutes les Cibles" : "Mes Cibles"} <small id="TC">0</small>${S.admin ? `<button class="bt bp bsm" style="margin-left:16px;vertical-align:middle" id="addTBtn">+ Ajouter une cible</button>` : ""}</h2>
+      el.innerHTML = `<h2 class="pt">${S.admin ? "Toutes les Cibles" : "Mes Cibles"} <small id="TC">0</small>${S.admin ? `<button class="bt bp bsm" style="margin-left:16px;vertical-align:middle" id="addTBtn">+ Ajouter une cible</button><button class="bt bsm" style="margin-left:8px;vertical-align:middle;background:var(--gd);color:var(--g);border:1px solid rgba(52,211,153,.3)" id="batchGenBtn">⚡ Générer en lot</button>` : ""}</h2><div id="batchGenStatus" style="display:none"></div>
   <div class="fb"><input id="fq" placeholder="⌕ Rechercher..." value="${e(f.q)}"><select id="fseg"><option value="">Tous segments</option><option value="SaaS B2B"${f.seg === "SaaS B2B" ? " selected" : ""}>SaaS B2B</option><option value="ETI PME Industrielles"${f.seg === "ETI PME Industrielles" ? " selected" : ""}>ETI / PME</option><option value="ESN & ICT"${f.seg === "ESN & ICT" ? " selected" : ""}>ESN & ICT</option></select><select id="fstg"><option value="">Toutes étapes</option>${STAGES.map(s => `<option value="${s.k}"${f.stg === s.k ? " selected" : ""}>${s.l}</option>`).join("")}</select><select id="fpri"><option value="">Toutes priorités</option><option value="P1"${f.pri === "P1" ? " selected" : ""}>P1 — Haute</option><option value="P2"${f.pri === "P2" ? " selected" : ""}>P2 — Moyenne</option><option value="P3"${f.pri === "P3" ? " selected" : ""}>P3 — Basse</option><option value="__none__"${f.pri === "__none__" ? " selected" : ""}>Non définie</option></select>${S.admin ? `<select id="fcons"><option value="">Tous consultants</option><option value="__none__"${f.cons === "__none__" ? " selected" : ""}>Non assignées</option>${S.cons.filter(c => c.is_active !== false).map(c => `<option value="${e(c.name)}"${f.cons === c.name ? " selected" : ""}>${e(c.name)}</option>`).join("")}</select>` : ""}</div>
   <div class="cd"><div class="tw"><table><thead><tr><th>Entreprise</th><th>Segment</th><th>Contact</th><th>DURR</th><th>Pipeline</th><th>Actions</th>${S.admin ? "<th>Consultant</th>" : ""}</tr></thead><tbody id="TBD"></tbody></table></div></div>`;
       $("fq").oninput = function () { S.fl.q = this.value; rTRows() }; $("fseg").onchange = function () { S.fl.seg = this.value; rTRows() }; $("fstg").onchange = function () { S.fl.stg = this.value; rTRows() }; $("fpri").onchange = function () { S.fl.pri = this.value; rTRows() }; if (S.admin && $("fcons")) $("fcons").onchange = function () { S.fl.cons = this.value; rTRows() };
       if (S.admin && $("addTBtn")) $("addTBtn").onclick = showAddTarget;
+      if (S.admin && $("batchGenBtn")) $("batchGenBtn").onclick = batchGenerate;
       rTRows();
+    }
+    // F6: Batch strategy generation for P1 targets without strategy
+    async function batchGenerate() {
+      const stIds = new Set(S.strats.map(s => s.target_id));
+      const eligible = S.targets.filter(t => t.priorite === 'P1' && !stIds.has(t.id) && t.linkedin_ceo);
+      if (!eligible.length) { alert('Aucune cible P1 éligible (sans stratégie + avec LinkedIn CEO)'); return }
+      if (!confirm(`Générer ${eligible.length} stratégie(s) pour :\n${eligible.map(t => '• ' + t.entreprise).join('\n')}\n\nContinuer ?`)) return;
+      window._batchStop = false;
+      const el = $('batchGenStatus'); el.style.display = 'block';
+      $('batchGenBtn').disabled = true;
+      let done = 0, errs = 0;
+      const upd = () => { el.innerHTML = `<div style="padding:12px 16px;background:var(--s2);border-radius:var(--rs);margin-bottom:12px;display:flex;align-items:center;gap:12px"><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--tx)">Génération en lot: ${done}/${eligible.length}${errs ? ` (${errs} erreur${errs>1?'s':''})` : ''}</div><div style="margin-top:6px;height:6px;background:var(--bd);border-radius:3px;overflow:hidden"><div style="height:100%;background:var(--g);width:${(done/eligible.length*100).toFixed(0)}%;transition:width .3s"></div></div></div><button class="bt bsm" style="background:rgba(248,113,113,.15);color:var(--rd);border:1px solid rgba(248,113,113,.3)" onclick="window._batchStop=true">Stop</button></div>` };
+      upd();
+      for (const t of eligible) {
+        if (window._batchStop) break;
+        try {
+          const r = await fetch(SB_URL + '/functions/v1/generate-strategy', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + SB_TOKEN }, body: JSON.stringify({ target_id: t.id, consultant_name: t.consultant_name || S.user }) });
+          const d = await r.json().catch(() => ({}));
+          if (r.ok && d.success) done++; else { done++; errs++; }
+        } catch (_) { done++; errs++; }
+        upd();
+        if (!window._batchStop && done < eligible.length) await new Promise(r => setTimeout(r, 5000));
+      }
+      S.strats = await GET('communication_strategies?select=*');
+      S.targets = await GET('targets?select=*');
+      el.innerHTML = `<div style="padding:12px 16px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border-radius:var(--rs);margin-bottom:12px;font-size:13px;color:var(--g)">✓ Terminé: ${done - errs} stratégie(s) générée(s)${errs ? `, ${errs} erreur(s)` : ''}${window._batchStop ? ' (arrêté)' : ''}</div>`;
+      $('batchGenBtn').disabled = false;
+      setTimeout(() => { el.style.display = 'none' }, 10000);
+      render();
     }
     function rTRows() {
       const f = S.fl; let items = S.targets.slice();
@@ -3442,6 +3472,8 @@
       const t = S.sel, nv = !t[f], p = { [f]: nv }; if (df) p[df] = nv ? new Date().toISOString().split("T")[0] : null;
       if (nv) { if (f === "action_connecte" && t.pipeline_etape === "strategie_generee") p.pipeline_etape = "premier_contact"; if (f === "action_echange_en_cours" && ["strategie_generee", "premier_contact"].includes(t.pipeline_etape)) p.pipeline_etape = "en_discussion"; if (f === "action_rdv" && ["premier_contact", "en_discussion"].includes(t.pipeline_etape)) p.pipeline_etape = "rdv"; if (f === "action_proposition") p.pipeline_etape = "proposition"; if (f === "action_signe") p.pipeline_etape = "gagne" }
       const u = await PATCH(`targets?id=eq.${t.id}`, p); if (u?.[0]) { const i = S.targets.findIndex(x => x.id === t.id); if (i >= 0) S.targets[i] = u[0]; S.sel = u[0]; rBadges(u[0]); rDC() }
+      // F2: Log interaction when action is checked (fire & forget)
+      if (nv) { const canalMap = { action_connecte: 'linkedin', action_email_envoye: 'email', action_appel: 'telephone', action_rdv: 'rdv', action_demo: 'demo', action_proposition: 'email', action_signe: 'signature', action_echange_en_cours: 'linkedin', action_commente_post: 'linkedin' }; POST('interactions', { target_id: t.id, canal: canalMap[f] || 'autre', direction: 'outbound', contenu_envoye: f.replace('action_', '').replace(/_/g, ' '), date_interaction: new Date().toISOString() }).catch(() => {}) }
     }
     async function updTF(f, v) { const t = S.sel; const u = await PATCH(`targets?id=eq.${t.id}`, { [f]: v || null }); if (u?.[0]) { const i = S.targets.findIndex(x => x.id === t.id); if (i >= 0) S.targets[i] = u[0]; S.sel = u[0]; rBadges(u[0]) } }
 

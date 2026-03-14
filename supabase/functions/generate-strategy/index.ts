@@ -1189,6 +1189,13 @@ CONCISION : Sois PERCUTANT et CONCIS dans chaque champ. Les messages doivent res
       sb('targets?id=eq.' + target_id, { method: 'PATCH', body: JSON.stringify(finalTargetUpdate) })
     ];
     if (ac) finalWrites.push(sb('agent_config?consultant_name=eq.' + encodeURIComponent(con), { method: 'PATCH', body: JSON.stringify({ total_strategies_generated: (ac.total_strategies_generated || 0) + 1 }) }));
+    // F2: Auto-create pipeline opportunity + interaction log
+    finalWrites.push(
+      fetch(SUPABASE_URL + '/rest/v1/pipeline_opportunities', { method: 'POST', headers: SB_H, body: JSON.stringify({ target_id, consultant_id: ac?.consultant_id || null, consultant_name: con, entreprise: tg.entreprise, contact_nom: tg.ceo_prenom ? (tg.ceo_prenom + ' ' + (tg.ceo_nom || '')).trim() : tg.ceo_nom || null, offre_pulse: tg.segment || null, montant_estime: tg.ca_estime || null, etape: 'strategie_generee', source: 'outbound', date_entree_pipeline: new Date().toISOString().split('T')[0] }) }).then(r => { if (!r.ok) console.error('Pipeline INSERT err: ' + r.status); })
+    );
+    finalWrites.push(
+      fetch(SUPABASE_URL + '/rest/v1/interactions', { method: 'POST', headers: SB_H, body: JSON.stringify({ target_id, consultant_id: ac?.consultant_id || null, canal: 'ia', direction: 'outbound', contenu_envoye: 'Stratégie IA générée — ' + (p.angle_attaque || 'analyse prospect'), date_interaction: new Date().toISOString() }) }).then(r => { if (!r.ok) console.error('Interaction INSERT err: ' + r.status); })
+    );
     await Promise.all(finalWrites);
     console.log('v9.0 TOTAL ' + tg.entreprise + ': ' + ((Date.now() - T0) / 1000).toFixed(1) + 's fallback=' + usedFallback);
     const finalDurrScore = [aiDurrUpdate.durr_d ?? durr.d, aiDurrUpdate.durr_u ?? durr.u, aiDurrUpdate.durr_r1 ?? durr.r1, aiDurrUpdate.durr_r2 ?? durr.r2].filter(Boolean).length;
