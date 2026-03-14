@@ -940,6 +940,18 @@
       color: var(--g-light);
       transform: translateY(-1px);
     }
+    .em-ta { width:100%; background:var(--s1); border:1px solid var(--bd); border-radius:6px; color:var(--tx); padding:10px; font-size:12px; font-family:var(--fm); line-height:1.6; resize:vertical; min-height:60px; }
+    .em-ta:focus { outline:none; border-color:rgba(96,165,250,.5); box-shadow:0 0 0 2px rgba(96,165,250,.15); }
+    .em-acts { display:flex; gap:6px; margin-top:8px; }
+    .em-acts button { padding:5px 14px; font-size:11px; font-weight:600; border-radius:5px; cursor:pointer; transition:all .2s; }
+    .em-save { background:rgba(52,211,153,.12); color:#34D399; border:1px solid rgba(52,211,153,.3); }
+    .em-save:hover { background:rgba(52,211,153,.25); }
+    .em-cancel { background:rgba(255,255,255,.05); color:var(--t3); border:1px solid var(--bd); }
+    .em-cancel:hover { background:rgba(255,255,255,.1); }
+    .em-edit { background:none; border:1px solid var(--bd); border-radius:5px; color:var(--t3); padding:5px 10px; font-size:11px; cursor:pointer; transition:all .2s; }
+    .em-edit:hover { border-color:rgba(96,165,250,.4); color:#60A5FA; background:rgba(96,165,250,.08); }
+    .dt-ed { background:transparent; border:1px solid var(--bd); border-radius:4px; color:var(--t3); font-size:10px; padding:2px 6px; cursor:pointer; transition:border-color .2s; }
+    .dt-ed:focus { border-color:rgba(96,165,250,.5); outline:none; }
 
     /* TOAST */
     #TOAST {
@@ -2879,6 +2891,53 @@
         }
       }
 
+      async function saveStepMsg(stepKey, idx, newText) {
+        const isCeo = smode === 'ceo';
+        let patch = {};
+        if (stepKey === 'commentaire') {
+          const field = isCeo ? 'commentaires_multi' : 'dirco_commentaires_multi';
+          const arr = JSON.parse(JSON.stringify(s[field] || []));
+          if (arr[idx]) { arr[idx].commentaire = newText; patch[field] = arr; }
+          else return;
+        } else {
+          const MAP = {
+            connexion: ['message_connexion', 'dirco_message_connexion'],
+            suivi: ['message_suivi_1', 'dirco_message_suivi'],
+            email: ['message_email', 'dirco_message_email'],
+            relance: ['message_relance_guide', 'dirco_message_relance_guide'],
+            rdv: ['message_proposition_rdv', 'dirco_message_proposition_rdv'],
+            nurturing: ['message_nurturing_long', 'dirco_message_nurturing']
+          };
+          const pair = MAP[stepKey];
+          if (!pair) return;
+          patch[isCeo ? pair[0] : pair[1]] = newText;
+        }
+        const upd = await PATCH('communication_strategies?id=eq.' + s.id, patch);
+        if (upd?.[0]) {
+          Object.assign(s, upd[0]);
+          const si = S.strats.findIndex(x => x.id === s.id);
+          if (si >= 0) S.strats[si] = s;
+          const toast = document.createElement('div');
+          toast.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;padding:10px 16px;background:rgba(62,200,120,.95);color:#000;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.3)';
+          toast.textContent = '\u2713 Message sauvegardé';
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 2000);
+          paint();
+        }
+      }
+
+      async function saveStepDate(stepKey, newDate) {
+        const pfx = smode === 'ceo' ? 'step_' : 'dirco_step_';
+        const patch = { [pfx + stepKey + '_date']: newDate || null };
+        const upd = await PATCH('communication_strategies?id=eq.' + s.id, patch);
+        if (upd?.[0]) {
+          Object.assign(s, upd[0]);
+          const si = S.strats.findIndex(x => x.id === s.id);
+          if (si >= 0) S.strats[si] = s;
+          paint();
+        }
+      }
+
       const paint = () => {
         const isCeo = smode === "ceo";
         const approche = isCeo ? s.approche_ceo : s.approche_dirco;
@@ -3098,7 +3157,9 @@
             ? 'background:rgba(52,211,153,.15);border-color:var(--g);color:var(--g)'
             : 'background:rgba(255,255,255,.04);border-color:var(--bd);color:var(--t3)';
           const div = document.createElement("div"); div.className = "ts";
-          div.innerHTML = `<div class="dot2" style="background:${isChecked ? 'var(--g)' : isDone ? 'var(--g)' : st.c};${isChecked || isDone ? 'box-shadow:0 0 8px rgba(52,211,153,.4)' : ''}"></div><div class="scd" style="${isChecked ? 'border-color:rgba(52,211,153,.2);background:rgba(52,211,153,.02)' : isDone ? 'border-color:rgba(52,211,153,.25);background:rgba(52,211,153,.03)' : ''}"><div class="shd"><button class="ichk" data-ik="${itemKey}" style="width:22px;height:22px;min-width:22px;border-radius:5px;border:1.5px solid;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;font-weight:700;transition:all .2s;${chkStyle}" title="Marquer comme utilisé">${isChecked ? '✓' : ''}</button>${badge(st.w, st.c)}<strong style="font-size:13px;${isChecked ? 'text-decoration:line-through;opacity:.6' : ''}">${st.l}</strong><span style="margin-left:auto;display:flex;align-items:center;gap:6px">${isChecked ? '<span style="padding:2px 8px;font-size:10px;font-weight:700;border-radius:4px;background:rgba(52,211,153,.15);color:var(--g)">✓ Utilisé</span>' : isDone ? '<span style="padding:2px 8px;font-size:10px;font-weight:700;border-radius:4px;background:rgba(52,211,153,.15);color:var(--g)">✓ Fait</span>' : ''}${badge(st.ch, "#71717A")}</span></div><div class="sbd"><div style="font-size:12px;color:var(--t2);margin-bottom:8px">${st.a}</div>${st.msg ? `<div class="sm"><span>${e(st.msg)}</span><button class="cpb" data-sk="${st.sk || ''}">Copier</button></div>` : ""}${st.link ? `<a href="${e(st.link)}" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:6px;font-size:11px;color:var(--bl);text-decoration:none;padding:3px 8px;background:rgba(96,165,250,.1);border-radius:4px">${ic('linkedin', '11px')} Voir le post →</a>` : ""}<div style="font-size:11px;font-style:italic;color:${st.c};margin-top:8px">◈ ${st.why}</div></div></div>`;
+          const _dateField = _pfx2 + (st.sk || 'x') + '_date';
+          const _dateVal = s[_dateField] || '';
+          div.innerHTML = `<div class="dot2" style="background:${isChecked ? 'var(--g)' : isDone ? 'var(--g)' : st.c};${isChecked || isDone ? 'box-shadow:0 0 8px rgba(52,211,153,.4)' : ''}"></div><div class="scd" style="${isChecked ? 'border-color:rgba(52,211,153,.2);background:rgba(52,211,153,.02)' : isDone ? 'border-color:rgba(52,211,153,.25);background:rgba(52,211,153,.03)' : ''}"><div class="shd"><button class="ichk" data-ik="${itemKey}" style="width:22px;height:22px;min-width:22px;border-radius:5px;border:1.5px solid;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;font-weight:700;transition:all .2s;${chkStyle}" title="Marquer comme utilisé">${isChecked ? '✓' : ''}</button>${badge(st.w, st.c)}${st.sk ? `<input type="date" class="dt-ed" value="${_dateVal}" data-sk="${st.sk}" title="Date planifiée"/>` : ''}<strong style="font-size:13px;${isChecked ? 'text-decoration:line-through;opacity:.6' : ''}">${st.l}</strong><span style="margin-left:auto;display:flex;align-items:center;gap:6px">${isChecked ? '<span style="padding:2px 8px;font-size:10px;font-weight:700;border-radius:4px;background:rgba(52,211,153,.15);color:var(--g)">✓ Utilisé</span>' : isDone ? '<span style="padding:2px 8px;font-size:10px;font-weight:700;border-radius:4px;background:rgba(52,211,153,.15);color:var(--g)">✓ Fait</span>' : ''}${badge(st.ch, "#71717A")}</span></div><div class="sbd"><div style="font-size:12px;color:var(--t2);margin-bottom:8px">${st.a}</div>${st.msg ? `<div class="sm"><span class="sm-txt">${e(st.msg)}</span><div style="display:flex;gap:4px;flex-shrink:0"><button class="cpb" data-sk="${st.sk || ''}">Copier</button><button class="em-edit" data-sk="${st.sk || ''}" data-idx="${st.idx || 0}" title="Modifier le message">✏️</button></div></div>` : ""}${st.link ? `<a href="${e(st.link)}" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:6px;font-size:11px;color:var(--bl);text-decoration:none;padding:3px 8px;background:rgba(96,165,250,.1);border-radius:4px">${ic('linkedin', '11px')} Voir le post →</a>` : ""}<div style="font-size:11px;font-style:italic;color:${st.c};margin-top:8px">◈ ${st.why}</div></div></div>`;
           // Bind item check button
           const ichk = div.querySelector(".ichk");
           if (ichk) ichk.onclick = ev => { ev.stopPropagation(); toggleItemCheck(ichk.dataset.ik); };
@@ -3107,6 +3168,30 @@
             const cpb = div.querySelector(".cpb");
             if (cpb) cpb.onclick = ev => { ev.stopPropagation(); cpTxt(st.msg); cpb.textContent = "✓ Copié"; setTimeout(() => cpb.textContent = "Copier", 2000); toggleItemCheck(itemKey); if (st.sk) autoMarkStep(st.sk, true); }
           }
+          // Bind edit button
+          const eBtn = div.querySelector(".em-edit");
+          if (eBtn && st.msg) {
+            eBtn.onclick = ev => {
+              ev.stopPropagation();
+              const smDiv = eBtn.closest(".sm");
+              const txtSpan = smDiv.querySelector(".sm-txt");
+              const btns = smDiv.querySelector("div:last-child");
+              // Replace text span with textarea
+              const ta = document.createElement("textarea");
+              ta.className = "em-ta";
+              ta.value = st.msg;
+              ta.rows = Math.max(3, st.msg.split('\n').length + 1);
+              txtSpan.replaceWith(ta);
+              ta.focus();
+              // Replace buttons with save/cancel
+              btns.innerHTML = `<button class="em-acts em-save" style="padding:5px 14px;font-size:11px;font-weight:600;border-radius:5px;cursor:pointer;background:rgba(52,211,153,.12);color:#34D399;border:1px solid rgba(52,211,153,.3)">Sauvegarder</button><button class="em-acts em-cancel" style="padding:5px 14px;font-size:11px;font-weight:600;border-radius:5px;cursor:pointer;background:rgba(255,255,255,.05);color:var(--t3);border:1px solid var(--bd)">Annuler</button>`;
+              btns.querySelector(".em-save").onclick = ev2 => { ev2.stopPropagation(); saveStepMsg(st.sk, st.idx || 0, ta.value); };
+              btns.querySelector(".em-cancel").onclick = ev2 => { ev2.stopPropagation(); paint(); };
+            };
+          }
+          // Bind date input
+          const dtIn = div.querySelector(".dt-ed");
+          if (dtIn) dtIn.onchange = () => saveStepDate(dtIn.dataset.sk, dtIn.value);
           tl.appendChild(div);
         });
       };
