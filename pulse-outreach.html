@@ -1739,7 +1739,7 @@
     function logout() {
       supabaseCl.auth.signOut();
       SB_TOKEN = SB_KEY;
-      S = { ...S, user: null, admin: false, targets: [], strats: [], posts: [], cfgs: [], livres: [] };
+      S = { ...S, user: null, admin: false, uid: null, targets: [], strats: [], posts: [], cfgs: [], livres: [], cons: [], kgCtx: [], _newsBanner: null, sel: null, dtab: 'info', fl: { q: '', seg: '', stg: '', cons: '' }, pfl: { cons: '' } };
       $("A").classList.remove("on"); $("LS").style.display = "flex"; closeDetail()
     }
 
@@ -1854,7 +1854,9 @@
         { key:'rdv', label:'Proposer RDV à', emoji:'📅', urgency:5, exp:[47,57] },
         { key:'nurturing', label:'Nurturing pour', emoji:'⏳', urgency:6, exp:[50,60] }
       ];
-      for (const t of S.targets) {
+      // Chaque utilisateur ne voit que ses propres actions (y compris admin)
+      const myTargets = S.targets.filter(t => t.consultant_name === S.user);
+      for (const t of myTargets) {
         const st = S.strats.find(x => x.target_id === t.id);
         if (!st) continue;
         if (t.pipeline_etape === 'gagne' || t.pipeline_etape === 'perdu') continue;
@@ -2253,7 +2255,7 @@
       m = document.createElement("div");
       m.id = "pwModal";
       m.style.cssText = "position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center";
-      m.innerHTML = `<div style="background:var(--c2);border:1px solid var(--bd);border-radius:var(--r);padding:24px;width:360px;max-width:90vw">
+      m.innerHTML = `<div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:24px;width:360px;max-width:90vw">
         <h3 style="margin-bottom:16px">${ic('lock','16px')} Changer le mot de passe</h3>
         <p style="color:var(--t2);font-size:13px;margin-bottom:16px">${userName ? 'Pour <strong>' + e(userName) + '</strong>' : 'Mon mot de passe'}</p>
         <div class="ig"><label>Nouveau mot de passe</label><input type="password" id="newPwIn" placeholder="Nouveau mot de passe" style="width:100%"></div>
@@ -2287,9 +2289,9 @@
           msg.innerHTML = '<span style="color:var(--g)">' + ic('check','13px') + ' Mot de passe mis à jour !</span>';
           setTimeout(() => { const m = document.getElementById("pwModal"); if (m) m.remove() }, 1500);
         } else {
-          msg.innerHTML = '<span style="color:var(--rd)">' + (d.error || "Erreur") + '</span>';
+          msg.innerHTML = '<span style="color:var(--rd)">' + e(d.error || "Erreur") + '</span>';
         }
-      } catch (err) { msg.innerHTML = '<span style="color:var(--rd)">Erreur: ' + err.message + '</span>' }
+      } catch (err) { msg.innerHTML = '<span style="color:var(--rd)">Erreur: ' + e(err.message) + '</span>' }
     }
 
     // ===== ADMIN ===== (FIX #5: onglet Assets)
@@ -2340,13 +2342,13 @@
       el.innerHTML = `<div style="color:var(--yw)">⏳ Rafraîchissement en cours${conName ? " pour " + conName : ""}...</div>`;
       try {
         const body = conName ? { consultant_name: conName } : {};
-        const r = await fetch(SB_URL + "/functions/v1/refresh-intelligence", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SB_KEY }, body: JSON.stringify(body) });
+        const r = await fetch(SB_URL + "/functions/v1/refresh-intelligence", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SB_TOKEN }, body: JSON.stringify(body) });
         const d = await r.json();
         if (d.success) {
           el.innerHTML = `<div style="color:var(--g)">${ic('check', '13px')} ${d.refreshed} cibles rafraîchies · ${d.alerts} nouvelles alertes</div>${(d.details || []).filter(x => x.alert).map(x => `<div style="margin-top:4px;color:var(--yw)">${ic('trend', '12px')} ${x.entreprise}: ${x.new_news} nouvelle(s) actu</div>`).join("")}`;
           await loadData(); render()
-        } else { el.innerHTML = `<div style="color:var(--rd)">Erreur: ${d.error || "inconnue"}</div>` }
-      } catch (err) { el.innerHTML = `<div style="color:var(--rd)">Erreur: ${err.message}</div>` }
+        } else { el.innerHTML = `<div style="color:var(--rd)">Erreur: ${e(d.error || "inconnue")}</div>` }
+      } catch (err) { el.innerHTML = `<div style="color:var(--rd)">Erreur: ${e(err.message)}</div>` }
     }
     // ===== CONFIG =====
     async function rConfig(el) {
@@ -2457,7 +2459,7 @@
             if (header) { const span = header.querySelectorAll("span")[1]; if (span) span.textContent = newContent.length + " caractères"; }
             setTimeout(() => { status.innerHTML = ''; }, 3000);
           } catch (err) {
-            status.innerHTML = `<span style="color:var(--rd)">Erreur: ${err.message}</span>`;
+            status.innerHTML = `<span style="color:var(--rd)">Erreur: ${e(err.message)}</span>`;
           }
         };
       });
@@ -3228,7 +3230,7 @@
       renderGenSt(tid);
       renderAIBanner(tid);
 
-      fetch(SB_URL + "/functions/v1/generate-strategy", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SB_KEY }, body: JSON.stringify({ target_id: tid, consultant_name: S.user }), signal: ctrl.signal })
+      fetch(SB_URL + "/functions/v1/generate-strategy", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SB_TOKEN }, body: JSON.stringify({ target_id: tid, consultant_name: S.user }), signal: ctrl.signal })
         .then(async r => {
           clearInterval(iv);
           clearTimeout(timeout);
@@ -3258,7 +3260,7 @@
               const toast = document.createElement("div");
               toast.style.cssText = "position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--s2);border:1px solid rgba(52,211,153,.4);border-radius:12px;padding:14px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.4);cursor:pointer;animation:fadeInUp .3s ease";
               toast.innerHTML = `<span style="color:var(--g);font-size:16px">✓</span><div><div style="font-size:13px;font-weight:600;color:var(--g)">Stratégie générée</div><div style="font-size:12px;color:var(--t2)">${tName} — Cliquez pour voir</div></div>`;
-              toast.onclick = () => { openTarget(S.targets.find(t => t.id === tid)); S.dtab = "strat"; rDC(); toast.remove(); };
+              toast.onclick = () => { openDetail(tid); S.dtab = "strat"; setTimeout(() => rDC(), 100); toast.remove(); };
               document.body.appendChild(toast);
               setTimeout(() => { if (toast.parentNode) toast.remove(); }, 15000);
             }

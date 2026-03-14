@@ -604,9 +604,56 @@ Deno.serve(async (req: Request) => {
       console.log('v9.0 posts Company: ' + posts.length + ' posts extracted from company updates (raw=' + updates.length + ')');
       return posts;
     }
-    const ceoPosts = extractPersonActivity(liP, 'CEO');
-    const dircoPosts = extractPersonActivity(liDirco, 'DirCo');
+    let ceoPosts = extractPersonActivity(liP, 'CEO');
+    let dircoPosts = extractPersonActivity(liDirco, 'DirCo');
     const companyPosts = extractCompanyPosts(liC);
+
+    // Fallback: if Person profile didn't return posts, use dedicated DS_LI_POSTS dataset
+    const postsFallbacks: Promise<void>[] = [];
+    if (ceoPosts.length === 0 && liUrl) {
+      console.log('v9.0 CEO posts empty from profile, trying DS_LI_POSTS for ' + liUrl);
+      postsFallbacks.push(
+        bdDataset(DS_LI_POSTS, [{ url: liUrl }], 40000).then((data: any) => {
+          if (data) {
+            const arr = Array.isArray(data) ? data : [data];
+            const posts = arr.flatMap((d: any) => {
+              const items = d.posts || d.activity || (Array.isArray(d) ? d : [d]);
+              return (Array.isArray(items) ? items : []).map((a: any) => ({
+                _source: 'CEO', text: a.text || a.content || a.title || '',
+                link: a.post_url || a.link || a.url || '', post_url: a.post_url || a.link || a.url || '',
+                interaction: a.interaction || '', date: a.date || a.posted_at || a.time || '',
+                likes_count: a.likes_count || 0, id: a.id || a.post_id || ''
+              }));
+            }).filter((p: any) => p.text && p.text.length > 10);
+            console.log('v9.0 DS_LI_POSTS CEO fallback: ' + posts.length + ' posts');
+            ceoPosts = posts;
+          }
+        }).catch((e: any) => console.log('v9.0 DS_LI_POSTS CEO err: ' + e))
+      );
+    }
+    if (dircoPosts.length === 0 && dircoUrl) {
+      console.log('v9.0 DirCo posts empty from profile, trying DS_LI_POSTS for ' + dircoUrl);
+      postsFallbacks.push(
+        bdDataset(DS_LI_POSTS, [{ url: dircoUrl }], 40000).then((data: any) => {
+          if (data) {
+            const arr = Array.isArray(data) ? data : [data];
+            const posts = arr.flatMap((d: any) => {
+              const items = d.posts || d.activity || (Array.isArray(d) ? d : [d]);
+              return (Array.isArray(items) ? items : []).map((a: any) => ({
+                _source: 'DirCo', text: a.text || a.content || a.title || '',
+                link: a.post_url || a.link || a.url || '', post_url: a.post_url || a.link || a.url || '',
+                interaction: a.interaction || '', date: a.date || a.posted_at || a.time || '',
+                likes_count: a.likes_count || 0, id: a.id || a.post_id || ''
+              }));
+            }).filter((p: any) => p.text && p.text.length > 10);
+            console.log('v9.0 DS_LI_POSTS DirCo fallback: ' + posts.length + ' posts');
+            dircoPosts = posts;
+          }
+        }).catch((e: any) => console.log('v9.0 DS_LI_POSTS DirCo err: ' + e))
+      );
+    }
+    if (postsFallbacks.length > 0) await Promise.all(postsFallbacks);
+
     let prospectPostsMerged = [...ceoPosts, ...dircoPosts, ...companyPosts];
     console.log('v9.0 POSTS TOTAL: CEO=' + ceoPosts.length + ' DirCo=' + dircoPosts.length + ' Company=' + companyPosts.length + ' merged=' + prospectPostsMerged.length);
     if (news && (Array.isArray(news) ? news.length > 0 : true)) {
