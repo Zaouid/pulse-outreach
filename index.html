@@ -1814,69 +1814,190 @@
     }
 
     // ===== ACTIONS DU JOUR =====
+    // ===== ACTIONS DU JOUR (Plan du Jour) =====
+    window._adjActions = [];
+    function _adjResolveMsg(st, key, persona) {
+      const isCeo = persona === 'ceo';
+      const ck = st.items_checked || {};
+      if (key === 'commentaire') {
+        const multi = isCeo ? (st.commentaires_multi || []) : (st.dirco_commentaires_multi || []);
+        const ckPfx = isCeo ? 'ceo_commentaire_' : 'dirco_commentaire_';
+        for (let i = 0; i < multi.length; i++) {
+          if (!ck[ckPfx + i]) {
+            const pUrl = multi[i].post_url;
+            return { msg: multi[i].commentaire || '', postUrl: (pUrl && pUrl !== 'N/A' && pUrl.startsWith('http')) ? pUrl : null, postCible: multi[i].post_cible || '' };
+          }
+        }
+        const fallback = isCeo ? st.commentaire_linkedin : st.dirco_commentaire_linkedin;
+        return { msg: fallback || '', postUrl: null, postCible: '' };
+      }
+      const MAP = {
+        connexion: [st.message_connexion, st.dirco_message_connexion || st.message_connexion_dirco],
+        suivi: [st.message_suivi_1, st.dirco_message_suivi || st.message_suivi_dirco],
+        email: [st.message_email, st.dirco_message_email],
+        relance: [st.message_relance_guide, st.dirco_message_relance_guide],
+        rdv: [st.message_proposition_rdv, st.dirco_message_proposition_rdv],
+        nurturing: [st.message_nurturing_long, st.dirco_message_nurturing]
+      };
+      const pair = MAP[key] || ['', ''];
+      return { msg: (isCeo ? pair[0] : pair[1]) || '', postUrl: null, postCible: '' };
+    }
+
     function computeTodayActions() {
       const today = new Date(), actions = [];
       const STEPS = [
-        { key:'commentaire', label:'Commenter les posts de', icon:'comment', urgency:1, exp:[0,21] },
-        { key:'connexion', label:'Envoyer connexion à', icon:'connect', urgency:2, exp:[20,35] },
-        { key:'suivi', label:'Envoyer DM à', icon:'send', urgency:3, exp:[27,42] },
-        { key:'email', label:'Envoyer email à', icon:'mail', urgency:3, exp:[30,47] },
-        { key:'relance', label:'Relancer', icon:'refresh', urgency:4, exp:[37,52] },
-        { key:'rdv', label:'Proposer RDV à', icon:'calendar', urgency:5, exp:[47,57] },
-        { key:'nurturing', label:'Nurturing pour', icon:'clock', urgency:6, exp:[50,60] }
+        { key:'commentaire', label:'Commenter les posts de', emoji:'💬', urgency:1, exp:[0,21] },
+        { key:'connexion', label:'Envoyer connexion à', emoji:'🤝', urgency:2, exp:[20,35] },
+        { key:'suivi', label:'Envoyer DM à', emoji:'✉️', urgency:3, exp:[27,42] },
+        { key:'email', label:'Envoyer email à', emoji:'📧', urgency:3, exp:[30,47] },
+        { key:'relance', label:'Relancer', emoji:'🔄', urgency:4, exp:[37,52] },
+        { key:'rdv', label:'Proposer RDV à', emoji:'📅', urgency:5, exp:[47,57] },
+        { key:'nurturing', label:'Nurturing pour', emoji:'⏳', urgency:6, exp:[50,60] }
       ];
       for (const t of S.targets) {
         const st = S.strats.find(x => x.target_id === t.id);
         if (!st) continue;
         if (t.pipeline_etape === 'gagne' || t.pipeline_etape === 'perdu') continue;
         const daysSince = Math.floor((today - new Date(st.created_at)) / 86400000);
-        const isCeo = true;
-        const pfx = isCeo ? 'step_' : 'dirco_step_';
-        let nextStep = null;
-        for (const step of STEPS) {
-          if (!st[pfx + step.key + '_done']) { nextStep = step; break; }
+        // Generate actions for both CEO and DirCo
+        const personas = [
+          { key: 'ceo', pfx: 'step_', name: [t.ceo_prenom, t.ceo_nom].filter(Boolean).join(' '), badge: 'CEO' },
+          { key: 'dirco', pfx: 'dirco_step_', name: [t.dirco_prenom, t.dirco_nom].filter(Boolean).join(' '), badge: 'DirCo' }
+        ];
+        for (const p of personas) {
+          if (!p.name) continue; // skip if no contact for this persona
+          let nextStep = null;
+          for (const step of STEPS) {
+            if (!st[p.pfx + step.key + '_done']) { nextStep = step; break; }
+          }
+          if (!nextStep) continue;
+          const [expStart, expEnd] = nextStep.exp;
+          const overdue = daysSince > expEnd;
+          const inWindow = daysSince >= expStart && daysSince <= expEnd;
+          let priority = nextStep.urgency;
+          if (overdue) priority -= 4;
+          else if (inWindow) priority -= 2;
+          const resolved = _adjResolveMsg(st, nextStep.key, p.key);
+          if (!resolved.msg) continue; // skip if no message content
+          actions.push({
+            target: t, strategy: st, step: nextStep, persona: p.key, personaBadge: p.badge,
+            contactName: p.name, daysSince, overdue, inWindow, priority,
+            label: nextStep.label + ' ' + p.name,
+            sublabel: t.entreprise + ' · J' + daysSince + '/60',
+            msg: resolved.msg, postUrl: resolved.postUrl, postCible: resolved.postCible
+          });
         }
-        if (!nextStep) continue;
-        const [expStart, expEnd] = nextStep.exp;
-        const overdue = daysSince > expEnd;
-        const inWindow = daysSince >= expStart && daysSince <= expEnd;
-        let priority = nextStep.urgency;
-        if (overdue) priority -= 4;
-        else if (inWindow) priority -= 2;
-        const contactName = [t.ceo_prenom, t.ceo_nom].filter(Boolean).join(' ') || t.entreprise;
-        actions.push({
-          target: t, strategy: st, step: nextStep,
-          contactName, daysSince, overdue, inWindow,
-          label: nextStep.label + ' ' + contactName,
-          sublabel: t.entreprise + ' · J' + daysSince + '/60'
-        });
       }
       actions.sort((a, b) => {
         if (a.overdue !== b.overdue) return a.overdue ? -1 : 1;
+        if (a.inWindow !== b.inWindow) return a.inWindow ? -1 : 1;
         return a.priority - b.priority;
       });
-      return actions.slice(0, 8);
+      // Show all overdue + all inWindow + top 5 upcoming
+      const od = actions.filter(a => a.overdue);
+      const iw = actions.filter(a => a.inWindow && !a.overdue);
+      const up = actions.filter(a => !a.inWindow && !a.overdue).slice(0, 5);
+      return [...od, ...iw, ...up];
     }
+
+    async function adjDone(idx) {
+      const a = window._adjActions[idx];
+      if (!a) return;
+      const pfx = a.persona === 'ceo' ? 'step_' : 'dirco_step_';
+      const patch = { [pfx + a.step.key + '_done']: true, [pfx + a.step.key + '_date']: new Date().toISOString().split('T')[0] };
+      await PATCH('communication_strategies?id=eq.' + a.strategy.id, patch);
+      a.strategy[pfx + a.step.key + '_done'] = true;
+      const card = document.getElementById('adj_' + idx);
+      if (card) { card.style.transition = 'all .3s'; card.style.opacity = '0'; card.style.maxHeight = '0'; card.style.marginBottom = '0'; card.style.padding = '0'; setTimeout(() => card.remove(), 350); }
+      // Update counters
+      setTimeout(() => { const hdr = document.getElementById('ADJ_HDR'); if (hdr) { const fresh = computeTodayActions(); const odc = fresh.filter(x => x.overdue).length, iwc = fresh.filter(x => x.inWindow && !x.overdue).length; hdr.innerHTML = odc ? `<span style="color:#F87171">${odc} en retard</span> · <span style="color:#34D399">${iwc} à faire</span>` : `<span style="color:#34D399">${iwc} à faire</span>`; } }, 400);
+    }
+
+    function adjCopy(idx) {
+      const a = window._adjActions[idx];
+      if (!a) return;
+      navigator.clipboard.writeText(a.msg).then(() => {
+        const btn = document.getElementById('adjcp_' + idx);
+        if (btn) { btn.textContent = '✓ Copié'; btn.style.background = 'rgba(52,211,153,.2)'; btn.style.color = '#34D399'; setTimeout(() => { btn.textContent = 'Copier'; btn.style.background = ''; btn.style.color = ''; }, 2000); }
+      });
+    }
+
+    function adjOpen(idx) {
+      const a = window._adjActions[idx];
+      if (!a) return;
+      openDetail(a.target.id);
+      S.dtab = 'strat'; setTimeout(() => rDC(), 100);
+    }
+
     function rActionsDuJour() {
       const actions = computeTodayActions();
-      if (!actions.length) return '<div style="margin-bottom:20px"><h3 style="font-family:var(--fh);margin-bottom:10px">📋 Actions du Jour</h3><div class="es">Aucune action planifiée. Générez des stratégies pour vos cibles.</div></div>';
-      const overdueCount = actions.filter(a => a.overdue).length;
-      return `<div style="margin-bottom:24px">
-        <h3 style="font-family:var(--fh);margin-bottom:14px">📋 Actions du Jour <span style="font-size:12px;font-weight:400;color:var(--t3)">${actions.length} action${actions.length > 1 ? 's' : ''}${overdueCount ? ` · <span style="color:var(--rd)">${overdueCount} en retard</span>` : ''}</span></h3>
-        <div id="ADJ_LIST">${actions.map(a => {
-          const stepColors = { commentaire:'#60A5FA', connexion:'#A78BFA', suivi:'#34D399', email:'#FBBF24', relance:'#FB923C', rdv:'#F87171', nurturing:'#94A3B8' };
-          const col = stepColors[a.step.key] || 'var(--t3)';
-          return `<div class="na" style="border-left:3px solid ${a.overdue ? 'var(--rd)' : col};cursor:pointer" onclick="openDetail('${a.target.id}')">
-            <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:${a.overdue ? 'rgba(248,113,113,.1)' : col + '15'};color:${a.overdue ? 'var(--rd)' : col};font-size:14px">
-              ${a.step.key === 'commentaire' ? '💬' : a.step.key === 'connexion' ? '🤝' : a.step.key === 'suivi' ? '✉️' : a.step.key === 'email' ? '📧' : a.step.key === 'relance' ? '🔄' : a.step.key === 'rdv' ? '📅' : '⏳'}
-            </div>
+      window._adjActions = actions;
+      const stepColors = { commentaire:'#60A5FA', connexion:'#A78BFA', suivi:'#FBBF24', email:'#F472B6', relance:'#FB923C', rdv:'#3EC878', nurturing:'#71717A' };
+      // Date header
+      const now = new Date();
+      const jours = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+      const mois = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+      const dateStr = jours[now.getDay()] + ' ' + now.getDate() + ' ' + mois[now.getMonth()] + ' ' + now.getFullYear();
+
+      if (!actions.length) return `<div style="margin-bottom:24px">
+        <div style="font-size:13px;color:var(--t3);margin-bottom:6px">${dateStr}</div>
+        <h3 style="font-family:var(--fh);margin-bottom:10px;font-size:18px">Plan du Jour</h3>
+        <div class="es" style="padding:20px;text-align:center;color:var(--t3)">Aucune action planifiée. Générez des stratégies pour vos cibles.</div>
+      </div>`;
+
+      const overdueList = actions.filter(a => a.overdue);
+      const inWindowList = actions.filter(a => a.inWindow && !a.overdue);
+      const upcomingList = actions.filter(a => !a.inWindow && !a.overdue);
+
+      function renderCard(a, idx) {
+        const col = stepColors[a.step.key] || '#71717A';
+        const borderCol = a.overdue ? '#F87171' : col;
+        const preview = a.msg.length > 100 ? a.msg.substring(0, 100) + '...' : a.msg;
+        const postCibleTxt = a.postCible ? ' — «' + (a.postCible.length > 50 ? a.postCible.substring(0, 50) + '...' : a.postCible) + '»' : '';
+        return `<div id="adj_${idx}" class="na" style="border-left:3px solid ${borderCol};margin-bottom:8px;overflow:hidden">
+          <div style="display:flex;align-items:flex-start;gap:10px;width:100%">
+            <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:${borderCol}15;font-size:14px">${a.step.emoji}</div>
             <div style="flex:1;min-width:0">
-              <div style="font-weight:600;font-size:13px">${e(a.label)}</div>
-              <div style="font-size:11px;color:var(--t2)">${e(a.sublabel)}</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;flex-wrap:wrap">
+                <span style="font-weight:600;font-size:13px;cursor:pointer" onclick="adjOpen(${idx})">${e(a.label)}</span>
+                <span style="padding:1px 6px;font-size:9px;font-weight:700;border-radius:3px;background:${a.persona === 'ceo' ? 'rgba(96,165,250,.15)' : 'rgba(167,139,250,.15)'};color:${a.persona === 'ceo' ? '#60A5FA' : '#A78BFA'}">${a.personaBadge}</span>
+                ${a.overdue ? '<span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(248,113,113,.15);color:#F87171;font-weight:600">En retard</span>' : a.inWindow ? '<span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(52,211,153,.15);color:#34D399;font-weight:600">À faire</span>' : '<span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(148,163,184,.15);color:#94A3B8;font-weight:600">À venir</span>'}
+              </div>
+              <div style="font-size:11px;color:var(--t3);margin-bottom:6px">${e(a.sublabel)}${postCibleTxt}</div>
+              <div style="background:rgba(0,0,0,.25);border-radius:6px;padding:8px 10px;margin-bottom:6px">
+                <div style="font-size:12px;color:var(--t2);line-height:1.5;white-space:pre-wrap">${e(preview)}</div>
+              </div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <button id="adjcp_${idx}" onclick="event.stopPropagation();adjCopy(${idx})" style="padding:3px 10px;font-size:11px;font-weight:600;border-radius:5px;border:1px solid var(--bd);background:rgba(255,255,255,.05);color:var(--tx);cursor:pointer">Copier</button>
+                ${a.postUrl ? `<a href="${e(a.postUrl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="padding:3px 10px;font-size:11px;font-weight:600;border-radius:5px;border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.1);color:#60A5FA;text-decoration:none;cursor:pointer">Ouvrir le post</a>` : ''}
+                <button onclick="event.stopPropagation();adjDone(${idx})" style="padding:3px 10px;font-size:11px;font-weight:600;border-radius:5px;border:1px solid rgba(52,211,153,.3);background:rgba(52,211,153,.1);color:#34D399;cursor:pointer;margin-left:auto">✓ Fait</button>
+              </div>
             </div>
-            ${a.overdue ? '<span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(248,113,113,.15);color:#F87171;font-weight:600;white-space:nowrap">En retard</span>' : a.inWindow ? '<span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(52,211,153,.15);color:#34D399;font-weight:600;white-space:nowrap">À faire</span>' : '<span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(148,163,184,.15);color:#94A3B8;font-weight:600;white-space:nowrap">À venir</span>'}
-          </div>`
-        }).join('')}</div>
+          </div>
+        </div>`;
+      }
+
+      function renderSection(title, list, startIdx, color) {
+        if (!list.length) return '';
+        return `<div style="margin-bottom:16px">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:${color};margin-bottom:8px">${title} (${list.length})</div>
+          ${list.map((a, i) => renderCard(a, startIdx + i)).join('')}
+        </div>`;
+      }
+
+      const odStart = 0;
+      const iwStart = overdueList.length;
+      const upStart = iwStart + inWindowList.length;
+
+      return `<div style="margin-bottom:28px">
+        <div style="font-size:13px;color:var(--t3);margin-bottom:4px">${dateStr}</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <h3 style="font-family:var(--fh);margin:0;font-size:18px">Plan du Jour</h3>
+          <span id="ADJ_HDR" style="font-size:12px;color:var(--t3)">${overdueList.length ? `<span style="color:#F87171">${overdueList.length} en retard</span> · ` : ''}<span style="color:#34D399">${inWindowList.length} à faire</span>${upcomingList.length ? ` · <span style="color:#94A3B8">${upcomingList.length} à venir</span>` : ''}</span>
+        </div>
+        ${renderSection('En retard', overdueList, odStart, '#F87171')}
+        ${renderSection('À faire', inWindowList, iwStart, '#34D399')}
+        ${renderSection('À venir', upcomingList, upStart, '#94A3B8')}
       </div>`;
     }
 
