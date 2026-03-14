@@ -1625,7 +1625,7 @@
     const STAGES = [{ k: "non_traite", l: "Non traité", c: "#71717A" }, { k: "strategie_generee", l: "Stratégie IA", c: "#A78BFA" }, { k: "premier_contact", l: "1er Contact", c: "#60A5FA" }, { k: "en_discussion", l: "Discussion", c: "#FBBF24" }, { k: "rdv", l: "RDV", c: "#FB923C" }, { k: "proposition", l: "Proposition", c: "#F472B6" }, { k: "gagne", l: "Gagné", c: "#3EC878" }, { k: "perdu", l: "Perdu", c: "#F87171" }];
     const SEGC = { "SaaS B2B": "#A78BFA", "ETI PME Industrielles": "#FBBF24", "ESN & ICT": "#60A5FA" };
     const DURR_DEF = [{ k: "durr_d", l: "D — Douloureux", d: "Le problème commercial est réel et mesurable", q: "Quel impact concret ce problème a-t-il sur vos résultats ?", sig: "CA stagne, quota non atteint, conversion chute" }, { k: "durr_u", l: "U — Urgent", d: "Le problème doit être résolu maintenant", q: "Que se passe-t-il si vous ne faites rien dans les 3 prochains mois ?", sig: "LBO récent, nouveau DirCo, restructuration" }, { k: "durr_r1", l: "R — Reconnu", d: "Le dirigeant reconnaît qu'il a un problème", q: "Depuis quand avez-vous identifié ce sujet ?", sig: "Il en parle, cherche des solutions, a déjà tenté des choses" }, { k: "durr_r2", l: "R — Récurrent", d: "Ce n'est pas un accident, c'est structurel", q: "Ce problème est-il nouveau ou revient-il régulièrement ?", sig: "Revient chaque trimestre, chaque année, à chaque recrutement" }];
-    let S = { user: null, admin: false, uid: null, targets: [], strats: [], cons: [], posts: [], cfgs: [], livres: [], page: "dashboard", sel: null, dtab: "exec", fl: { q: "", seg: "", stg: "", cons: "" }, pfl: { f: "all", cons: "" } };
+    let S = { user: null, admin: false, uid: null, targets: [], strats: [], cons: [], posts: [], cfgs: [], livres: [], page: "dashboard", sel: null, dtab: "exec", fl: { q: "", seg: "", stg: "", cons: "", pri: "" }, pfl: { f: "all", cons: "" } };
 
     // SVG Icon library (line style)
     const I = {
@@ -1739,7 +1739,7 @@
     function logout() {
       supabaseCl.auth.signOut();
       SB_TOKEN = SB_KEY;
-      S = { ...S, user: null, admin: false, uid: null, targets: [], strats: [], posts: [], cfgs: [], livres: [], cons: [], kgCtx: [], _newsBanner: null, sel: null, dtab: 'info', fl: { q: '', seg: '', stg: '', cons: '' }, pfl: { cons: '' } };
+      S = { ...S, user: null, admin: false, uid: null, targets: [], strats: [], posts: [], cfgs: [], livres: [], cons: [], kgCtx: [], _newsBanner: null, sel: null, dtab: 'info', fl: { q: '', seg: '', stg: '', cons: '', pri: '' }, pfl: { cons: '' } };
       $("A").classList.remove("on"); $("LS").style.display = "flex"; closeDetail()
     }
 
@@ -2037,9 +2037,9 @@
     function rTargets(el) {
       const f = S.fl;
       el.innerHTML = `<h2 class="pt">${S.admin ? "Toutes les Cibles" : "Mes Cibles"} <small id="TC">0</small>${S.admin ? `<button class="bt bp bsm" style="margin-left:16px;vertical-align:middle" id="addTBtn">+ Ajouter une cible</button>` : ""}</h2>
-  <div class="fb"><input id="fq" placeholder="⌕ Rechercher..." value="${e(f.q)}"><select id="fseg"><option value="">Tous segments</option><option value="SaaS B2B"${f.seg === "SaaS B2B" ? " selected" : ""}>SaaS B2B</option><option value="ETI PME Industrielles"${f.seg === "ETI PME Industrielles" ? " selected" : ""}>ETI / PME</option><option value="ESN & ICT"${f.seg === "ESN & ICT" ? " selected" : ""}>ESN & ICT</option></select><select id="fstg"><option value="">Toutes étapes</option>${STAGES.map(s => `<option value="${s.k}"${f.stg === s.k ? " selected" : ""}>${s.l}</option>`).join("")}</select>${S.admin ? `<select id="fcons"><option value="">Tous consultants</option><option value="__none__"${f.cons === "__none__" ? " selected" : ""}>Non assignées</option>${S.cons.filter(c => c.is_active !== false).map(c => `<option value="${e(c.name)}"${f.cons === c.name ? " selected" : ""}>${e(c.name)}</option>`).join("")}</select>` : ""}</div>
+  <div class="fb"><input id="fq" placeholder="⌕ Rechercher..." value="${e(f.q)}"><select id="fseg"><option value="">Tous segments</option><option value="SaaS B2B"${f.seg === "SaaS B2B" ? " selected" : ""}>SaaS B2B</option><option value="ETI PME Industrielles"${f.seg === "ETI PME Industrielles" ? " selected" : ""}>ETI / PME</option><option value="ESN & ICT"${f.seg === "ESN & ICT" ? " selected" : ""}>ESN & ICT</option></select><select id="fstg"><option value="">Toutes étapes</option>${STAGES.map(s => `<option value="${s.k}"${f.stg === s.k ? " selected" : ""}>${s.l}</option>`).join("")}</select><select id="fpri"><option value="">Toutes priorités</option><option value="P1"${f.pri === "P1" ? " selected" : ""}>P1 — Haute</option><option value="P2"${f.pri === "P2" ? " selected" : ""}>P2 — Moyenne</option><option value="P3"${f.pri === "P3" ? " selected" : ""}>P3 — Basse</option><option value="__none__"${f.pri === "__none__" ? " selected" : ""}>Non définie</option></select>${S.admin ? `<select id="fcons"><option value="">Tous consultants</option><option value="__none__"${f.cons === "__none__" ? " selected" : ""}>Non assignées</option>${S.cons.filter(c => c.is_active !== false).map(c => `<option value="${e(c.name)}"${f.cons === c.name ? " selected" : ""}>${e(c.name)}</option>`).join("")}</select>` : ""}</div>
   <div class="cd"><div class="tw"><table><thead><tr><th>Entreprise</th><th>Segment</th><th>Contact</th><th>DURR</th><th>Pipeline</th><th>Actions</th>${S.admin ? "<th>Consultant</th>" : ""}</tr></thead><tbody id="TBD"></tbody></table></div></div>`;
-      $("fq").oninput = function () { S.fl.q = this.value; rTRows() }; $("fseg").onchange = function () { S.fl.seg = this.value; rTRows() }; $("fstg").onchange = function () { S.fl.stg = this.value; rTRows() }; if (S.admin && $("fcons")) $("fcons").onchange = function () { S.fl.cons = this.value; rTRows() };
+      $("fq").oninput = function () { S.fl.q = this.value; rTRows() }; $("fseg").onchange = function () { S.fl.seg = this.value; rTRows() }; $("fstg").onchange = function () { S.fl.stg = this.value; rTRows() }; $("fpri").onchange = function () { S.fl.pri = this.value; rTRows() }; if (S.admin && $("fcons")) $("fcons").onchange = function () { S.fl.cons = this.value; rTRows() };
       if (S.admin && $("addTBtn")) $("addTBtn").onclick = showAddTarget;
       rTRows();
     }
@@ -2048,6 +2048,8 @@
       if (f.q) { const q = f.q.toLowerCase(); items = items.filter(t => (t.entreprise || "").toLowerCase().includes(q) || (t.ceo_nom || "").toLowerCase().includes(q)) }
       if (f.seg) items = items.filter(t => t.segment === f.seg);
       if (f.stg) items = items.filter(t => t.pipeline_etape === f.stg);
+      if (f.pri === "__none__") items = items.filter(t => !t.priorite);
+      else if (f.pri) items = items.filter(t => t.priorite === f.pri);
       if (S.admin && f.cons === "__none__") items = items.filter(t => !t.consultant_name);
       else if (S.admin && f.cons) items = items.filter(t => t.consultant_name === f.cons);
       const tc = $("TC"); if (tc) tc.textContent = items.length;
