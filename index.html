@@ -1639,6 +1639,17 @@
       if (session?.access_token) SB_TOKEN = session.access_token;
       else if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED' && !session) { SB_TOKEN = SB_KEY; }
     });
+    // F4: Force-refresh JWT before critical API calls (prevents 401 on expired tokens)
+    async function ensureFreshToken() {
+      try {
+        const { data } = await supabaseCl.auth.getSession();
+        if (data?.session?.access_token) { SB_TOKEN = data.session.access_token; return true; }
+        // Session gone — try refreshing
+        const { data: r2 } = await supabaseCl.auth.refreshSession();
+        if (r2?.session?.access_token) { SB_TOKEN = r2.session.access_token; return true; }
+      } catch (_) {}
+      return false;
+    }
     // F4: Session timeout — 30 min inactivity
     let _lastActivity = Date.now();
     const _SESSION_TIMEOUT = 30 * 60 * 1000;
@@ -2150,6 +2161,7 @@
       for (const t of eligible) {
         if (window._batchStop) break;
         try {
+          await ensureFreshToken();
           const r = await fetch(SB_URL + '/functions/v1/generate-strategy', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + SB_TOKEN }, body: JSON.stringify({ target_id: t.id, consultant_name: t.consultant_name || S.user }) });
           const d = await r.json().catch(() => ({}));
           if (r.ok && d.success) done++; else { done++; errs++; }
@@ -2464,6 +2476,7 @@
       const el = $("rfRes"); if (!el) return;
       el.innerHTML = `<div style="color:var(--yw)">⏳ Rafraîchissement en cours${conName ? " pour " + conName : ""}...</div>`;
       try {
+        await ensureFreshToken();
         const body = conName ? { consultant_name: conName } : {};
         const r = await fetch(SB_URL + "/functions/v1/refresh-intelligence", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SB_TOKEN }, body: JSON.stringify(body) });
         const d = await r.json();
@@ -3426,10 +3439,17 @@
       renderGenSt(tid);
       renderAIBanner(tid);
 
-      fetch(SB_URL + "/functions/v1/generate-strategy", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SB_TOKEN }, body: JSON.stringify({ target_id: tid, consultant_name: S.user }), signal: ctrl.signal })
+      ensureFreshToken().then(() =>
+      fetch(SB_URL + "/functions/v1/generate-strategy", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SB_TOKEN }, body: JSON.stringify({ target_id: tid, consultant_name: S.user }), signal: ctrl.signal }))
         .then(async r => {
           clearInterval(iv);
           clearTimeout(timeout);
+          if (r.status === 401) {
+            window.S_GEN[tid] = { status: "error", err: "Session expirée (401). Rechargez la page et reconnectez-vous." };
+            renderGenSt(tid); renderAIBanner(tid);
+            if ($('launchBtn')) $('launchBtn').disabled = false;
+            return;
+          }
           if (r.status === 502 || r.status === 504) {
             window.S_GEN[tid] = { status: "error", err: "Le serveur a mis trop de temps (erreur " + r.status + "). Réessayez, la 2e tentative est souvent plus rapide." };
             renderGenSt(tid); renderAIBanner(tid);
